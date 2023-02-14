@@ -1,4 +1,9 @@
-# Getting Started with Create React App
+# Getting Started with the Munch App
+
+Munch is an item focused food finder app created for the COMP550 Advanced Software\
+Engineering class.
+
+Authors: Nathanael Paulus, Mitchell Dennen, Austin Hedrick, Kelsey Helling, Lean Xu
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
