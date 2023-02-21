@@ -1,36 +1,35 @@
 Restaurant,MenuItem,Price,Description
-Lighthouse Cafe,LH Burger,,"american cheese, lettece, onion, tomato, 1000 island sauce"
-Lighthouse Cafe,Turkey Burger,,"provolone, lettece, onion, tomato, 1000 island sauce"
-Lighthouse Cafe,Veggie or Black Bean Burger,,"veggie or black bean patti, american cheese, lettece,onion,tomato, 1000 island sauce"
-Lighthouse Cafe,Grilled Chicken Breast Snadwich,,"vitalian marinated chicken breast, lettece, onion, tomato, pickles, ranch dressing"
-Lighthouse Cafe,Grilled Cheese Sandwhich,,"provolone, american cheese, butter"
-Lighthouse Cafe,Buffalo Chicken Wrap,,"crispy chicken, chedder jack cheese, lettuce,tomato, buffalo sauce in a flour tortilla"
-Lighthouse Cafe,Cripsy Chicken Buffalo Wrap,,"crispy chicken, bacon, chedder jack cheese, lettuce, ranch in a flour tortilla"
-Lighthouse Cafe,Crispy Chicken Strips,,3 battered and fried chicken tenders served with choice of dipping sauce
-Lighthouse Cafe,Veggie Wrap,,"Spring mix. shredded carrots, tomatoes, cucumber, avacado, balsamic dressing in a flour tortilla"
-Lighthouse Cafe,Salad Of The Week,,changes every week
-Lighthouse Cafe,Soup Of The Week,,changes every week
-Lighthouse Cafe,Fries,,choice of sauce
-Lighthouse Cafe,Chili Cheese Fries,,vegetarian or beef chili
-Pizza 3.14,Build Your Own Pizza,,"Pepperoni, Sausage, Meatball, Chicken, Bacon, Extra Cheese, Mushrooms, Red Onions, Olives, Roasted Red Peppers, Green Peppers, Tomatoes, Broccoli, Pineapple, Fresh Jalapeños, Roasted Garlic, Artichokes"
-Pizza 3.14,The Hawaiian,,"Canadian Bacon, Pineapple, Sprinkle of Real Bacon, on a Semi-Sweet Sauce Smothered in Mozzarella"
-Pizza 3.14,BackYard BBQ Pizza,,"Crispy BBQ Chicken, Red Onions, Cilantro Leaves with Cheddar/Jack Cheese Blend and a Sweet and Tangy BBQ Sauce"
-Pizza 3.14,Meat Lovers,,"Pepperoni, Bacon, Sausage, Mozzarella, Homemade Marinara Sauce"
-Pizza 3.14,Margherita,,"Fresh Mozzarella Slices, Tomato, Fresh Basil, & Choice of Marinara or Pesto"
-Pizza 3.14,Original Veggie,,"Red Onion, Mushroom, Green Bell Pepper, Roasted Red Pepper, Mozzarella, Homemade Marinara Sauce"
-Pizza 3.14,The Vegan Delight,,"Fresh Mushrooms, Peppers, Red Onions, Artichoke Hearts, Broccoli, Sliced Tomatoes, Served With Cheese and Nut Free Basil Pesto"
-Pizza 3.14,Kitchen Buffalo Chicken Pizza,,"Boneless Chicken Wings, Blue Cheese and Mozzarella Blend, SpicyBuffalo Sauce, Topped With Diced Celery and Creamy Ranch Dressing"
-Pizza 3.14,Supreme,,"Pepperoni, Sausage, Bell Pepper, Mushroom, Onion, Mozzarella, Marinara"
-Pizza 3.14,Wings,,"Traditional or Boneless, Buffalo or Sweet & Tangy BBQ, Lemon Pepper, Garlic/Romano or Cajun"
-Pizza 3.14,Seasoned Potato Wedges,,NA
-Pizza 3.14,Onion Rings,,NA
-Pizza 3.14,Sweet Potato Fries,,NA
-Pizza 3.14,Side of Chips,,NA
-Pizza 3.14,Garlic Bread,,NA
-Pizza 3.14,Zucchini Sticks,,NA
-Pizza 3.14,Mozzarella Sicks,,NA
-Pizza 3.14,Salad Bar,,NA
-Pizza 3.14,Small Salad,,NA
-Pizza 3.14,Large Salad,,NA
-Pizza 3.14,3.14 Zookie,,NA
-Pizza 3.14,Albert's Brownie,,NA
+Lighthouse Cafe,All American Angus Burger,5.99,"american cheese, lettece, onion, tomato, 1000 island sauce"
+Lighthouse Cafe,Turkey Burger,6.39,"provolone, lettece, onion, tomato, 1000 island sauce"
+Lighthouse Cafe,Veggie or Black Bean Burger,6.39,"veggie or black bean patti, american cheese, lettece,onion,tomato, 1000 island sauce"
+Lighthouse Cafe,Grilled Chicken Breast Snadwich,6.99,"vitalian marinated chicken breast, lettece, onion, tomato, pickles, ranch dressing"
+Lighthouse Cafe,Grilled Cheese Sandwhich,4.29,"provolone, american cheese, butter"
+Lighthouse Cafe,Buffalo Chicken Wrap,7.99,"crispy chicken, chedder jack cheese, lettuce,tomato, buffalo sauce in a flour tortilla"
+Lighthouse Cafe,Cripsy Chicken Buffalo Wrap,8.69,"crispy chicken, bacon, chedder jack cheese, lettuce, ranch in a flour tortilla"
+Lighthouse Cafe,Crispy Chicken Strips,6.99,3 battered and fried chicken tenders served with choice of dipping sauce
+Lighthouse Cafe,Veggie Wrap,5.59,"Spring mix. shredded carrots, tomatoes, cucumber, avacado, balsamic dressing in a flour tortilla"
+Lighthouse Cafe,Salad Of The Week,3.99,changes every week
+Lighthouse Cafe,Soup Of The Week,3.49,changes every week
+Lighthouse Cafe,Fries,2.59,choice of sauce
+Lighthouse Cafe,Chili Cheese Fries,4.69,vegetarian or beef chili
+Pizza 3.14,Build Your Own Pizza,5.79,"Pepperoni, Sausage, Meatball, Chicken, Bacon, Extra Cheese, Mushrooms, Red Onions, Olives, Roasted Red Peppers, Green Peppers, Tomatoes, Broccoli, Pineapple, Fresh Jalapeños, Roasted Garlic, Artichokes"
+Pizza 3.14,The Hawaiian,7.49,"Canadian Bacon, Pineapple, Sprinkle of Real Bacon, on a Semi-Sweet Sauce Smothered in Mozzarella"
+Pizza 3.14,BackYard BBQ Pizza,7.49,"Crispy BBQ Chicken, Red Onions, Cilantro Leaves with Cheddar/Jack Cheese Blend and a Sweet and Tangy BBQ Sauce"
+Pizza 3.14,Meat Lovers,7.89,"Pepperoni, Bacon, Sausage, Mozzarella, Homemade Marinara Sauce"
+Pizza 3.14,Margherita,7.29,"Fresh Mozzarella Slices, Tomato, Fresh Basil, & Choice of Marinara or Pesto"
+Pizza 3.14,Original Veggie,7.29,"Red Onion, Mushroom, Green Bell Pepper, Roasted Red Pepper, Mozzarella, Homemade Marinara Sauce"
+Pizza 3.14,The Vegan Delight,7.29,"Fresh Mushrooms, Peppers, Red Onions, Artichoke Hearts, Broccoli, Sliced Tomatoes, Served With Cheese and Nut Free Basil Pesto"
+Pizza 3.14,Kitchen Buffalo Chicken Pizza,7.49,"Boneless Chicken Wings, Blue Cheese and Mozzarella Blend, SpicyBuffalo Sauce, Topped With Diced Celery and Creamy Ranch Dressing"
+Pizza 3.14,Supreme,7.99,"Pepperoni, Sausage, Bell Pepper, Mushroom, Onion, Mozzarella, Marinara"
+Pizza 3.14,Wings,6.99,"Traditional or Boneless, Buffalo or Sweet & Tangy BBQ, Lemon Pepper, Garlic/Romano or Cajun"
+Pizza 3.14,Seasoned Potato Wedges,2.79,NA
+Pizza 3.14,Onion Rings,3.99,NA
+Pizza 3.14,Sweet Potato Fries,2.5,NA
+Pizza 3.14,Side of Chips,1.5,NA
+Pizza 3.14,Garlic Bread,3,NA
+Pizza 3.14,Zucchini Sticks,4.49,NA
+Pizza 3.14,Mozzarella Sicks,4.49,NA
+Pizza 3.14,Small Salad,2.79,NA
+Pizza 3.14,Large Salad,5.79,NA
+Pizza 3.14,3.14 Zookie,3.79,NA
+Pizza 3.14,Albert's Brownie,3.79,NA
