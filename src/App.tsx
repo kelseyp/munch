@@ -11,25 +11,23 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import Paper from '@mui/material/Paper';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
+import Container from '@mui/material/Container';
 
 function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number,
+  item_name: string,
+  restaurant_name: string,
+  price: number,
+  description: string,
 ) {
-  return { name, calories, fat, carbs, protein };
+  return { item_name, restaurant_name, price, description };
 }
 
 const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
+  createData('Frozen yoghurt', 'Froyo Heaven', 6.0, ' Like ice-cream, but worse!'),
+  createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
+  createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
+  createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
+  createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
 ];
 
 function App() {
@@ -50,39 +48,35 @@ function App() {
       
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Card sx={{ minWidth: 275 }}>
-            <CardContent>
+          <Container>
               <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                   <TableHead>
                     <TableRow>
-                      <TableCell>Dessert (100g serving)</TableCell>
-                      <TableCell align="right">Calories</TableCell>
-                      <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                      <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                      <TableCell align="right">Protein&nbsp;(g)</TableCell>
+                      <TableCell>Food Item</TableCell>
+                      <TableCell align="right">Restaurant</TableCell>
+                      <TableCell align="right">Price&nbsp;(g)</TableCell>
+                      <TableCell align="right">Description(g)</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {rows.map((row) => (
                       <TableRow
-                        key={row.name}
+                        key={row.item_name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                       >
                         <TableCell component="th" scope="row">
-                          {row.name}
+                          {row.item_name}
                         </TableCell>
-                        <TableCell align="right">{row.calories}</TableCell>
-                        <TableCell align="right">{row.fat}</TableCell>
-                        <TableCell align="right">{row.carbs}</TableCell>
-                        <TableCell align="right">{row.protein}</TableCell>
+                        <TableCell align="right">{row.restaurant_name}</TableCell>
+                        <TableCell align="right">{row.price}</TableCell>
+                        <TableCell align="right">{row.description}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
               </TableContainer>
-            </CardContent>
-          </Card>
+            </Container>
         </Grid>
       </Grid>
     </Box>
