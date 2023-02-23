@@ -45,7 +45,7 @@ function App() {
           </Typography>
         </Toolbar>
       </AppBar>
-      
+      <Toolbar />
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Container>
@@ -55,8 +55,8 @@ function App() {
                     <TableRow>
                       <TableCell>Food Item</TableCell>
                       <TableCell align="right">Restaurant</TableCell>
-                      <TableCell align="right">Price&nbsp;(g)</TableCell>
-                      <TableCell align="right">Description(g)</TableCell>
+                      <TableCell align="right">Price</TableCell>
+                      <TableCell align="right">Description</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
