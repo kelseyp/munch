@@ -1,3 +1,10 @@
+/*
+1, please install mysql in your local PC
+2, create database named munch
+3, create user 'root'@'%' and password
+4, npm install mysql and sequelize
+5, run the code,   node src/db.js
+*/
 const { Sequelize, DataTypes } = require('sequelize');
 const { ModuleResolutionKind } = require('typescript');
 
@@ -19,42 +26,34 @@ seq.authenticate().then(() => {
 //State
 const State = seq.define('state', {
   name: DataTypes.STRING,
-  short_name: DataTypes.STRING,
-  is_deleted: DataTypes.BOOLEAN,
-  deletedat: DataTypes.DATE
+  short_name: DataTypes.STRING
 }, { tableName: 'tab_states' });
 
 //City
 const City = seq.define('city', {
   name: DataTypes.STRING,
-  zipcode: DataTypes.STRING,
-  is_deleted: DataTypes.BOOLEAN,
-  deletedat: DataTypes.DATE
+  zipcode: DataTypes.STRING
 }, { tableName: 'tab_cities' });
 
 
 
 //tag type
 const Tagtype = seq.define('tagtype', {
-  name: DataTypes.STRING,
-  tagclass: DataTypes.STRING,
-  is_deleted: DataTypes.BOOLEAN,
-  deletedat: DataTypes.DATE
+  name: DataTypes.STRING
+  description: DataTypes.TEXT
 }, { tableName: 'tab_tag_types' });
 
 //tag
 const Tag = seq.define('tag', {
   name: DataTypes.STRING,
-  is_deleted: DataTypes.BOOLEAN,
-  deletedat: DataTypes.DATE
+  deletedat: DataTypes.DATE,
+  description: DataTypes.TEXT
 }, { tableName: 'tab_tags' });
 
 //resturant
 const Resturant = seq.define('resturant', {
   name: DataTypes.STRING,
   address: DataTypes.STRING,
-  is_deleted: DataTypes.BOOLEAN,
-  deletedat: DataTypes.DATE,
   description: DataTypes.TEXT
 }, { tableName: 'tab_resturants' });
 
@@ -65,7 +64,6 @@ const Resturant = seq.define('resturant', {
 const Item = seq.define('item', {
   name: DataTypes.STRING,
   price: DataTypes.DOUBLE,
-  is_deleted: DataTypes.BOOLEAN,
   description: DataTypes.TEXT
 }, { tableName: 'tab_items' });
 
