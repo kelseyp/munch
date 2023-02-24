@@ -39,7 +39,7 @@ const City = seq.define('city', {
 
 //tag type
 const Tagtype = seq.define('tagtype', {
-  name: DataTypes.STRING
+  name: DataTypes.STRING,
   description: DataTypes.TEXT
 }, { tableName: 'tab_tag_types' });
 
