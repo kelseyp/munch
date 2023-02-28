@@ -32,6 +32,7 @@ const State = seq.define('state', {
 //City
 const City = seq.define('city', {
   name: DataTypes.STRING,
+  county:DataTypes.STRING,
   zipcode: DataTypes.STRING
 }, { tableName: 'tab_cities' });
 
