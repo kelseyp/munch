@@ -60,8 +60,10 @@ To learn React, check out the [React documentation](https://reactjs.org/).
    flush privileges;
 3, make sure you already installed the mysql2 and sequelize
    npm install mysql2 sequelize
-3, go to the src folder, run db.js to generate the tables
+4, go to the src folder, run db.js to generate the tables
    node db.js
+DB guide details:
+https://docs.google.com/document/d/1Tcwqm02uZAkpyp45TWSms5VUwF5ddQdyfY_KXC-XqjM
 
 Austin Hedrick
 Kelsey Helling
