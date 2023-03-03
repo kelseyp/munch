@@ -27,6 +27,7 @@ const State = seq.define('state', {
 //City
 const City = seq.define('city', {
   name: DataTypes.STRING,
+  county: DataTypes.STRING,
   zipcode: DataTypes.STRING,
   is_deleted: DataTypes.BOOLEAN,
   deletedat: DataTypes.DATE
