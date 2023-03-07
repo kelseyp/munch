@@ -94,3 +94,8 @@ Tag.sync({ alter: true })
 Item.sync({ alter: true })
 Resturant.sync({ alter: true })
 seq.sync()
+
+
+const items = await Item.findAll();
+console.log(items.every(item => item instanceof Item));
+console.log("All items", JSON.stringify(items))
