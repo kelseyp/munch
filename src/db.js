@@ -9,11 +9,11 @@ const { Sequelize, DataTypes } = require('sequelize');
 const { ModuleResolutionKind } = require('typescript');
 
 const conf = {
-  host: 'localhost',
+  host: '54.237.150.71',
   dialect: 'mysql'
 }
 
-const seq = new Sequelize('munch', 'root', '123456', conf)
+const seq = new Sequelize('munch_md', 'root', '123456', conf)
 
 
 seq.authenticate().then(() => {
