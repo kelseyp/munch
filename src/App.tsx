@@ -54,7 +54,7 @@ function App() {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <AppBar position="static">
+      <AppBar position="fixed" sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}>
         <Toolbar>
           <Typography
             variant="h6"
@@ -80,13 +80,18 @@ function App() {
         </Box>
       </Drawer>
       <Toolbar />
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Container>
-            <MunchTable rows={rows} />
-          </Container>
+      <Box>
+        <Toolbar />
+        <Toolbar />
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Container>
+              <MunchTable rows={rows} />
+            </Container>
+          </Grid>
         </Grid>
-      </Grid>
+      </Box>
+      
     </Box>
   );
 }
