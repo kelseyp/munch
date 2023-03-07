@@ -15,6 +15,12 @@ import Container from '@mui/material/Container';
 import React from 'react';
 import './styles.css';
 
+interface Data {
+  item_name: string;
+  restaurant_name: string;
+  price: number;
+  description: string;
+}
 
 function createData(
   item_name: string,
