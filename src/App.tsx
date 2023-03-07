@@ -6,6 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import MunchTable, { FoodItem } from './components/MunchTable';
+import Drawer from '@mui/material/Drawer';
 
 function App() {
   function createData(
@@ -52,7 +53,7 @@ function App() {
   ];
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ display: "flex" }}>
       <AppBar position="static">
         <Toolbar>
           <Typography
@@ -65,6 +66,19 @@ function App() {
           </Typography>
         </Toolbar>
       </AppBar>
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: 240,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: { width: 240, boxSizing: 'border-box' },
+        }}
+      >
+        <Toolbar />
+        <Box sx={{ overflow: "auto" }}>
+          Stuff!
+        </Box>
+      </Drawer>
       <Toolbar />
       <Grid container spacing={2}>
         <Grid item xs={12}>
