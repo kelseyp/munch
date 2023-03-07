@@ -36,8 +36,8 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.rows.length) : 0;
 
-  return <TableContainer component={Paper}>
-    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+  return <TableContainer sx={{ maxHeight: 650 }} component={Paper}>
+    <Table stickyHeader sx={{ minWidth: 650 }} aria-label="sticky table">
       <TableHead>
         <TableRow>
           <TableCell>Food Item</TableCell>
