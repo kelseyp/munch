@@ -28,7 +28,7 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 0));
+    setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
