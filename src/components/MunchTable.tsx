@@ -2,6 +2,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
+import DeleteIcon from '@mui/icons-material/Delete';
+import FilterListIcon from '@mui/icons-material/FilterList';
 import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
@@ -10,7 +12,6 @@ import React from 'react';
 import { TableSortLabel, Toolbar, Typography, Tooltip, IconButton } from '@mui/material';
 import { Box, alpha } from '@mui/system';
 import { visuallyHidden } from '@mui/utils';
-import { Data } from 'ws';
 
 export interface FoodItem {
   item_name: string,
@@ -25,14 +26,14 @@ export interface MunchTableProps {
 
 function MunchTable(props: MunchTableProps): React.ReactElement {
   const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof Data>('item_name');
+  const [orderBy, setOrderBy] = React.useState<keyof FoodItem>('item_name');
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof Data,
+    property: keyof FoodItem,
   ) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -41,7 +42,7 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.name);
+      const newSelected = props.rows.map((n) => n.item_name);
       setSelected(newSelected);
       return;
     }
@@ -93,7 +94,7 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={props.rows.length}
             />
         <TableRow>
           <TableCell>Food Item</TableCell>
@@ -103,7 +104,7 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
         </TableRow>
       </TableHead>
       <TableBody>
-        {props.rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+        {stableSort(props.rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
           return (
             <TableRow
               key={index}
@@ -165,7 +166,8 @@ function getComparator<Key extends keyof any>(
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) {
+
+function stableSort<T>(array:  Array<FoodItem>, comparator: (a: T, b: T) => number) {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -177,18 +179,19 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
   return stabilizedThis.map((el) => el[0]);
 }
 
+
 interface HeadCell {
   disablePadding: boolean;
-  id: keyof Data;
+  id: keyof FoodItem;
   label: string;
   numeric: boolean;
 }
 
 const headCells: readonly HeadCell[] = [
   {
+    disablePadding: true,
     id: 'item_name',
     numeric: false,
-    disablePadding: true,
     label: 'Food',
   },
   {
@@ -207,13 +210,13 @@ const headCells: readonly HeadCell[] = [
     id: 'description',
     numeric: true,
     disablePadding: false,
-    label: 'Food Sescription',
+    label: 'Food Description',
   },
 ];
 
 interface EnhancedTableProps {
   numSelected: number;
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof FoodItem) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
   orderBy: string;
@@ -224,7 +227,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
     props;
   const createSortHandler =
-    (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
+    (property: keyof FoodItem) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
 
