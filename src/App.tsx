@@ -6,7 +6,9 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import MunchTable, { FoodItem } from './components/MunchTable';
+import MunchDrawer from './components/MunchDrawer';
 import Drawer from '@mui/material/Drawer';
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 function App() {
   function createData(
@@ -75,8 +77,19 @@ function App() {
         }}
       >
         <Toolbar />
-        <Box sx={{ overflow: "auto" }}>
-          Stuff!
+        <Box>
+            <Grid item xs={12}>
+              <Container>
+              <Typography
+                  variant="h6"
+                  noWrap
+                  component="div"
+                  sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                >
+                  Filters <FilterListIcon/>
+                </Typography>
+              </Container>
+            </Grid>
         </Box>
       </Drawer>
       <Toolbar />
