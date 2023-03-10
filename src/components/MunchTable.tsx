@@ -36,53 +36,57 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.rows.length) : 0;
 
-  return <TableContainer component={Paper}>
-    <Table sx={{ minWidth: 650 }} aria-label="simple table">
-      <TableHead>
-        <TableRow>
-          <TableCell>Food Item</TableCell>
-          <TableCell align="right">Restaurant</TableCell>
-          <TableCell align="right">Price</TableCell>
-          <TableCell align="right">Description</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {props.rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
-          return (
-            <TableRow
-              key={index}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.item_name}
-              </TableCell>
-              <TableCell align="right">{row.restaurant_name}</TableCell>
-              <TableCell align="right">{row.price}</TableCell>
-              <TableCell align="right">{row.description}</TableCell>
+  return (
+    <Paper>
+      <TableContainer sx={{ maxHeight: "80vh" }} component={Paper}>
+        <Table stickyHeader sx={{ minWidth: 650 }} aria-label="sticky table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Food Item</TableCell>
+              <TableCell align="right">Restaurant</TableCell>
+              <TableCell align="right">Price</TableCell>
+              <TableCell align="right">Description</TableCell>
             </TableRow>
-          );
-        })}
+          </TableHead>
+          <TableBody>
+            {props.rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+              return (
+                <TableRow
+                  key={index}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row.item_name}
+                  </TableCell>
+                  <TableCell align="right">{row.restaurant_name}</TableCell>
+                  <TableCell align="right">{row.price}</TableCell>
+                  <TableCell align="right">{row.description}</TableCell>
+                </TableRow>
+              );
+            })}
 
-        {emptyRows > 0 && (
-          <TableRow
-            style={{
-              height: (53) * emptyRows,
-            }}
-          >
-            <TableCell colSpan={6} />
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
-    <TablePagination
-      rowsPerPageOptions={[5, 10, 25]}
-      component="div"
-      count={props.rows.length}
-      rowsPerPage={rowsPerPage}
-      page={page}
-      onPageChange={handleChangePage}
-      onRowsPerPageChange={handleChangeRowsPerPage} />
-  </TableContainer>;
+            {emptyRows > 0 && (
+              <TableRow
+                style={{
+                  height: (53) * emptyRows,
+                }}
+              >
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={props.rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage} />
+    </Paper>
+  );
 }
 
 export default MunchTable;
