@@ -38,7 +38,7 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
 
   return (
     <Paper>
-      <TableContainer sx={{ maxHeight: 650 }} component={Paper}>
+      <TableContainer sx={{ maxHeight: "80vh" }} component={Paper}>
         <Table stickyHeader sx={{ minWidth: 650 }} aria-label="sticky table">
           <TableHead>
             <TableRow>
