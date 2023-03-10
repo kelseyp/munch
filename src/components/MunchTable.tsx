@@ -86,8 +86,7 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.rows.length) : 0;
 
   return <TableContainer component={Paper}>
-    <Table sx={{ minWidth: 650 }} aria-label="simple table">
-      <TableHead>
+    <Table sx={{ minWidth: 650 }} aria-label="simple table">  
       <EnhancedTableHead
               numSelected={selected.length}
               order={order}
@@ -96,13 +95,6 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
               onRequestSort={handleRequestSort}
               rowCount={props.rows.length}
             />
-        <TableRow>
-          <TableCell>Food Item</TableCell>
-          <TableCell align="right">Restaurant</TableCell>
-          <TableCell align="right">Price</TableCell>
-          <TableCell align="right">Description</TableCell>
-        </TableRow>
-      </TableHead>
       <TableBody>
         {stableSort(props.rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
           return (
@@ -110,12 +102,10 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
               key={index}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
-                {row.item_name}
-              </TableCell>
-              <TableCell align="right">{row.restaurant_name}</TableCell>
-              <TableCell align="right">{row.price}</TableCell>
-              <TableCell align="right">{row.description}</TableCell>
+              <TableCell sx={{ width:"25%" }} component="th" scope="row">{row.item_name}</TableCell>
+              <TableCell sx={{ width:"25%" }} align="left">{row.restaurant_name}</TableCell>
+              <TableCell sx={{ width:"25%" }} align="left">{row.price}</TableCell>
+              <TableCell sx={{ width:"25%" }} align="right">{row.description}</TableCell>
             </TableRow>
           );
         })}
@@ -189,20 +179,20 @@ interface HeadCell {
 
 const headCells: readonly HeadCell[] = [
   {
-    disablePadding: true,
+    disablePadding: false,
     id: 'item_name',
     numeric: false,
-    label: 'Food',
+    label: 'Food Item',
   },
   {
     id: 'restaurant_name',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Restaurant',
   },
   {
     id: 'price',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Price',
   },
@@ -210,7 +200,7 @@ const headCells: readonly HeadCell[] = [
     id: 'description',
     numeric: true,
     disablePadding: false,
-    label: 'Food Description',
+    label: 'Description',
   },
 ];
 
@@ -234,8 +224,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
