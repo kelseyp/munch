@@ -7,6 +7,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import Table from '@mui/material/Table';
 import React from 'react';
+import TableSortLabel from '@mui/material/TableSortLabel';
+import Box from '@mui/material/Box';
+import visuallyHidden from '@mui/utils/visuallyHidden';
 
 export interface FoodItem {
   item_name: string,
@@ -20,8 +23,19 @@ export interface MunchTableProps {
 }
 
 function MunchTable(props: MunchTableProps): React.ReactElement {
+  const [order, setOrder] = React.useState<Order>('asc');
+  const [orderBy, setOrderBy] = React.useState<keyof FoodItem>('item_name');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const handleRequestSort = (
+    event: React.MouseEvent<unknown>,
+    property: keyof FoodItem,
+  ) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -39,28 +53,23 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
   return (
     <Paper>
       <TableContainer sx={{ maxHeight: "80vh" }} component={Paper}>
-        <Table stickyHeader sx={{ minWidth: 650 }} aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Food Item</TableCell>
-              <TableCell align="right">Restaurant</TableCell>
-              <TableCell align="right">Price</TableCell>
-              <TableCell align="right">Description</TableCell>
-            </TableRow>
-          </TableHead>
+        <Table stickyHeader sx={{ minWidth: "100vh" }} aria-label="sticky table">
+        <EnhancedTableHead
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
+            />
           <TableBody>
-            {props.rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+          {stableSort(props.rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
               return (
                 <TableRow
                   key={index}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                  <TableCell component="th" scope="row">
-                    {row.item_name}
-                  </TableCell>
-                  <TableCell align="right">{row.restaurant_name}</TableCell>
-                  <TableCell align="right">{row.price}</TableCell>
-                  <TableCell align="right">{row.description}</TableCell>
+                  <TableCell sx={{ width:"25%" }} component="th" scope="row">{row.item_name}</TableCell>
+                  <TableCell sx={{ width:"25%" }} align="left">{row.restaurant_name}</TableCell>
+                  <TableCell sx={{ width:"15%" }} align="left">{row.price}</TableCell>
+                  <TableCell sx={{ width:"35%" }} align="right">{row.description}</TableCell>
                 </TableRow>
               );
             })}
@@ -86,6 +95,121 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage} />
     </Paper>
+  );
+}
+
+function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+}
+
+type Order = 'asc' | 'desc';
+
+function getComparator<Key extends keyof any>(
+  order: Order,
+  orderBy: Key,
+): (
+  a: { [key in Key]: number | string },
+  b: { [key in Key]: number | string },
+) => number {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+
+function stableSort<T>(array:  Array<FoodItem>, comparator: (a: T, b: T) => number) {
+  const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) {
+      return order;
+    }
+    return a[1] - b[1];
+  });
+  return stabilizedThis.map((el) => el[0]);
+}
+
+
+interface HeadCell {
+  disablePadding: boolean;
+  id: keyof FoodItem;
+  label: string;
+  numeric: boolean;
+}
+
+const headCells: readonly HeadCell[] = [
+  {
+    disablePadding: false,
+    id: 'item_name',
+    numeric: false,
+    label: 'Food Item',
+  },
+  {
+    id: 'restaurant_name',
+    numeric: false,
+    disablePadding: false,
+    label: 'Restaurant',
+  },
+  {
+    id: 'price',
+    numeric: false,
+    disablePadding: false,
+    label: 'Price',
+  },
+  {
+    id: 'description',
+    numeric: true,
+    disablePadding: false,
+    label: 'Description',
+  },
+];
+
+interface EnhancedTableProps {
+  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof FoodItem) => void;
+  order: Order;
+  orderBy: string;
+}
+
+function EnhancedTableHead(props: EnhancedTableProps) {
+  const { order, orderBy, onRequestSort } =
+     props;
+  const createSortHandler =
+    (property: keyof FoodItem) => (event: React.MouseEvent<unknown>) => {
+      onRequestSort(event, property);
+    };
+
+  return (
+    <TableHead>
+      <TableRow>
+        {headCells.map((headCell) => (
+          <TableCell
+            key={headCell.id}
+            align={headCell.numeric ? 'right' : 'left'}
+            padding={headCell.disablePadding ? 'none' : 'normal'}
+            sortDirection={orderBy === headCell.id ? order : false}
+          >
+            <TableSortLabel
+              active={orderBy === headCell.id}
+              direction={orderBy === headCell.id ? order : 'asc'}
+              onClick={createSortHandler(headCell.id)}
+            >
+              {headCell.label}
+              {orderBy === headCell.id ? (
+                <Box component="span" sx={visuallyHidden}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                </Box>
+              ) : null}
+            </TableSortLabel>
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
   );
 }
 
