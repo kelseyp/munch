@@ -6,6 +6,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import MunchTable, { FoodItem } from './components/MunchTable';
+import Drawer from '@mui/material/Drawer';
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 function App() {
   function createData(
@@ -52,8 +54,8 @@ function App() {
   ];
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+    <Box sx={{ display: "flex" }}>
+      <AppBar position="fixed" sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}>
         <Toolbar>
           <Typography
             variant="h6"
@@ -65,14 +67,43 @@ function App() {
           </Typography>
         </Toolbar>
       </AppBar>
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: 240,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: { width: 240, boxSizing: 'border-box' },
+        }}
+      >
+        <Toolbar />
+        <Box>
+            <Grid item xs={12}>
+              <Container>
+              <Typography
+                  variant="h6"
+                  noWrap
+                  component="div"
+                  sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                >
+                  Filters <FilterListIcon/>
+                </Typography>
+              </Container>
+            </Grid>
+        </Box>
+      </Drawer>
       <Toolbar />
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Container>
-            <MunchTable rows={rows} />
-          </Container>
+      <Box>
+        <Toolbar />
+        <Toolbar />
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Container>
+              <MunchTable rows={rows} />
+            </Container>
+          </Grid>
         </Grid>
-      </Grid>
+      </Box>
+      
     </Box>
   );
 }

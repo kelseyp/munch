@@ -53,7 +53,7 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
   return (
     <Paper>
       <TableContainer sx={{ maxHeight: "80vh" }} component={Paper}>
-        <Table stickyHeader sx={{ minWidth: 650 }} aria-label="sticky table">
+        <Table stickyHeader sx={{ minWidth: "100vh" }} aria-label="sticky table">
         <EnhancedTableHead
               order={order}
               orderBy={orderBy}
@@ -68,11 +68,12 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
                 >
                   <TableCell sx={{ width:"25%" }} component="th" scope="row">{row.item_name}</TableCell>
                   <TableCell sx={{ width:"25%" }} align="left">{row.restaurant_name}</TableCell>
-                  <TableCell sx={{ width:"25%" }} align="left">{row.price}</TableCell>
-                  <TableCell sx={{ width:"25%" }} align="right">{row.description}</TableCell>
+                  <TableCell sx={{ width:"15%" }} align="left">{row.price}</TableCell>
+                  <TableCell sx={{ width:"35%" }} align="right">{row.description}</TableCell>
                 </TableRow>
               );
             })}
+
             {emptyRows > 0 && (
               <TableRow
                 style={{
