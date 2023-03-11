@@ -59,14 +59,6 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
             />
-          <TableHead>
-            <TableRow>
-              <TableCell>Food Item</TableCell>
-              <TableCell align="right">Restaurant</TableCell>
-              <TableCell align="right">Price</TableCell>
-              <TableCell align="right">Description</TableCell>
-            </TableRow>
-          </TableHead>
           <TableBody>
           {stableSort(props.rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
               return (
@@ -74,16 +66,13 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
                   key={index}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                  <TableCell component="th" scope="row">
-                    {row.item_name}
-                  </TableCell>
-                  <TableCell align="right">{row.restaurant_name}</TableCell>
-                  <TableCell align="right">{row.price}</TableCell>
-                  <TableCell align="right">{row.description}</TableCell>
+                  <TableCell sx={{ width:"25%" }} component="th" scope="row">{row.item_name}</TableCell>
+                  <TableCell sx={{ width:"25%" }} align="left">{row.restaurant_name}</TableCell>
+                  <TableCell sx={{ width:"25%" }} align="left">{row.price}</TableCell>
+                  <TableCell sx={{ width:"25%" }} align="right">{row.description}</TableCell>
                 </TableRow>
               );
             })}
-
             {emptyRows > 0 && (
               <TableRow
                 style={{
