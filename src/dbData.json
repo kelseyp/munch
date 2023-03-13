@@ -1,0 +1,7 @@
+[
+    {"name": "All American Angus Burger", "price":"5.99", "description":"american cheese, lettece, onion, tomato, 1000 island sauce", "resturantID":"1"},
+    {"name": "Turkey Burger", "price":"6.39", "description":"provolone, lettece, onion, tomato, 1000 island sauce", "resturantID":"1"},
+    {"name": "Veggie or Black Bean Burger", "price":"6.39", "description":"veggie or black bean patti, american cheese, lettece,onion,tomato, 1000 island sauce", "resturantID":"1"},
+    {"name": "Grilled Chicken Breast Snadwich", "price":"6.99", "description":"vitalian marinated chicken breast, lettece, onion, tomato, pickles, ranch dressing", "resturantID":"1"},
+    {"name": "Grilled Cheese Sandwhich", "price":"4.29", "description":"provolone, american cheese, butter", "resturantID":"1"}
+]

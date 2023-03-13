@@ -8,6 +8,7 @@ import Container from '@mui/material/Container';
 import MunchTable, { FoodItem } from './components/MunchTable';
 import Drawer from '@mui/material/Drawer';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import data from './dbData.json';
 
 function App() {
   function createData(
@@ -19,39 +20,50 @@ function App() {
     return { item_name, restaurant_name, price, description };
   }
 
-  const rows: Array<FoodItem> = [
-    createData('Frozen yoghurt', 'Froyo Heaven', 6.0, ' Like ice-cream, but worse!'),
-    createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
-    createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
-    createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
-    createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
-    createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
-    createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
-    createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
-    createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
-    createData('Frozen yoghurt', 'Froyo Heaven', 6.0, ' Like ice-cream, but worse!'),
-    createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
-    createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
-    createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
-    createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
-    createData('Frozen yoghurt', 'Froyo Heaven', 6.0, ' Like ice-cream, but worse!'),
-    createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
-    createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
-    createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
-    createData('Frozen yoghurt', 'Froyo Heaven', 6.0, ' Like ice-cream, but worse!'),
-    createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
-    createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
-    createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
-    createData('Frozen yoghurt', 'Froyo Heaven', 6.0, ' Like ice-cream, but worse!'),
-    createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
-    createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
-    createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
-    createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
-    createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
-    createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
-    createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
-    createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
-  ];
+  const rows: Array<FoodItem> = [];
+    // createData('Frozen yoghurt', 'Froyo Heaven', 6.0, ' Like ice-cream, but worse!'),
+    // createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
+    // createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
+    // createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
+    // createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
+    // createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
+    // createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
+    // createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
+    // createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
+    // createData('Frozen yoghurt', 'Froyo Heaven', 6.0, ' Like ice-cream, but worse!'),
+    // createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
+    // createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
+    // createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
+    // createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
+    // createData('Frozen yoghurt', 'Froyo Heaven', 6.0, ' Like ice-cream, but worse!'),
+    // createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
+    // createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
+    // createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
+    // createData('Frozen yoghurt', 'Froyo Heaven', 6.0, ' Like ice-cream, but worse!'),
+    // createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
+    // createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
+    // createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
+    // createData('Frozen yoghurt', 'Froyo Heaven', 6.0, ' Like ice-cream, but worse!'),
+    // createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
+    // createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
+    // createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
+    // createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
+    // createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
+    // createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
+    // createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
+    // createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
+  let restaurant: string = '';
+
+
+  for (const value of Object.values(data)) {
+    if (value.resturantID === '1') {
+      restaurant = 'Lighthouse Cafe';
+    } else if (value.resturantID === '2') {
+      restaurant = 'Pizza 3.14';
+    }
+    rows.push(createData(value.name, restaurant, Number(value.price), value.description))
+  };
+
 
   return (
     <Box sx={{ display: "flex" }}>
