@@ -8,7 +8,13 @@ import Container from '@mui/material/Container';
 import MunchTable, { FoodItem } from './components/MunchTable';
 import Drawer from '@mui/material/Drawer';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import data from './dbData.json';
+import { getDBData } from './GetData';
+import { useEffect, useState } from 'react';
+import React from 'react';
+//import data from './dbData.json';
+//import getDBData from './GetData.js';
+
+
 
 function App() {
   function createData(
@@ -20,54 +26,29 @@ function App() {
     return { item_name, restaurant_name, price, description };
   }
 
-  const rows: Array<FoodItem> = [];
-    // createData('Frozen yoghurt', 'Froyo Heaven', 6.0, ' Like ice-cream, but worse!'),
-    // createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
-    // createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
-    // createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
-    // createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
-    // createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
-    // createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
-    // createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
-    // createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
-    // createData('Frozen yoghurt', 'Froyo Heaven', 6.0, ' Like ice-cream, but worse!'),
-    // createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
-    // createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
-    // createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
-    // createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
-    // createData('Frozen yoghurt', 'Froyo Heaven', 6.0, ' Like ice-cream, but worse!'),
-    // createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
-    // createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
-    // createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
-    // createData('Frozen yoghurt', 'Froyo Heaven', 6.0, ' Like ice-cream, but worse!'),
-    // createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
-    // createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
-    // createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
-    // createData('Frozen yoghurt', 'Froyo Heaven', 6.0, ' Like ice-cream, but worse!'),
-    // createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
-    // createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
-    // createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
-    // createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
-    // createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
-    // createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
-    // createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
-    // createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
-  let restaurant: string = '';
 
+  const [items, setItems] = React.useState<FoodItem[]>([]);
+  useEffect(() => {
+    let restaurant: string = '';
+    getDBData().then((jsonData) => {
+      const rows: Array<FoodItem> = [];
+      for (let item of jsonData) {
+        if (item.resturantID === '1') {
+          restaurant = 'Lighthouse Cafe';
+        } else if (item.resturantID === '2') {
+          restaurant = 'Pizza 3.14';
+        }
+        rows.push(createData(item.name, restaurant, Number(item.price), item.description))
+      }
+      setItems(rows);
+    });
 
-  for (const value of Object.values(data)) {
-    if (value.resturantID === '1') {
-      restaurant = 'Lighthouse Cafe';
-    } else if (value.resturantID === '2') {
-      restaurant = 'Pizza 3.14';
-    }
-    rows.push(createData(value.name, restaurant, Number(value.price), value.description))
-  };
+  });
 
 
   return (
     <Box sx={{ display: "flex" }}>
-      <AppBar position="fixed" sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}>
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <Typography
             variant="h6"
@@ -89,18 +70,18 @@ function App() {
       >
         <Toolbar />
         <Box>
-            <Grid item xs={12}>
-              <Container>
+          <Grid item xs={12}>
+            <Container>
               <Typography
-                  variant="h6"
-                  noWrap
-                  component="div"
-                  sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-                >
-                  Filters <FilterListIcon/>
-                </Typography>
-              </Container>
-            </Grid>
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+              >
+                Filters <FilterListIcon />
+              </Typography>
+            </Container>
+          </Grid>
         </Box>
       </Drawer>
       <Toolbar />
@@ -110,12 +91,12 @@ function App() {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Container>
-              <MunchTable rows={rows} />
+              <MunchTable rows={items} />
             </Container>
           </Grid>
         </Grid>
       </Box>
-      
+
     </Box>
   );
 }
