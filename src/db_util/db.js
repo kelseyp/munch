@@ -6,7 +6,7 @@ const conf = {
   dialect: 'mysql'
 }
 
-const seq = new Sequelize('munch', 'root', '123456', conf)
+const seq = new Sequelize('munch_lx', 'root', '123456', conf)
 
 
 seq.authenticate().then(() => {
@@ -19,18 +19,14 @@ seq.authenticate().then(() => {
 //State
 const State = seq.define('state', {
   name: DataTypes.STRING,
-  short_name: DataTypes.STRING,
-  is_deleted: DataTypes.BOOLEAN,
-  deletedat: DataTypes.DATE
+  short_name: DataTypes.STRING
 }, { tableName: 'tab_states' });
 
 //City
 const City = seq.define('city', {
   name: DataTypes.STRING,
   county: DataTypes.STRING,
-  zipcode: DataTypes.STRING,
-  is_deleted: DataTypes.BOOLEAN,
-  deletedat: DataTypes.DATE
+  zipcode: DataTypes.STRING
 }, { tableName: 'tab_cities' });
 
 
@@ -38,24 +34,20 @@ const City = seq.define('city', {
 //tag type
 const Tagtype = seq.define('tagtype', {
   name: DataTypes.STRING,
-  tagclass: DataTypes.STRING,
-  is_deleted: DataTypes.BOOLEAN,
-  deletedat: DataTypes.DATE
+  description: DataTypes.TEXT
 }, { tableName: 'tab_tag_types' });
 
 //tag
 const Tag = seq.define('tag', {
   name: DataTypes.STRING,
-  is_deleted: DataTypes.BOOLEAN,
-  deletedat: DataTypes.DATE
+  deletedat: DataTypes.DATE,
+  description: DataTypes.TEXT
 }, { tableName: 'tab_tags' });
 
 //resturant
 const Resturant = seq.define('resturant', {
   name: DataTypes.STRING,
   address: DataTypes.STRING,
-  is_deleted: DataTypes.BOOLEAN,
-  deletedat: DataTypes.DATE,
   description: DataTypes.TEXT
 }, { tableName: 'tab_resturants' });
 
@@ -66,7 +58,6 @@ const Resturant = seq.define('resturant', {
 const Item = seq.define('item', {
   name: DataTypes.STRING,
   price: DataTypes.DOUBLE,
-  is_deleted: DataTypes.BOOLEAN,
   description: DataTypes.TEXT
 }, { tableName: 'tab_items' });
 
