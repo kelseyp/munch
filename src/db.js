@@ -64,7 +64,8 @@ const Resturant = seq.define('resturant', {
 const Item = seq.define('item', {
   name: DataTypes.STRING,
   price: DataTypes.DOUBLE,
-  description: DataTypes.TEXT
+  description: DataTypes.TEXT,
+  picture: DataTypes.VARCHAR
 }, { tableName: 'tab_items' });
 
 
