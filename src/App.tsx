@@ -8,6 +8,8 @@ import Container from '@mui/material/Container';
 import MunchTable, { FoodItem } from './components/MunchTable';
 import Drawer from '@mui/material/Drawer';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import SearchBar from './components/SearchBar';
+
 
 function App() {
   function createData(
@@ -97,6 +99,9 @@ function App() {
         <Toolbar />
         <Grid container spacing={2}>
           <Grid item xs={12}>
+            <Box>
+              <SearchBar/>
+            </Box>
             <Container>
               <MunchTable rows={rows} />
             </Container>
