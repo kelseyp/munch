@@ -1,6 +1,7 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
 import { FoodItem } from "./entity/FoodItem"
+import { Restaurant } from "./entity/Restaurant"
 
 export const AppDataSource = new DataSource({
     type: "mysql",
@@ -11,7 +12,7 @@ export const AppDataSource = new DataSource({
     database: "munch_md",
     synchronize: true,
     logging: true,
-    entities: [FoodItem],
+    entities: [FoodItem, Restaurant],
     migrations: [],
     subscribers: [],
 })

@@ -5,57 +5,38 @@ import Grid from '@mui/material/Grid';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import MunchTable, { FoodItem } from './components/MunchTable';
+import MunchTable, { TableFoodItem } from './components/MunchTable';
 import Drawer from '@mui/material/Drawer';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import { useEffect, useState } from 'react';
+
+type FoodItem = {
+  id: number
+  name: string
+  price: number
+  description: string
+};
+
+const mapFoodItemData = (foodItem: FoodItem): TableFoodItem => {
+  return {'item_name': foodItem.name, 'restaurant_name': 'Todo', 'price': foodItem.price, 'description': foodItem.description};
+}
 
 function App() {
-  function createData(
-    item_name: string,
-    restaurant_name: string,
-    price: number,
-    description: string,
-  ): FoodItem {
-    return { item_name, restaurant_name, price, description };
-  }
+  const [foodItems, setFoodItems] = useState<FoodItem[]>([])
 
-  const rows: Array<FoodItem> = [
-    createData('Frozen yoghurt', 'Froyo Heaven', 6.0, ' Like ice-cream, but worse!'),
-    createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
-    createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
-    createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
-    createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
-    createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
-    createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
-    createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
-    createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
-    createData('Frozen yoghurt', 'Froyo Heaven', 6.0, ' Like ice-cream, but worse!'),
-    createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
-    createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
-    createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
-    createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
-    createData('Frozen yoghurt', 'Froyo Heaven', 6.0, ' Like ice-cream, but worse!'),
-    createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
-    createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
-    createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
-    createData('Frozen yoghurt', 'Froyo Heaven', 6.0, ' Like ice-cream, but worse!'),
-    createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
-    createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
-    createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
-    createData('Frozen yoghurt', 'Froyo Heaven', 6.0, ' Like ice-cream, but worse!'),
-    createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
-    createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
-    createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
-    createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
-    createData('Ice cream sandwich', 'YumYums', 9.0, 'Ice-cream between crackers?'),
-    createData('Eclair', 'Fine Desserts', 16.0, 'No clue, good luck'),
-    createData('Cupcake', 'Best Bakery', 3.7, 'A cake you can feel better about eating'),
-    createData('Gingerbread', 'Gingy', 16.0, 'Made down on Drury Lane'),
-  ];
+  useEffect(() => {
+      fetch(`http://localhost:3001`).then((response: Response) => {
+        response.json().then((json: any) => {
+          setFoodItems(JSON.parse(json));
+        })
+      });
+  }, [])
+
+  const tableFoodItems: TableFoodItem[] = foodItems.map((value: FoodItem) => {return mapFoodItemData(value);})
 
   return (
     <Box sx={{ display: "flex" }}>
-      <AppBar position="fixed" sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}>
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <Typography
             variant="h6"
@@ -77,18 +58,18 @@ function App() {
       >
         <Toolbar />
         <Box>
-            <Grid item xs={12}>
-              <Container>
+          <Grid item xs={12}>
+            <Container>
               <Typography
-                  variant="h6"
-                  noWrap
-                  component="div"
-                  sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-                >
-                  Filters <FilterListIcon/>
-                </Typography>
-              </Container>
-            </Grid>
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+              >
+                Filters <FilterListIcon />
+              </Typography>
+            </Container>
+          </Grid>
         </Box>
       </Drawer>
       <Toolbar />
@@ -98,12 +79,12 @@ function App() {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Container>
-              <MunchTable rows={rows} />
+              <MunchTable rows={tableFoodItems} />
             </Container>
           </Grid>
         </Grid>
       </Box>
-      
+
     </Box>
   );
 }
