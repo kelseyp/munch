@@ -21,7 +21,7 @@ For more information about the backend service, reference the README in /backend
 
 ## Rinning Frontend
 
-In the /frontend directory, you can run:
+In a seperate terminal in the /frontend directory, you can run:
 
 ### `npm start`
 
