@@ -1,10 +1,3 @@
-# Getting Started with the Munch App
-
-Munch is an item focused food finder app created for the COMP550 Advanced Software\
-Engineering class.
-
-Authors: Nathanael Paulus, Mitchell Dennen, Austin Hedrick, Kelsey Helling, Lean Xu
-
 ## Available Scripts
 
 In the project directory, you can run:
@@ -47,24 +40,3 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
-
-## Lean Xu DateTime: 2023-02-24 
-## how to install set model locally
-1. download and install mairadb, the download url
-   WIN: https://mariadb.org/download/?t=mariadb&p=mariadb&r=10.11.2&os=windows&cpu=x86_64&pkg=msi&m=xtom_fre
-2, login the mysql instance, 
-   mysql -uroot -p
-   run the below command in mysql
-   create user 'root'@'%' identified by '123456';
-   grant all on *.* to 'root'@'%';
-   flush privileges;
-3, make sure you already installed the mysql2 and sequelize
-   npm install mysql2 sequelize
-3, go to the src folder, run db.js to generate the tables
-   node db.js
-
-Austin Hedrick
-Kelsey Helling
-mitchell 
-Lean Xu
-Nathanael Paulus
