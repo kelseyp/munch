@@ -10,15 +10,22 @@ import Drawer from '@mui/material/Drawer';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { useEffect, useState } from 'react';
 
+type Restaurant = {
+  name: string
+  address: string
+  description: string
+}
+
 type FoodItem = {
   id: number
   name: string
   price: number
   description: string
+  restaurant: Restaurant
 };
 
 const mapFoodItemData = (foodItem: FoodItem): TableFoodItem => {
-  return {'item_name': foodItem.name, 'restaurant_name': 'Todo', 'price': foodItem.price, 'description': foodItem.description};
+  return {'item_name': foodItem.name, 'restaurant_name': foodItem.restaurant.name, 'price': foodItem.price, 'description': foodItem.description};
 }
 
 function App() {
