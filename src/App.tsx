@@ -72,25 +72,25 @@ function App() {
       <Drawer
         variant="permanent"
         sx={{
-          width: 240,
+          width: '15%',
           flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: 240, boxSizing: 'border-box' },
+          [`& .MuiDrawer-paper`]: { width: '15%', minWidth:150, maxWidth:240, boxSizing: 'border-box' },
         }}
       >
         <Toolbar />
         <Box>
-            <Grid item xs={12}>
-              <Container>
-              <Typography
-                  variant="h6"
-                  noWrap
-                  component="div"
-                  sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-                >
-                  Filters <FilterListIcon/>
-                </Typography>
-              </Container>
-            </Grid>
+          <Grid item xs={12}>
+            <Container>
+            <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+              >
+                Filters <FilterListIcon/>
+              </Typography>
+            </Container>
+          </Grid>
         </Box>
       </Drawer>
       <Toolbar />
@@ -99,7 +99,7 @@ function App() {
         <Toolbar />
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Container>
+            <Container sx={{ flexGrow: 1 }}>
               <MunchTable rows={rows} />
             </Container>
           </Grid>

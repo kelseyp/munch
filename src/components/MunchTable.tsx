@@ -53,7 +53,7 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
   return (
     <Paper>
       <TableContainer sx={{ maxHeight: "80vh" }} component={Paper}>
-        <Table stickyHeader sx={{ minWidth: "100vh" }} aria-label="sticky table">
+        <Table stickyHeader sx={{ minWidth: "75vh" }} aria-label="sticky table">
         <EnhancedTableHead
               order={order}
               orderBy={orderBy}
@@ -66,20 +66,18 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
                   key={index}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                  <TableCell sx={{ width:"25%" }} component="th" scope="row">{row.item_name}</TableCell>
-                  <TableCell sx={{ width:"25%" }} align="left">{row.restaurant_name}</TableCell>
-                  <TableCell sx={{ width:"15%" }} align="left">{row.price}</TableCell>
-                  <TableCell sx={{ width:"35%" }} align="right">{row.description}</TableCell>
+                  <TableCell sx={{ height:53, width:"25%" }} component="th" scope="row">{row.item_name}</TableCell>
+                  <TableCell sx={{ height:53, width:"25%" }} align="left">{row.restaurant_name}</TableCell>
+                  <TableCell sx={{ height:53, width:"10%" }} align="left">{row.price}</TableCell>
+                  <TableCell sx={{ height:53, width:"40%" }} align="right">{row.description}</TableCell>
                 </TableRow>
               );
             })}
-
+            {/* Took trial and error to figure out how tall the tablecells with padding and standard height of 53 (the old height for empty rows) */}
             {emptyRows > 0 && (
               <TableRow
-                style={{
-                  height: (53) * emptyRows,
-                }}
-              >
+                style={{ height: (86) * emptyRows }}
+              > 
                 <TableCell colSpan={6} />
               </TableRow>
             )}
