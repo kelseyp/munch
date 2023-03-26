@@ -61,12 +61,12 @@ function App() {
         <Toolbar>
           <Typography
             variant="h6"
-            noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            sx={{ display: { xs: 'none', sm: 'block' } }}
           >
             Munch
           </Typography>
+          <SearchBar/>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -99,16 +99,13 @@ function App() {
         <Toolbar />
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Box>
-              <SearchBar/>
-            </Box>
             <Container>
               <MunchTable rows={rows} />
             </Container>
           </Grid>
         </Grid>
       </Box>
-      
+
     </Box>
   );
 }

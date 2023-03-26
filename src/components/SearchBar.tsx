@@ -1,20 +1,6 @@
-import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import MoreIcon from '@mui/icons-material/MoreVert';
 import Container from '@mui/material/Container';
 
 
@@ -29,9 +15,9 @@ export const Search = styled('div')(({ theme }) => ({
     marginRight: theme.spacing(2),
     marginLeft: 0,
     width: '100%',
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
         marginLeft: theme.spacing(3),
-        width: 'auto',
+        width: '60vh',
     },
 }));
 
@@ -53,8 +39,10 @@ export const StyledInputBase = styled(InputBase)(({ theme }) => ({
         paddingLeft: `calc(1em + ${theme.spacing(4)})`,
         transition: theme.transitions.create('width'),
         width: '100%',
+        // Below width determines size of text box entries
+        // using %s doesn't seem to have desired effect.
         [theme.breakpoints.up('md')]: {
-            width: '20ch',
+            width: '55ch'
         },
     },
 }));
@@ -62,7 +50,11 @@ export const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function SearchBar() {
     return (
-        <Container disableGutters sx={{ flexGrow: 1, border:1 }}>
+        <Container
+        maxWidth="md"
+        disableGutters
+        sx={{ flexGrow: 0 }}
+        >
             <Search>
                 <SearchIconWrapper>
                     <SearchIcon />
