@@ -4,6 +4,7 @@ import { parse } from 'csv-parse';
 import { AppDataSource } from "../data-source";
 import { FoodItem } from "../entity/FoodItem";
 import { Restaurant } from "../entity/Restaurant";
+import { Blob } from "buffer";
 
 type RawRestaurant = {
     Name: string
@@ -16,6 +17,7 @@ type RawFoodItem = {
     MenuItem: string
     Price: number
     Description: string
+    Image : Blob
 }
 
 const readCSV = async <T>(filePath: string, delimeter: string = ','): Promise<T[]> => {
@@ -63,6 +65,7 @@ AppDataSource.initialize().then(async () => {
         foodItem.price = rawItem.Price;
         foodItem.description = rawItem.Description;
         foodItem.restaurant = restaurant;
+        foodItem.image = rawItem.Image;
         await AppDataSource.manager.save(foodItem);
         console.log("Saved a new food with id: " + foodItem.id);
     }));

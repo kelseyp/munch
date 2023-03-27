@@ -1,3 +1,4 @@
+import { Blob } from "buffer"
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm"
 import { Restaurant } from "./Restaurant"
 
@@ -15,6 +16,9 @@ export class FoodItem {
 
     @Column()
     description: string
+
+    @Column()
+    image: Blob
 
     @ManyToOne(() => Restaurant, (restaurant) => restaurant.foodItems)
     restaurant: Restaurant
