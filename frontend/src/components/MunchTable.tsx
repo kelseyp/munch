@@ -11,7 +11,7 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Box from '@mui/material/Box';
 import visuallyHidden from '@mui/utils/visuallyHidden';
 
-export interface FoodItem {
+export interface TableFoodItem {
   item_name: string,
   restaurant_name: string,
   price: number,
@@ -19,18 +19,18 @@ export interface FoodItem {
 }
 
 export interface MunchTableProps {
-  rows: Array<FoodItem>
+  rows: Array<TableFoodItem>
 }
 
 function MunchTable(props: MunchTableProps): React.ReactElement {
   const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof FoodItem>('item_name');
+  const [orderBy, setOrderBy] = React.useState<keyof TableFoodItem>('item_name');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof FoodItem,
+    property: keyof TableFoodItem,
   ) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -123,7 +123,7 @@ function getComparator<Key extends keyof any>(
 }
 
 
-function stableSort<T>(array:  Array<FoodItem>, comparator: (a: T, b: T) => number) {
+function stableSort<T>(array:  Array<TableFoodItem>, comparator: (a: T, b: T) => number) {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -138,7 +138,7 @@ function stableSort<T>(array:  Array<FoodItem>, comparator: (a: T, b: T) => numb
 
 interface HeadCell {
   disablePadding: boolean;
-  id: keyof FoodItem;
+  id: keyof TableFoodItem;
   label: string;
   numeric: boolean;
 }
@@ -171,7 +171,7 @@ const headCells: readonly HeadCell[] = [
 ];
 
 interface EnhancedTableProps {
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof FoodItem) => void;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof TableFoodItem) => void;
   order: Order;
   orderBy: string;
 }
@@ -180,7 +180,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   const { order, orderBy, onRequestSort } =
      props;
   const createSortHandler =
-    (property: keyof FoodItem) => (event: React.MouseEvent<unknown>) => {
+    (property: keyof TableFoodItem) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
 
