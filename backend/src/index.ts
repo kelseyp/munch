@@ -33,11 +33,12 @@ AppDataSource.initialize().then(async () => {
 const app = express()
 
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: 'http://127.0.0.1:3000',
     optionsSuccessStatus: 200
 }
 
 app.get('/', cors(corsOptions), async (req: Request, res: Response) => {
+    console.log(req);
     return res.json(JSON.stringify(await AppDataSource.manager.find(FoodItem, {relations: {restaurant: true}})));
 })
 
