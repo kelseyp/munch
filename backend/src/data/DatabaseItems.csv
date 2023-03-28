@@ -1,5 +1,5 @@
-Restaurant,MenuItem,Price,Description
-Lighthouse Cafe,All American Angus Burger,5.99,"american cheese, lettece, onion, tomato, 1000 island sauce"
+Restaurant,MenuItem,Price,Description,Image
+Lighthouse Cafe,All American Angus Burger,5.99,"american cheese, lettece, onion, tomato, 1000 island sauce","all_american_burger.jpg"
 Lighthouse Cafe,Turkey Burger,6.39,"provolone, lettece, onion, tomato, 1000 island sauce"
 Lighthouse Cafe,Veggie or Black Bean Burger,6.39,"veggie or black bean patti, american cheese, lettece,onion,tomato, 1000 island sauce"
 Lighthouse Cafe,Grilled Chicken Breast Snadwich,6.99,"vitalian marinated chicken breast, lettece, onion, tomato, pickles, ranch dressing"
