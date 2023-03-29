@@ -86,7 +86,7 @@ function App() {
         <Toolbar />
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Container sx={{ flexGrow: 1 }}>
+            <Container sx={{ flexGrow: 0 }}>
               <MunchTable rows={tableFoodItems} />
             </Container>
           </Grid>

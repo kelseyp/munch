@@ -66,10 +66,10 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
                   key={index}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                  <TableCell sx={{ height:53, width:"25%" }} component="th" scope="row">{row.item_name}</TableCell>
-                  <TableCell sx={{ height:53, width:"25%" }} align="left">{row.restaurant_name}</TableCell>
-                  <TableCell sx={{ height:53, width:"10%" }} align="left">{row.price}</TableCell>
-                  <TableCell sx={{ height:53, width:"40%" }} align="right">{row.description}</TableCell>
+                  <TableCell sx={{ height:53, maxHeight:53, width:"25%", maxWidth:"25%" }} component="th" scope="row">{row.item_name}</TableCell>
+                  <TableCell sx={{ height:53, maxHeight:53, width:"25%", maxWidth:"25%" }} align="left">{row.restaurant_name}</TableCell>
+                  <TableCell sx={{ height:53, maxHeight:53, width:"10%", maxWidth:"10%" }} align="left">{row.price}</TableCell>
+                  <TableCell sx={{ height:53, maxHeight:53, width:"40%", maxWidth:"40%" }} align="right">{row.description}</TableCell>
                 </TableRow>
               );
             })}
