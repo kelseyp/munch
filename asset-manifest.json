@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/munch/static/css/main.073c9b0a.css",
+    "main.js": "/munch/static/js/main.05bfabb7.js",
+    "static/js/787.4355ca90.chunk.js": "/munch/static/js/787.4355ca90.chunk.js",
+    "index.html": "/munch/index.html",
+    "main.073c9b0a.css.map": "/munch/static/css/main.073c9b0a.css.map",
+    "main.05bfabb7.js.map": "/munch/static/js/main.05bfabb7.js.map",
+    "787.4355ca90.chunk.js.map": "/munch/static/js/787.4355ca90.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.05bfabb7.js"
+  ]
+}
