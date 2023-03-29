@@ -9,6 +9,7 @@ import MunchTable, { TableFoodItem } from './components/MunchTable';
 import Drawer from '@mui/material/Drawer';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { useEffect, useState } from 'react';
+import SearchBar from './components/SearchBar';
 
 type Restaurant = {
   name: string
@@ -47,20 +48,20 @@ function App() {
         <Toolbar>
           <Typography
             variant="h6"
-            noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            sx={{ display: { xs: 'none', sm: 'block' } }}
           >
             Munch
           </Typography>
+          <SearchBar/>
         </Toolbar>
       </AppBar>
       <Drawer
         variant="permanent"
         sx={{
-          width: 240,
+          width: '15%',
           flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: 240, boxSizing: 'border-box' },
+          [`& .MuiDrawer-paper`]: { width: '15%', minWidth:150, maxWidth:240, boxSizing: 'border-box' },
         }}
       >
         <Toolbar />
@@ -85,7 +86,7 @@ function App() {
         <Toolbar />
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Container>
+            <Container sx={{ flexGrow: 1 }}>
               <MunchTable rows={tableFoodItems} />
             </Container>
           </Grid>
