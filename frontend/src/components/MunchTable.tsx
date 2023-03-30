@@ -52,8 +52,8 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
 
   return (
     <Paper>
-      <TableContainer sx={{ maxHeight: "80vh" }} component={Paper}>
-        <Table stickyHeader sx={{ minWidth: "75vh" }} aria-label="sticky table">
+      <TableContainer sx={{ flexGrow:0, flexShrink:0, maxHeight: "80vh" }} component={Paper}>
+        <Table stickyHeader style={{width:"100vh", tableLayout:"auto"}} aria-label="sticky table">
         <EnhancedTableHead
               order={order}
               orderBy={orderBy}
@@ -66,18 +66,18 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
                   key={index}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                  <TableCell sx={{ height:53, maxHeight:53, width:"25%", maxWidth:"25%" }} component="th" scope="row">{row.item_name}</TableCell>
-                  <TableCell sx={{ height:53, maxHeight:53, width:"25%", maxWidth:"25%" }} align="left">{row.restaurant_name}</TableCell>
-                  <TableCell sx={{ height:53, maxHeight:53, width:"10%", maxWidth:"10%" }} align="left">{row.price}</TableCell>
-                  <TableCell sx={{ height:53, maxHeight:53, width:"40%", maxWidth:"40%" }} align="right">{row.description}</TableCell>
+                  <TableCell width={"20%"} sx={{ height:75, maxHeight:75, minWidth:"20%", maxWidth:"20%" }} component="th" scope="row">{row.item_name}</TableCell>
+                  <TableCell width={"15%"} sx={{ height:75, maxHeight:75, minWidth:"15%",maxWidth:"15%" }} align="left">{row.restaurant_name}</TableCell>
+                  <TableCell width={"10%"} sx={{ height:75, maxHeight:75, minWidth:"10%",maxWidth:"10%" }} align="left">{row.price}</TableCell>
+                  <TableCell width={"55%"} sx={{ height:75, maxHeight:75, minWidth:"55%",maxWidth:"55%" }} align="right">{row.description}</TableCell>
                 </TableRow>
               );
             })}
-            {/* Took trial and error to figure out how tall the tablecells with padding and standard height of 53 (the old height for empty rows) */}
+            {/* TableRow height below is TableCell height + 33 to have a well aligned table */}
             {emptyRows > 0 && (
               <TableRow
                 style={{
-                  height: (86) * emptyRows,
+                  height: (108) * emptyRows,
                 }}
               >
                 <TableCell colSpan={6} />

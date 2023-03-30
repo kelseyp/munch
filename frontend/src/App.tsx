@@ -43,7 +43,7 @@ function App() {
   const tableFoodItems: TableFoodItem[] = foodItems.map((value: FoodItem) => {return mapFoodItemData(value);})
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Container disableGutters sx={{ display:"flex", height:"99vh", width:"90vh", border:0 }}>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <Typography
@@ -51,7 +51,7 @@ function App() {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            Munch
+            MunchBox
           </Typography>
           <SearchBar/>
         </Toolbar>
@@ -60,7 +60,8 @@ function App() {
         variant="permanent"
         sx={{
           width: '15%',
-          flexShrink: 0,
+          flexShrink: 1,
+          flexGrow: 1,
           [`& .MuiDrawer-paper`]: { width: '15%', minWidth:150, maxWidth:240, boxSizing: 'border-box' },
         }}
       >
@@ -72,7 +73,7 @@ function App() {
                 variant="h6"
                 noWrap
                 component="div"
-                sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                sx={{ flexGrow:1, display: { xs: 'none', sm: 'block'} }}
               >
                 Filters <FilterListIcon />
               </Typography>
@@ -80,20 +81,19 @@ function App() {
           </Grid>
         </Box>
       </Drawer>
-      <Toolbar />
       <Box>
         <Toolbar />
         <Toolbar />
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Container sx={{ flexGrow: 0 }}>
+            <Container>
               <MunchTable rows={tableFoodItems} />
             </Container>
           </Grid>
         </Grid>
       </Box>
 
-    </Box>
+    </Container>
   );
 }
 
