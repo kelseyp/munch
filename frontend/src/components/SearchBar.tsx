@@ -13,10 +13,10 @@ export const Search = styled('div')(({ theme }) => ({
         backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
     marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
+    marginLeft: theme.spacing(15),
+    width: '60vh',
     [theme.breakpoints.up('md')]: {
-        marginLeft: theme.spacing(3),
+        marginLeft: theme.spacing(15),
         width: '60vh',
     },
 }));
@@ -38,11 +38,11 @@ export const StyledInputBase = styled(InputBase)(({ theme }) => ({
         // vertical padding + font size from searchIcon
         paddingLeft: `calc(1em + ${theme.spacing(4)})`,
         transition: theme.transitions.create('width'),
-        width: '100%',
+        width: '50ch',
         // Below width determines size of text box entries
         // using %s doesn't seem to have desired effect.
         [theme.breakpoints.up('md')]: {
-            width: '55ch'
+            width: '50ch'
         },
     },
 }));

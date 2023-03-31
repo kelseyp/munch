@@ -52,8 +52,8 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
 
   return (
     <Paper>
-      <TableContainer sx={{ flexGrow:0, flexShrink:0, maxHeight: "80vh" }} component={Paper}>
-        <Table stickyHeader style={{width:"100vh", tableLayout:"auto"}} aria-label="sticky table">
+      <TableContainer sx={{ flexGrow:1, flexShrink:1, height:"75vh", maxHeight: "75vh", width:"85vh",maxWidth:"90vh" }} component={Paper}>
+        <Table stickyHeader style={{ flexGrow:1, flexShrink:1, width:"auto", tableLayout:"auto"}} aria-label="sticky table">
         <EnhancedTableHead
               order={order}
               orderBy={orderBy}
@@ -67,9 +67,9 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell width={"20%"} sx={{ height:75, maxHeight:75, minWidth:"20%", maxWidth:"20%" }} component="th" scope="row">{row.item_name}</TableCell>
-                  <TableCell width={"15%"} sx={{ height:75, maxHeight:75, minWidth:"15%",maxWidth:"15%" }} align="left">{row.restaurant_name}</TableCell>
-                  <TableCell width={"10%"} sx={{ height:75, maxHeight:75, minWidth:"10%",maxWidth:"10%" }} align="left">{row.price}</TableCell>
-                  <TableCell width={"55%"} sx={{ height:75, maxHeight:75, minWidth:"55%",maxWidth:"55%" }} align="right">{row.description}</TableCell>
+                  <TableCell width={"15%"} sx={{ height:75, maxHeight:75, minWidth:"15%", maxWidth:"15%" }} align="left">{row.restaurant_name}</TableCell>
+                  <TableCell width={"10%"} sx={{ height:75, maxHeight:75, minWidth:"10%", maxWidth:"10%" }} align="left">{row.price}</TableCell>
+                  <TableCell width={"55%"} sx={{ height:75, maxHeight:75, minWidth:"55%", maxWidth:"55%" }} align="right">{row.description}</TableCell>
                 </TableRow>
               );
             })}

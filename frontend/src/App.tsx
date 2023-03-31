@@ -43,7 +43,7 @@ function App() {
   const tableFoodItems: TableFoodItem[] = foodItems.map((value: FoodItem) => {return mapFoodItemData(value);})
 
   return (
-    <Container disableGutters sx={{ display:"flex", height:"99vh", width:"90vh", border:0 }}>
+    <Container sx={{ display:"flex", height:"99vh", width:"90vh" }}>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <Typography
@@ -66,7 +66,7 @@ function App() {
         }}
       >
         <Toolbar />
-        <Box>
+        <Box sx={{ overflow: 'auto' }}>
           <Grid item xs={12}>
             <Container>
               <Typography
@@ -81,12 +81,12 @@ function App() {
           </Grid>
         </Box>
       </Drawer>
-      <Box>
+      <Box component="main">
         <Toolbar />
         <Toolbar />
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Container>
+            <Container >
               <MunchTable rows={tableFoodItems} />
             </Container>
           </Grid>
