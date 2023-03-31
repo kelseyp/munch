@@ -52,7 +52,7 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
 
   return (
     <Paper>
-      <TableContainer sx={{ flexGrow:1, flexShrink:1, height:"75vh", maxHeight: "75vh", width:"85vh",maxWidth:"90vh" }} component={Paper}>
+      <TableContainer sx={{ flexGrow:1, flexShrink:1, height:"65vh", maxHeight: "65vh", width:"90vh",maxWidth:"90vh" }} component={Paper}>
         <Table stickyHeader style={{ flexGrow:1, flexShrink:1, width:"auto", tableLayout:"auto"}} aria-label="sticky table">
         <EnhancedTableHead
               order={order}
