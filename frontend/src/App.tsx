@@ -9,6 +9,9 @@ import MunchTable, { TableFoodItem } from './components/MunchTable';
 import Drawer from '@mui/material/Drawer';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { useEffect, useState } from 'react';
+import * as React from 'react';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 type Restaurant = {
   name: string
@@ -31,6 +34,77 @@ const mapFoodItemData = (foodItem: FoodItem): TableFoodItem => {
 function App() {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([])
 
+  function IndeterminateCheckbox() {
+    const [checked, setChecked] = React.useState([true, false]);
+
+    const handleChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setChecked([event.target.checked, event.target.checked]);
+    };
+
+    const handleChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setChecked([event.target.checked, checked[1]]);
+
+    };
+
+    const handleChange3 = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setChecked([checked[0], event.target.checked]);
+    };
+
+    const handleChange4 = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setChecked([checked[0], event.target.checked]);
+    };
+
+    const handleChange5 = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setChecked([checked[0], event.target.checked]);
+    };
+
+    const handleChange6 = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setChecked([checked[0], event.target.checked]);
+    };
+
+    const controlLabelList: Array<any> = [];
+
+    function childrenNames() {(
+      filteredData.forEach((element: any) => {
+
+        controlLabelList.push(
+          <FormControlLabel
+          key = {element}
+          label= {element}
+          control={<Checkbox checked={checked[0]} 
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setChecked([event.target.checked, event.target.checked])}} />}
+          />)
+          })
+      )};
+    childrenNames();
+    console.log(controlLabelList);
+
+    const children = (
+      <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
+        {controlLabelList}
+      </Box>
+    );
+
+
+    return (
+      <div>
+        <FormControlLabel
+          label="Restaurants"
+          control={
+            <Checkbox
+              checked={checked[0] && checked[1]}
+              indeterminate={checked[0] !== checked[1]}
+              onChange={handleChange1}
+            />
+          }
+        />
+        {children}
+      </div>
+    );
+  }
+
+
+
   useEffect(() => {
       fetch(`http://localhost:3001`).then((response: Response) => {
         response.json().then((json: any) => {
@@ -40,6 +114,9 @@ function App() {
   }, [])
 
   const tableFoodItems: TableFoodItem[] = foodItems.map((value: FoodItem) => {return mapFoodItemData(value);})
+
+  const filteredData = tableFoodItems.map(item => item.restaurant_name).filter((value, index, self) => self.indexOf(value) === index)
+  console.log(filteredData);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -75,6 +152,13 @@ function App() {
               >
                 Filters <FilterListIcon />
               </Typography>
+            </Container>
+          </Grid>
+        </Box>
+        <Box>
+          <Grid item xs={12}>
+            <Container>
+              <IndeterminateCheckbox/>
             </Container>
           </Grid>
         </Box>
