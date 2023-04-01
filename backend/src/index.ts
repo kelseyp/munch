@@ -47,7 +47,7 @@ app.get('/', cors(corsOptions), async (req: Request, res: Response) => {
 app.get('/searchbar', cors(corsOptions), async (req: Request, res: Response) => {
     console.log(req.query)
     var keyword = req.query.keyword
-    console.log("test==="+keyword+"====")
+    //console.log("test==="+keyword+"====")
     if( (keyword === null) || (keyword === '') || (keyword === undefined)){
         let data = await AppDataSource.getRepository(FoodItem).find({relations: {restaurant: true}});
         return res.json(JSON.stringify(data))
