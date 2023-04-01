@@ -3,7 +3,9 @@ import * as path from "path";
 import { parse } from 'csv-parse';
 import { AppDataSource } from "./data-source";
 import { FoodItem } from "./entity/FoodItem";
+import { Restaurant } from "./entity/Restaurant";
 import express, { Request, Response } from "express";
+import { Like } from "typeorm"
 import cors from "cors"
 
 
@@ -41,6 +43,14 @@ app.get('/', cors(corsOptions), async (req: Request, res: Response) => {
     console.log(req);
     return res.json(JSON.stringify(await AppDataSource.manager.find(FoodItem, {relations: {restaurant: true}})));
 })
+
+app.get('/searchbar', async (req, res) => {
+    console.log(req.query)
+    var keyword = req.query.keyword
+    let data = await AppDataSource.getRepository(FoodItem).findBy({description: Like(`%${keyword}%`)});
+    //let data = await AppDataSource.getRepository(FoodItem).findBy({description: Like("%aa%")});
+    res.send(data)
+ })
 
 app.listen(3001, () => {
     console.log(`[server]: Server is running at http://localhost:3001`)
