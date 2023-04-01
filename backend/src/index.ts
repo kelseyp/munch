@@ -35,7 +35,7 @@ AppDataSource.initialize().then(async () => {
 const app = express()
 
 const corsOptions = {
-    origin: 'http://127.0.0.1:3000',
+    origin: 'http://localhost:3000',
     optionsSuccessStatus: 200
 }
 
@@ -44,12 +44,17 @@ app.get('/', cors(corsOptions), async (req: Request, res: Response) => {
     return res.json(JSON.stringify(await AppDataSource.manager.find(FoodItem, {relations: {restaurant: true}})));
 })
 
-app.get('/searchbar', async (req, res) => {
+app.get('/searchbar', cors(corsOptions), async (req: Request, res: Response) => {
     console.log(req.query)
     var keyword = req.query.keyword
-    let data = await AppDataSource.getRepository(FoodItem).findBy({description: Like(`%${keyword}%`)});
-    //let data = await AppDataSource.getRepository(FoodItem).findBy({description: Like("%aa%")});
-    res.send(data)
+    console.log("test==="+keyword+"====")
+    if( (keyword === null) || (keyword === '') || (keyword === undefined)){
+        let data = await AppDataSource.getRepository(FoodItem).find({relations: {restaurant: true}});
+        return res.json(JSON.stringify(data))
+    } else{
+        let data = await AppDataSource.getRepository(FoodItem).find({relations: {restaurant: true},where:{description: Like(`%${keyword}%`)}});
+        return res.json(JSON.stringify(data))
+    }
  })
 
 app.listen(3001, () => {

@@ -32,7 +32,7 @@ function App() {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([])
 
   useEffect(() => {
-      fetch(`http://localhost:3001`).then((response: Response) => {
+      fetch(`http://localhost:3001/serarchbar`).then((response: Response) => {
         response.json().then((json: any) => {
           setFoodItems(JSON.parse(json));
         })
