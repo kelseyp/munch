@@ -3,7 +3,7 @@ import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import Container from '@mui/material/Container';
 import React from 'react';
-import SetSearchWord from '../App';
+//import SetSearchWord from '../App';
 
 export var currentWord = 'Tangy';
 

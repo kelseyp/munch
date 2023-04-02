@@ -35,8 +35,8 @@ function App() {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([])
   console.log('The word the app sees is: ', currentWord);
 
-  const [searchWord, setSearchWord] = React.useState('');
-  setSearchWord(currentWord);
+  // const [searchWord, setSearchWord] = React.useState('');
+  // setSearchWord(currentWord);
 
   useEffect(() => {
       //fetch(`http://localhost:3001/searchbar${searchWord}`).then((response: Response) => {
