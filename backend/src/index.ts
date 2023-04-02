@@ -6,7 +6,7 @@ import { FoodItem } from "./entity/FoodItem";
 import { Restaurant } from "./entity/Restaurant";
 import express, { Request, Response } from "express";
 import { Like } from "typeorm"
-import cors from "cors"
+import cors from "cors" 
 
 
 AppDataSource.initialize().then(async () => {
@@ -40,16 +40,8 @@ const corsOptions = {
 }
 
 app.get('/', cors(corsOptions), async (req: Request, res: Response) => {
-    console.log(req.query)
-    var keyword = req.query.keyword
-    //console.log("test==="+keyword+"====")
-    if( (keyword === null) || (keyword === '') || (keyword === undefined)){
-        let data = await AppDataSource.getRepository(FoodItem).find({relations: {restaurant: true}});
-        return res.json(JSON.stringify(data))
-    } else{
-        let data = await AppDataSource.getRepository(FoodItem).find({relations: {restaurant: true},where:{description: Like(`%${keyword}%`)}});
-        return res.json(JSON.stringify(data))
-    }
+    console.log(req);
+    return res.json(JSON.stringify(await AppDataSource.manager.find(FoodItem, {relations: {restaurant: true}})));
 })
 
 app.get('/searchbar', cors(corsOptions), async (req: Request, res: Response) => {
