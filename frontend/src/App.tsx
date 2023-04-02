@@ -28,9 +28,8 @@ const mapFoodItemData = (foodItem: FoodItem): TableFoodItem => {
   return {'item_name': foodItem.name, 'restaurant_name': foodItem.restaurant.name, 'price': foodItem.price, 'description': foodItem.description};
 }
 
-function App() {
+function App(){
   const [foodItems, setFoodItems] = useState<FoodItem[]>([])
-
   useEffect(() => {
       fetch(`http://localhost:3001/`).then((response: Response) => {
         response.json().then((json: any) => {
