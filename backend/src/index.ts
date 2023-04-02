@@ -7,7 +7,7 @@ import { Restaurant } from "./entity/Restaurant";
 import express, { Request, Response } from "express";
 import { Like } from "typeorm"
 import cors from "cors"
-
+import { currentWord } from "../../frontend/src/components/SearchBar";
 
 AppDataSource.initialize().then(async () => {
 //     await AppDataSource.manager.clear(FoodItem);
@@ -35,18 +35,22 @@ AppDataSource.initialize().then(async () => {
 const app = express()
 
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: 'http://127.0.0.1:3000',
     optionsSuccessStatus: 200
 }
 
-app.get('/', cors(corsOptions), async (req: Request, res: Response) => {
-    console.log(req);
-    return res.json(JSON.stringify(await AppDataSource.manager.find(FoodItem, {relations: {restaurant: true}})));
-})
+// app.get('/', cors(corsOptions), async (req: Request, res: Response) => {
+//     console.log(req);
+//     return res.json(JSON.stringify(await AppDataSource.manager.find(FoodItem, {relations: {restaurant: true}})));
+// })
 
 app.get('/searchbar', cors(corsOptions), async (req: Request, res: Response) => {
-    console.log(req.query)
-    var keyword = req.query.keyword
+    console.log(req.query);
+    //var keyword = req.query.keyword
+    //var keyword = 'tangy'
+    var keyword = currentWord;
+    // console.log('the current word is: ', currentWord.currentWord)
+    // console.log(keyword);
     //console.log("test==="+keyword+"====")
     if( (keyword === null) || (keyword === '') || (keyword === undefined)){
         let data = await AppDataSource.getRepository(FoodItem).find({relations: {restaurant: true}});

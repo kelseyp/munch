@@ -10,6 +10,8 @@ import Drawer from '@mui/material/Drawer';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { useEffect, useState } from 'react';
 import SearchBar from './components/SearchBar';
+import { currentWord } from './components/SearchBar';
+import React from 'react';
 
 type Restaurant = {
   name: string
@@ -31,11 +33,17 @@ const mapFoodItemData = (foodItem: FoodItem): TableFoodItem => {
 
 function App() {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([])
+  console.log('The word the app sees is: ', currentWord);
+
+  const [searchWord, setSearchWord] = React.useState('');
+  setSearchWord(currentWord);
 
   useEffect(() => {
-      fetch(`http://localhost:3001/serarchbar`).then((response: Response) => {
+      //fetch(`http://localhost:3001/searchbar${searchWord}`).then((response: Response) => {
+      fetch(`http://localhost:3001/searchbar`).then((response: Response) => {
         response.json().then((json: any) => {
           setFoodItems(JSON.parse(json));
+          console.log('The word the app searches is: ', currentWord);
         })
       });
   }, [])

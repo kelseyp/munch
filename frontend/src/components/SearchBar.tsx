@@ -3,8 +3,13 @@ import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import Container from '@mui/material/Container';
 import React from 'react';
+import SetSearchWord from '../App';
 
+export var currentWord = 'Tangy';
 
+// export function CurrentSearchWord () {
+//     return (currentWord);
+// }
 
 export const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -51,10 +56,11 @@ export const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function SearchBar() {
     const [search, setSearch] = React.useState('');
-
+    
+    
     const handleChange = (event:any) => {
         setSearch(event.currentTarget.value);
-        console.log({search});
+        //console.log(search);
         }
 
     return (
@@ -72,8 +78,12 @@ export default function SearchBar() {
                     inputProps={{ 'aria-label': 'search' }}
                     
                     onKeyDown={(event) => {
-                        if (event.key === 'Enter')
+                        if (event.key === 'Enter') {
                             console.log('Enter Pressed');
+                            currentWord = search;
+                            console.log('currentWord is: ', currentWord);
+
+                        }
                      }}
                     onChange={handleChange}
                 />
