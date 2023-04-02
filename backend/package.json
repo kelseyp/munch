@@ -5,6 +5,7 @@
    "type": "commonjs",
    "devDependencies": {
       "@types/node": "^16.11.10",
+      "nodemon": "^2.0.22",
       "ts-node": "10.7.0",
       "typescript": "4.5.2"
    },
@@ -22,6 +23,7 @@
    "scripts": {
       "start": "ts-node src/index.ts",
       "typeorm": "typeorm-ts-node-commonjs",
-      "initialize-database": "ts-node src/migration/initialize-database.ts"
+      "initialize-database": "ts-node src/migration/initialize-database.ts",
+      "dev": "nodemon"
    }
 }
