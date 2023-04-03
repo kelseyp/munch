@@ -3,8 +3,6 @@ import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import Container from '@mui/material/Container';
 
-
-
 export const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -47,9 +45,12 @@ export const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
+export interface SearchBarProps {
+  searchCallback: ((event: any) => void);
+}
 
-export default function SearchBar() {
-    return (
+export default function SearchBar(props: SearchBarProps) {
+      return (
         <Container
         maxWidth="md"
         disableGutters
@@ -62,6 +63,7 @@ export default function SearchBar() {
                 <StyledInputBase
                     placeholder="Search…"
                     inputProps={{ 'aria-label': 'search' }}
+                    onChange={props.searchCallback}
                 />
             </Search>
         </Container>

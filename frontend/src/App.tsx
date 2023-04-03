@@ -26,24 +26,33 @@ type FoodItem = {
 };
 
 const mapFoodItemData = (foodItem: FoodItem): TableFoodItem => {
-  return {'item_name': foodItem.name, 'restaurant_name': foodItem.restaurant.name, 'price': foodItem.price, 'description': foodItem.description};
+  return { 'item_name': foodItem.name, 'restaurant_name': foodItem.restaurant.name, 'price': foodItem.price, 'description': foodItem.description };
 }
 
 function App() {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([])
 
   useEffect(() => {
-      fetch(`http://localhost:3001`).then((response: Response) => {
-        response.json().then((json: any) => {
-          setFoodItems(JSON.parse(json));
-        })
-      });
+    fetch(`http://localhost:3001`).then((response: Response) => {
+      response.json().then((json: any) => {
+        setFoodItems(JSON.parse(json));
+      })
+    });
   }, [])
 
-  const tableFoodItems: TableFoodItem[] = foodItems.map((value: FoodItem) => {return mapFoodItemData(value);})
+  const handleSearchKeywordChange = (event: any) => {
+    let keyword = event.target.value;
+    fetch(`http://localhost:3001/searchbar?keyword=${keyword}`).then((response: Response) => {
+      response.json().then((json: any) => {
+        setFoodItems(JSON.parse(json));
+      })
+    });
+  }
+
+  const tableFoodItems: TableFoodItem[] = foodItems.map((value: FoodItem) => { return mapFoodItemData(value); })
 
   return (
-    <Container sx={{ display:"flex", height:"99vh", width:"90vh" }}>
+    <Container sx={{ display: "flex", height: "99vh", width: "90vh" }}>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <Typography
@@ -53,7 +62,7 @@ function App() {
           >
             MunchBox
           </Typography>
-          <SearchBar/>
+          <SearchBar searchCallback={handleSearchKeywordChange} />
         </Toolbar>
       </AppBar>
       <Drawer
@@ -62,7 +71,7 @@ function App() {
           width: '15%',
           flexShrink: 1,
           flexGrow: 1,
-          [`& .MuiDrawer-paper`]: { width: '15%', minWidth:150, maxWidth:240, boxSizing: 'border-box' },
+          [`& .MuiDrawer-paper`]: { width: '15%', minWidth: 150, maxWidth: 240, boxSizing: 'border-box' },
         }}
       >
         <Toolbar />
@@ -73,7 +82,7 @@ function App() {
                 variant="h6"
                 noWrap
                 component="div"
-                sx={{ flexGrow:1, display: { xs: 'none', sm: 'block'} }}
+                sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
               >
                 Filters <FilterListIcon />
               </Typography>
