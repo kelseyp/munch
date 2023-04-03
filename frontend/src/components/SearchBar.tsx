@@ -2,7 +2,6 @@ import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import Container from '@mui/material/Container';
-import React from 'react';
 
 
 
@@ -50,13 +49,6 @@ export const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 export default function SearchBar() {
-    const [search, setSearch] = React.useState('');
-
-    const handleChange = (event:any) => {
-        setSearch(event.currentTarget.value);
-        console.log({search});
-        }
-
     return (
         <Container
         maxWidth="md"
@@ -70,12 +62,6 @@ export default function SearchBar() {
                 <StyledInputBase
                     placeholder="Search…"
                     inputProps={{ 'aria-label': 'search' }}
-                    
-                    onKeyDown={(event) => {
-                        if (event.key === 'Enter')
-                            console.log('Enter Pressed');
-                     }}
-                    onChange={handleChange}
                 />
             </Search>
         </Container>
