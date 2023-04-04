@@ -17,7 +17,7 @@ export class FoodItem {
     @Column()
     description: string
 
-    @Column()
+    @Column("blob")
     image: Blob
 
     @ManyToOne(() => Restaurant, (restaurant) => restaurant.foodItems)

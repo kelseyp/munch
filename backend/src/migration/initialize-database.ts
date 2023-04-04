@@ -65,7 +65,8 @@ AppDataSource.initialize().then(async () => {
         foodItem.price = rawItem.Price;
         foodItem.description = rawItem.Description;
         foodItem.restaurant = restaurant;
-        foodItem.image = new Blob(["../data/images/" + rawItem.Image], { type : 'plain/text' });
+        foodItem.image = await fetch(`data:plain/text;base64,${"../data/images/" + rawItem.Image}`).then(res => res.blob());
+        //foodItem.image = new Blob(["../data/images/" + rawItem.Image], { type : 'plain/text' });
         //take string above and redirect to "../data/images/"+rawItem.image (convert string to blob)
         await AppDataSource.manager.save(foodItem);
         console.log("Saved a new food with id: " + foodItem.id);
