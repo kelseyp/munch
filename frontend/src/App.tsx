@@ -9,6 +9,7 @@ import MunchTable, { TableFoodItem } from './components/MunchTable';
 import Drawer from '@mui/material/Drawer';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { useEffect, useState } from 'react';
+import SearchBar from './components/SearchBar';
 
 type Restaurant = {
   name: string
@@ -25,46 +26,56 @@ type FoodItem = {
 };
 
 const mapFoodItemData = (foodItem: FoodItem): TableFoodItem => {
-  return {'item_name': foodItem.name, 'restaurant_name': foodItem.restaurant.name, 'price': foodItem.price, 'description': foodItem.description};
+  return { 'item_name': foodItem.name, 'restaurant_name': foodItem.restaurant.name, 'price': foodItem.price, 'description': foodItem.description };
 }
 
 function App() {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([])
 
   useEffect(() => {
-      fetch(`http://localhost:3001`).then((response: Response) => {
-        response.json().then((json: any) => {
-          setFoodItems(JSON.parse(json));
-        })
-      });
+    fetch(`http://localhost:3001`).then((response: Response) => {
+      response.json().then((json: any) => {
+        setFoodItems(JSON.parse(json));
+      })
+    });
   }, [])
 
-  const tableFoodItems: TableFoodItem[] = foodItems.map((value: FoodItem) => {return mapFoodItemData(value);})
+  const handleSearchKeywordChange = (event: any) => {
+    let keyword = event.target.value;
+    fetch(`http://localhost:3001/searchbar?keyword=${keyword}`).then((response: Response) => {
+      response.json().then((json: any) => {
+        setFoodItems(JSON.parse(json));
+      })
+    });
+  }
+
+  const tableFoodItems: TableFoodItem[] = foodItems.map((value: FoodItem) => { return mapFoodItemData(value); })
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Container sx={{ display: "flex", height: "99vh", width: "90vh" }}>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <Typography
             variant="h6"
-            noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            Munch
+            MunchBox
           </Typography>
+          <SearchBar searchCallback={handleSearchKeywordChange} />
         </Toolbar>
       </AppBar>
       <Drawer
         variant="permanent"
         sx={{
-          width: 240,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: 240, boxSizing: 'border-box' },
+          width: '15%',
+          flexShrink: 1,
+          flexGrow: 1,
+          [`& .MuiDrawer-paper`]: { width: '15%', minWidth: 150, maxWidth: 240, boxSizing: 'border-box' },
         }}
       >
         <Toolbar />
-        <Box>
+        <Box sx={{ overflow: 'auto' }}>
           <Grid item xs={12}>
             <Container>
               <Typography
@@ -79,20 +90,20 @@ function App() {
           </Grid>
         </Box>
       </Drawer>
-      <Toolbar />
-      <Box>
+      <Box component="main">
         <Toolbar />
         <Toolbar />
+
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Container>
+            <Container >
               <MunchTable rows={tableFoodItems} />
             </Container>
           </Grid>
         </Grid>
       </Box>
 
-    </Box>
+    </Container>
   );
 }
 
