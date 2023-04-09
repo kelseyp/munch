@@ -52,8 +52,8 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
 
   return (
     <Paper>
-      <TableContainer sx={{ flexGrow:1, flexShrink:1, height:"65vh", maxHeight: "65vh", width:"90vh",maxWidth:"90vh" }} component={Paper}>
-        <Table stickyHeader style={{ flexGrow:1, flexShrink:1, width:"auto", tableLayout:"auto"}} aria-label="sticky table">
+      <TableContainer component={Paper}>
+        <Table stickyHeader aria-label="sticky table">
         <EnhancedTableHead
               order={order}
               orderBy={orderBy}
@@ -66,10 +66,10 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
                   key={index}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                  <TableCell width={"20%"} sx={{ height:75, maxHeight:75, minWidth:"20%", maxWidth:"20%" }} component="th" scope="row">{row.item_name}</TableCell>
-                  <TableCell width={"15%"} sx={{ height:75, maxHeight:75, minWidth:"15%", maxWidth:"15%" }} align="left">{row.restaurant_name}</TableCell>
-                  <TableCell width={"10%"} sx={{ height:75, maxHeight:75, minWidth:"10%", maxWidth:"10%" }} align="left">{row.price}</TableCell>
-                  <TableCell width={"55%"} sx={{ height:75, maxHeight:75, minWidth:"55%", maxWidth:"55%" }} align="right">{row.description}</TableCell>
+                  <TableCell component="th" scope="row">{row.item_name}</TableCell>
+                  <TableCell align="left">{row.restaurant_name}</TableCell>
+                  <TableCell align="right">{row.price}</TableCell>
+                  <TableCell align="left">{row.description}</TableCell>
                 </TableRow>
               );
             })}
@@ -158,13 +158,13 @@ const headCells: readonly HeadCell[] = [
   },
   {
     id: 'price',
-    numeric: false,
+    numeric: true,
     disablePadding: false,
     label: 'Price',
   },
   {
     id: 'description',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Description',
   },
