@@ -9,10 +9,10 @@ import MunchTable, { TableFoodItem } from './components/MunchTable';
 import Drawer from '@mui/material/Drawer';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { useEffect, useState } from 'react';
-import * as React from 'react';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import SearchBar from './components/SearchBar';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ControlledCheckbox from './components/TableFilters';
 
 type Restaurant = {
   name: string
@@ -35,76 +35,28 @@ const mapFoodItemData = (foodItem: FoodItem): TableFoodItem => {
 function App() {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([])
 
-  function IndeterminateCheckbox() {
-    const [checked, setChecked] = React.useState([true, false]);
-
-    const handleChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setChecked([event.target.checked, event.target.checked]);
-    };
-
-    const handleChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setChecked([event.target.checked, checked[1]]);
-
-    };
-
-    const handleChange3 = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setChecked([checked[0], event.target.checked]);
-    };
-
-    const handleChange4 = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setChecked([checked[0], event.target.checked]);
-    };
-
-    const handleChange5 = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setChecked([checked[0], event.target.checked]);
-    };
-
-    const handleChange6 = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setChecked([checked[0], event.target.checked]);
-    };
-
+  function RestaurantCheckboxes() {
     const controlLabelList: Array<any> = [];
 
-    function childrenNames() {(
-      filteredData.forEach((element: any) => {
-
-        controlLabelList.push(
-          <FormControlLabel
-          key = {element}
-          label= {element}
-          control={<Checkbox checked={checked[0]} 
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setChecked([event.target.checked, event.target.checked])}} />}
-          />)
-          })
-      )};
-    childrenNames();
-    console.log(controlLabelList);
+    filteredData.forEach((restaurantName: any) => {
+      controlLabelList.push(
+        ControlledCheckbox(restaurantName)
+      )
+    });
 
     const children = (
       <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
         {controlLabelList}
       </Box>
     );
-
+    //console.log(controlLabelList);
 
     return (
       <div>
-        <FormControlLabel
-          label="Restaurants"
-          control={
-            <Checkbox
-              checked={checked[0] && checked[1]}
-              indeterminate={checked[0] !== checked[1]}
-              onChange={handleChange1}
-            />
-          }
-        />
         {children}
       </div>
     );
   }
-
-
 
   useEffect(() => {
     fetch(`http://localhost:3001`).then((response: Response) => {
@@ -126,7 +78,7 @@ function App() {
   const tableFoodItems: TableFoodItem[] = foodItems.map((value: FoodItem) => { return mapFoodItemData(value); })
 
   const filteredData = tableFoodItems.map(item => item.restaurant_name).filter((value, index, self) => self.indexOf(value) === index)
-  console.log(filteredData);
+  //console.log(filteredData);
 
   return (
     <Container sx={{ display: "flex", height: "99vh", width: "90vh" }}>
@@ -142,7 +94,7 @@ function App() {
           <SearchBar searchCallback={handleSearchKeywordChange} />
         </Toolbar>
       </AppBar>
-      <Drawer
+      {/* <Drawer
         variant="permanent"
         sx={{
           width: '15%',
@@ -169,10 +121,41 @@ function App() {
         <Box>
           <Grid item xs={12}>
             <Container>
-              <IndeterminateCheckbox/>
+                <Typography
+                  variant="h6"
+                  noWrap
+                  component="div"
+                  sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                >
+                Restuarants
+                </Typography>
+              <RestaurantCheckboxes/>
             </Container>
           </Grid>
         </Box>
+      </Drawer> */}
+      <Drawer variant="permanent"
+        sx={{
+          width: '15%',
+          flexShrink: 1,
+          flexGrow: 1,
+          [`& .MuiDrawer-paper`]: { width: '15%', minWidth: 150, maxWidth: 240, boxSizing: 'border-box' },
+        }}>
+        <Toolbar />
+        <List>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+          >
+            Filters <FilterListIcon />
+            <Divider />
+            Restaurants
+            <RestaurantCheckboxes />
+            <Divider />
+          </Typography>
+        </List>
       </Drawer>
       <Box component="main">
         <Toolbar />
