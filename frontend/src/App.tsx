@@ -34,26 +34,23 @@ const mapFoodItemData = (foodItem: FoodItem): TableFoodItem => {
 
 function App() {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([])
-
+  
   function RestaurantCheckboxes() {
     const controlLabelList: Array<any> = [];
 
     filteredData.forEach((restaurantName: any) => {
       controlLabelList.push(
-        ControlledCheckbox(restaurantName)
+        ControlledCheckbox(restaurantName, tableFoodItems)
       )
     });
 
-    const children = (
-      <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
-        {controlLabelList}
-      </Box>
-    );
     //console.log(controlLabelList);
 
     return (
       <div>
-        {children}
+        <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
+          {controlLabelList}
+        </Box>
       </div>
     );
   }
