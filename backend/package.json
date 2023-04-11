@@ -5,6 +5,7 @@
    "type": "commonjs",
    "devDependencies": {
       "@types/node": "^16.11.10",
+      "nodemon": "^2.0.22",
       "ts-node": "10.7.0",
       "typescript": "4.5.2"
    },
@@ -14,6 +15,7 @@
       "cors": "^2.8.5",
       "csv-parse": "^5.3.6",
       "express": "^4.18.2",
+      "fs": "^0.0.1-security",
       "mysql": "^2.14.1",
       "reflect-metadata": "^0.1.13",
       "typeorm": "0.3.12"
@@ -21,6 +23,7 @@
    "scripts": {
       "start": "ts-node src/index.ts",
       "typeorm": "typeorm-ts-node-commonjs",
-      "initialize-database": "ts-node src/migration/initialize-database.ts"
+      "initialize-database": "ts-node src/migration/initialize-database.ts",
+      "dev": "nodemon"
    }
 }
