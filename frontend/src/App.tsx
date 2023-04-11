@@ -1,15 +1,23 @@
 import './App.css';
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
+import ViewListIcon from '@mui/icons-material/ViewList';
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import MunchTable, { TableFoodItem } from './components/MunchTable';
+import MunchGrid from './components/MunchGrid';
 import Drawer from '@mui/material/Drawer';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { useEffect, useState } from 'react';
 import SearchBar from './components/SearchBar';
+
 
 type Restaurant = {
   name: string
@@ -31,6 +39,12 @@ const mapFoodItemData = (foodItem: FoodItem): TableFoodItem => {
 
 function App() {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([])
+  const [view, setView] = React.useState('list');
+
+  const ChangeView = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
+    setView(nextView);
+  } 
+
 
   useEffect(() => {
     fetch(`http://localhost:3001`).then((response: Response) => {
@@ -96,8 +110,24 @@ function App() {
 
         <Grid container spacing={2}>
           <Grid item xs={12}>
+            <Container>
+                <ToggleButtonGroup
+                  orientation="horizontal"
+                  value={view}
+                  exclusive
+                  onChange={ChangeView}
+                >     
+                  <ToggleButton value="list" aria-label="list">
+                    <ViewListIcon />
+                  </ToggleButton>
+                  <ToggleButton value="module" aria-label="module">
+                    <ViewModuleIcon />
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              </Container>
             <Container >
               <MunchTable rows={tableFoodItems} />
+              <MunchGrid />
             </Container>
           </Grid>
         </Grid>
