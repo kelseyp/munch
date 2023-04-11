@@ -37,7 +37,7 @@ const readCSV = async <T>(filePath: string, delimeter: string = ','): Promise<T[
 AppDataSource.initialize().then(async () => {
     // await AppDataSource.manager.clear(FoodItem);
     // await AppDataSource.manager.clear(Restaurant);
-    let rawRestaurants = await readCSV<RawRestaurant>(path.resolve(__dirname, '../../shared/data/DatabaseRestaurants.csv'), '|');
+    let rawRestaurants = await readCSV<RawRestaurant>(path.resolve(__dirname, '../../../shared/data/DatabaseRestaurants.csv'), '|');
 
     for await(const rawRestaurant of rawRestaurants) {
         let restaurant = await AppDataSource.manager.findOneBy(Restaurant, {name: rawRestaurant.Name});
@@ -51,7 +51,7 @@ AppDataSource.initialize().then(async () => {
         }
     }
 
-    let rawItems = await readCSV<RawFoodItem>(path.resolve(__dirname, '../../shared/data/DatabaseItems.csv'));
+    let rawItems = await readCSV<RawFoodItem>(path.resolve(__dirname, '../../../shared/data/DatabaseItems.csv'));
 
 
 
@@ -65,7 +65,7 @@ AppDataSource.initialize().then(async () => {
         foodItem.price = rawItem.Price;
         foodItem.description = rawItem.Description;
         foodItem.restaurant = restaurant;
-        foodItem.image = "../../shared/data/images/" + rawItem.Image;
+        foodItem.image = "../../../shared/data/images/" + rawItem.Image;
         await AppDataSource.manager.save(foodItem);
         console.log("Saved a new food with id: " + foodItem.id);
     }));
