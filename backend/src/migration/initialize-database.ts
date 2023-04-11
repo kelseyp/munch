@@ -17,7 +17,7 @@ type RawFoodItem = {
     MenuItem: string
     Price: number
     Description: string
-    Image : Blob
+    Image : string
 }
 
 const readCSV = async <T>(filePath: string, delimeter: string = ','): Promise<T[]> => {
@@ -65,18 +65,7 @@ AppDataSource.initialize().then(async () => {
         foodItem.price = rawItem.Price;
         foodItem.description = rawItem.Description;
         foodItem.restaurant = restaurant;
-        
-
-        
-        /*
-        const base64Data = "../data/images/" + rawItem.Image;
-        const base64 = await fetch(base64Data);
-        const base64Response = await fetch(`data:image/jpeg;base64,${base64Data}`);
-        foodItem.image = await base64Response.blob();
-        */
-        //foodItem.image = await fetch(`data:plain/text;base64,${"../data/images/" + rawItem.Image}`).then(res => res.blob());
-        foodItem.image = new Blob(["../data/images/" + rawItem.Image], { type : 'plain/text' });
-        //take string above and redirect to "../data/images/"+rawItem.image (convert string to blob)
+        foodItem.image = "../data/images/" + rawItem.Image;
         await AppDataSource.manager.save(foodItem);
         console.log("Saved a new food with id: " + foodItem.id);
     }));
