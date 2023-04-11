@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import SearchBar from './components/SearchBar';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-import ControlledCheckbox from './components/TableFilters';
+import ControlledCheckboxSetup from './components/TableFilters';
 
 type Restaurant = {
   name: string
@@ -37,10 +37,10 @@ function App() {
   
   function RestaurantCheckboxes() {
     const controlLabelList: Array<any> = [];
-
+    //let rows=tableFoodItems;
     filteredData.forEach((restaurantName: any) => {
       controlLabelList.push(
-        ControlledCheckbox(restaurantName, tableFoodItems)
+        ControlledCheckboxSetup(restaurantName, tableFoodItems)
       )
     });
 
@@ -65,7 +65,8 @@ function App() {
 
   const handleSearchKeywordChange = (event: any) => {
     let keyword = event.target.value;
-    fetch(`http://localhost:3001/searchbar?keyword=${keyword}`).then((response: Response) => {
+    let restaurantName = "Lighthouse Cafe";
+    fetch(`http://localhost:3001/searchbar?keyword=${keyword}${restaurantName}`).then((response: Response) => {
       response.json().then((json: any) => {
         setFoodItems(JSON.parse(json));
       })
