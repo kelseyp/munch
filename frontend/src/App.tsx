@@ -37,8 +37,7 @@ function App() {
   
   function RestaurantCheckboxes() {
     const controlLabelList: Array<any> = [];
-    //let rows=tableFoodItems;
-    filteredData.forEach((restaurantName: any) => {
+    filteredDataForRestaurant.forEach((restaurantName: any) => {
       controlLabelList.push(
         ControlledCheckboxSetup(restaurantName, tableFoodItems)
       )
@@ -65,17 +64,27 @@ function App() {
 
   const handleSearchKeywordChange = (event: any) => {
     let keyword = event.target.value;
-    let restaurantName = "Lighthouse Cafe";
-    fetch(`http://localhost:3001/searchbar?keyword=${keyword}${restaurantName}`).then((response: Response) => {
+    fetch(`http://localhost:3001/searchbar?keyword=${keyword}`).then((response: Response) => {
       response.json().then((json: any) => {
         setFoodItems(JSON.parse(json));
       })
     });
   }
 
-  const tableFoodItems: TableFoodItem[] = foodItems.map((value: FoodItem) => { return mapFoodItemData(value); })
+  ///const tableFoodItems: TableFoodItem[] = foodItems.map((value: FoodItem) => { return mapFoodItemData(value); })
+  let tableFoodItems: TableFoodItem[] = foodItems.map((value: FoodItem) => { return mapFoodItemData(value); });
+  const filteredDataForRestaurant = tableFoodItems.map(item => item.restaurant_name).filter((value, index, self) => self.indexOf(value) === index)
+  const anyCheckedBoxes = [true, false];
+  
+  if (anyCheckedBoxes.some(v => v === true)) {
+    //const tableFoodItems: TableFoodItem[] = foodItems.filter(checkBoxValue => checkBoxValue.restaurant.name === "Lighthouse Cafe").map((value: FoodItem) => { return mapFoodItemData(value); })
+    tableFoodItems = foodItems.filter(checkBoxValue => checkBoxValue.restaurant.name === "Lighthouse Cafe").map((value: FoodItem) => { return mapFoodItemData(value); })
+  } 
+  
+  
 
-  const filteredData = tableFoodItems.map(item => item.restaurant_name).filter((value, index, self) => self.indexOf(value) === index)
+
+  
   //console.log(filteredData);
 
   return (
