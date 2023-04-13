@@ -26,7 +26,7 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof TableFoodItem>('item_name');
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -89,7 +89,7 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[10, 25, 50]}
         component="div"
         count={props.rows.length}
         rowsPerPage={rowsPerPage}
