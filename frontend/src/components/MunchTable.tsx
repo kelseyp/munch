@@ -50,17 +50,19 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.rows.length) : 0;
 
+  const tableHeight: string = "calc(100vh - 164px)";
+
   return (
     <Paper>
-      <TableContainer component={Paper}>
-        <Table stickyHeader aria-label="sticky table">
-        <EnhancedTableHead
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-            />
+      <TableContainer component={Paper} sx={{ flexGrow:1, flexShrink:1, height:"auto", maxHeight: tableHeight }}>
+        <Table stickyHeader aria-label="sticky table" style={{ flexGrow:1, flexShrink:1, width:"auto", tableLayout:"auto"}}>
+          <EnhancedTableHead
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+          />
           <TableBody>
-          {stableSort(props.rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+            {stableSort(props.rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
               return (
                 <TableRow
                   key={index}
@@ -114,16 +116,16 @@ function getComparator<Key extends keyof any>(
   order: Order,
   orderBy: Key,
 ): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string },
-) => number {
+    a: { [key in Key]: number | string },
+    b: { [key in Key]: number | string },
+  ) => number {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
 
-function stableSort<T>(array:  Array<TableFoodItem>, comparator: (a: T, b: T) => number) {
+function stableSort<T>(array: Array<TableFoodItem>, comparator: (a: T, b: T) => number) {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -178,7 +180,7 @@ interface EnhancedTableProps {
 
 function EnhancedTableHead(props: EnhancedTableProps) {
   const { order, orderBy, onRequestSort } =
-     props;
+    props;
   const createSortHandler =
     (property: keyof TableFoodItem) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
