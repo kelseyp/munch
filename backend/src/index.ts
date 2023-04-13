@@ -9,7 +9,7 @@ AppDataSource.initialize().catch(error => console.log(error))
 const app = express()
 
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: 'http://127.0.0.1:3000',
     optionsSuccessStatus: 200
 }
 

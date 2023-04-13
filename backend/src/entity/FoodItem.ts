@@ -1,4 +1,3 @@
-import { Blob } from "buffer"
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm"
 import { Restaurant } from "./Restaurant"
 

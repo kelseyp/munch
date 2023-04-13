@@ -4,7 +4,6 @@ import { parse } from 'csv-parse';
 import { AppDataSource } from "../data-source";
 import { FoodItem } from "../entity/FoodItem";
 import { Restaurant } from "../entity/Restaurant";
-import { Blob } from "buffer";
 
 type RawRestaurant = {
     Name: string
