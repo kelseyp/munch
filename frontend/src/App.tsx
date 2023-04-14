@@ -42,11 +42,18 @@ function ToggleView() {
   const [showTable, setTable] = useState(true);
   const [showGrid, setGrid] = useState(false);
 
-  function ToggleShow() {
-    setTable(!showTable);
-    setGrid(!showGrid);
+  function ToggleShowTable() {
+    return  (
+      setTable(!showTable)
+      );
   }
 
+  function ToggleShowGrid() {
+    return (
+      setGrid(!showGrid)
+    );
+
+  }
   return (
 
     <div className="viewContainer">
@@ -57,10 +64,14 @@ function ToggleView() {
           orientation="horizontal"
           value={showTable}
           exclusive
-          onChange={ToggleShow}
+          onChange={() => {
+            setTable(!showTable);
+            setGrid(!showGrid);
+          }}
         >     
-          <ToggleButton value="list" aria-label="list">
+          <ToggleButton value="list" aria-label="list" >
             <ViewListIcon />
+            
           </ToggleButton>
           <ToggleButton value="module" aria-label="module">
             <ViewModuleIcon />
@@ -141,12 +152,8 @@ function App() {
 
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <ToggleView>
-                <MunchTable rows={tableFoodItems} />
-            </ToggleView>
-            <ToggleView>
-                <MunchGrid cards={tableFoodItems} />
-            </ToggleView>  
+            <MunchTable rows={tableFoodItems} />
+            <MunchGrid cards={tableFoodItems} />  
           </Grid>
         </Grid>
       </Box>
