@@ -5,7 +5,7 @@ Engineering class.
 
 Authors: Nathanael Paulus, Mitchell Dennen, Austin Hedrick, Kelsey Helling, Lean Xu
 
-## Rinning Backend
+## Running Backend
 
 In the /backend directory, you can run:
 
@@ -19,7 +19,7 @@ You will also see any lint errors in the console.
 
 For more information about the backend service, reference the README in /backend
 
-## Rinning Frontend
+## Running Frontend
 
 In a seperate terminal in the /frontend directory, you can run:
 
