@@ -12,7 +12,8 @@ import { useEffect, useState } from 'react';
 import SearchBar from './components/SearchBar';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-import ControlledCheckboxSetup from './components/TableFilters';
+import {ControlledCheckboxSetup} from './components/TableFilters';
+import {RestaurantCheckboxes} from './components/TableFilters';
 
 type Restaurant = {
   name: string
@@ -28,31 +29,12 @@ type FoodItem = {
   restaurant: Restaurant
 };
 
-const mapFoodItemData = (foodItem: FoodItem): TableFoodItem => {
+export const mapFoodItemData = (foodItem: FoodItem): TableFoodItem => {
   return { 'item_name': foodItem.name, 'restaurant_name': foodItem.restaurant.name, 'price': foodItem.price, 'description': foodItem.description };
 }
 
 function App() {
-  const [foodItems, setFoodItems] = useState<FoodItem[]>([])
-  
-  function RestaurantCheckboxes() {
-    const controlLabelList: Array<any> = [];
-    filteredDataForRestaurant.forEach((restaurantName: any) => {
-      controlLabelList.push(
-        ControlledCheckboxSetup(restaurantName, tableFoodItems)
-      )
-    });
-
-    //console.log(controlLabelList);
-
-    return (
-      <div>
-        <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
-          {controlLabelList}
-        </Box>
-      </div>
-    );
-  }
+  const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
 
   useEffect(() => {
     fetch(`http://localhost:3001`).then((response: Response) => {
@@ -62,9 +44,9 @@ function App() {
     });
   }, [])
 
-  const handleSearchKeywordChange = (event: any) => {
-    let keyword = event.target.value;
-    fetch(`http://localhost:3001/searchbar?keyword=${keyword}`).then((response: Response) => {
+  const handleSearchWordChange = (event: any) => {
+    let searchWord = event.target.value;
+    fetch(`http://localhost:3001/searchbar?keyword=${searchWord}`).then((response: Response) => {
       response.json().then((json: any) => {
         setFoodItems(JSON.parse(json));
       })
@@ -73,19 +55,9 @@ function App() {
 
   ///const tableFoodItems: TableFoodItem[] = foodItems.map((value: FoodItem) => { return mapFoodItemData(value); })
   let tableFoodItems: TableFoodItem[] = foodItems.map((value: FoodItem) => { return mapFoodItemData(value); });
-  const filteredDataForRestaurant = tableFoodItems.map(item => item.restaurant_name).filter((value, index, self) => self.indexOf(value) === index)
-  const anyCheckedBoxes = [true, false];
-  
-  if (anyCheckedBoxes.some(v => v === true)) {
-    //const tableFoodItems: TableFoodItem[] = foodItems.filter(checkBoxValue => checkBoxValue.restaurant.name === "Lighthouse Cafe").map((value: FoodItem) => { return mapFoodItemData(value); })
-    tableFoodItems = foodItems.filter(checkBoxValue => checkBoxValue.restaurant.name === "Lighthouse Cafe").map((value: FoodItem) => { return mapFoodItemData(value); })
-  } 
-  
-  
+  //const filteredDataForRestaurant = tableFoodItems.map(item => item.restaurant_name).filter((value, index, self) => self.indexOf(value) === index)
+  //const anyCheckedBoxes = [true, false];
 
-
-  
-  //console.log(filteredData);
 
   return (
     <Container sx={{ display: "flex", height: "99vh", width: "90vh" }}>
@@ -98,10 +70,55 @@ function App() {
           >
             MunchBox
           </Typography>
-          <SearchBar searchCallback={handleSearchKeywordChange} />
+          <SearchBar searchCallback={handleSearchWordChange} />
         </Toolbar>
       </AppBar>
-      {/* <Drawer
+      <Drawer variant="permanent"
+        sx={{
+          width: '15%',
+          flexShrink: 1,
+          flexGrow: 1,
+          [`& .MuiDrawer-paper`]: { width: '15%', minWidth: 150, maxWidth: 240, boxSizing: 'border-box' },
+        }}>
+        <Toolbar />
+        <List>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+          >
+            Filters <FilterListIcon />
+            <Divider />
+            Restaurants
+            {/* <RestaurantCheckboxes items={foodItems} tableData={tableFoodItems} filteredData={filteredDataForRestaurant} /> */}
+            <RestaurantCheckboxes items={foodItems} tableData={tableFoodItems} />
+            <Divider />
+          </Typography>
+        </List>
+      </Drawer>
+      <Box component="main">
+        <Toolbar />
+        <Toolbar />
+
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Container >
+              <MunchTable rows={tableFoodItems} />
+            </Container>
+          </Grid>
+        </Grid>
+      </Box>
+
+    </Container>
+  );
+}
+
+export default App;
+
+
+
+{/* <Drawer
         variant="permanent"
         sx={{
           width: '15%',
@@ -141,44 +158,3 @@ function App() {
           </Grid>
         </Box>
       </Drawer> */}
-      <Drawer variant="permanent"
-        sx={{
-          width: '15%',
-          flexShrink: 1,
-          flexGrow: 1,
-          [`& .MuiDrawer-paper`]: { width: '15%', minWidth: 150, maxWidth: 240, boxSizing: 'border-box' },
-        }}>
-        <Toolbar />
-        <List>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-          >
-            Filters <FilterListIcon />
-            <Divider />
-            Restaurants
-            <RestaurantCheckboxes />
-            <Divider />
-          </Typography>
-        </List>
-      </Drawer>
-      <Box component="main">
-        <Toolbar />
-        <Toolbar />
-
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Container >
-              <MunchTable rows={tableFoodItems} />
-            </Container>
-          </Grid>
-        </Grid>
-      </Box>
-
-    </Container>
-  );
-}
-
-export default App;
