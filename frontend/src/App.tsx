@@ -39,11 +39,9 @@ const mapFoodItemData = (foodItem: FoodItem): TableFoodItem => {
 
 function App() {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([])
-  const [view, setView] = React.useState('list');
-
-  const ChangeView = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
-    setView(nextView);
-  } 
+  const [cardView, setCardView] = React.useState(false);
+  const showHideTable = React.useState(true);
+  const showHideGrid = React.useState(false);
 
 
   useEffect(() => {
@@ -113,9 +111,6 @@ function App() {
             <Container>
                 <ToggleButtonGroup
                   orientation="horizontal"
-                  value={view}
-                  exclusive
-                  onChange={ChangeView}
                 >     
                   <ToggleButton value="list" aria-label="list">
                     <ViewListIcon />
@@ -127,7 +122,7 @@ function App() {
               </Container>
             <Container >
               <MunchTable rows={tableFoodItems} />
-              <MunchGrid />
+              <MunchGrid cards={tableFoodItems} />
             </Container>
           </Grid>
         </Grid>
