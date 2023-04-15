@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import SearchBar from './components/SearchBar';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-import {ControlledCheckboxSetup} from './components/TableFilters';
+import {FilterTheDamnTable} from './components/TableFilters';
 import {RestaurantCheckboxes} from './components/TableFilters';
 
 type Restaurant = {
@@ -53,11 +53,32 @@ function App() {
     });
   }
 
+  const handleCheckedBoxChange = (event: any) => {
+    let searchWord = event.target.value;
+    fetch(`http://localhost:3001/searchbar?keyword=${searchWord}`).then((response: Response) => {
+      response.json().then((json: any) => {
+        setFoodItems(JSON.parse(json));
+      })
+    });
+  }
+
   ///const tableFoodItems: TableFoodItem[] = foodItems.map((value: FoodItem) => { return mapFoodItemData(value); })
   let tableFoodItems: TableFoodItem[] = foodItems.map((value: FoodItem) => { return mapFoodItemData(value); });
   //const filteredDataForRestaurant = tableFoodItems.map(item => item.restaurant_name).filter((value, index, self) => self.indexOf(value) === index)
   //const anyCheckedBoxes = [true, false];
+  //console.log(tableFoodItems)
+  let somethingNew: TableFoodItem[] = [];
+  somethingNew.push(tableFoodItems[0]);
+  const trialArray = ["Pizza 3.14" ];
+  //let trialFilter = tableFoodItems.filter(name => name.restaurant_name.toString() === trialArray.toString())
 
+
+
+  // Filters the tableFoodItems to see if any restaurant names match a name in trialArray
+  let trialFilter = tableFoodItems.filter(name => trialArray.includes(name.restaurant_name))
+  //console.log(trialFilter);
+  //console.log(trialArray.toString())
+  //tableFoodItems = FilterTheDamnTable(tableFoodItems);
 
   return (
     <Container sx={{ display: "flex", height: "99vh", width: "90vh" }}>
@@ -92,7 +113,7 @@ function App() {
             <Divider />
             Restaurants
             {/* <RestaurantCheckboxes items={foodItems} tableData={tableFoodItems} filteredData={filteredDataForRestaurant} /> */}
-            <RestaurantCheckboxes items={foodItems} tableData={tableFoodItems} />
+            <RestaurantCheckboxes checkedCallback={handleCheckedBoxChange} items={foodItems} tableData={tableFoodItems} />
             <Divider />
           </Typography>
         </List>
@@ -104,7 +125,7 @@ function App() {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Container >
-              <MunchTable rows={tableFoodItems} />
+              <MunchTable rows={FilterTheDamnTable(tableFoodItems)} />
             </Container>
           </Grid>
         </Grid>
