@@ -19,7 +19,8 @@ export interface TableFoodItem {
 }
 
 export interface MunchTableProps {
-  rows: Array<TableFoodItem>
+  rows: Array<TableFoodItem>,
+  show: string
 }
 
 function MunchTable(props: MunchTableProps): React.ReactElement {
@@ -51,7 +52,7 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.rows.length) : 0;
 
   return (
-    <Paper>
+    <Paper sx={{display:props.show}} >
       <TableContainer sx={{ flexGrow:1, flexShrink:1, height:"65vh", maxHeight: "65vh", width:"90vh",maxWidth:"90vh" }} component={Paper}>
         <Table stickyHeader style={{ flexGrow:1, flexShrink:1, width:"auto", tableLayout:"auto"}} aria-label="sticky table">
         <EnhancedTableHead

@@ -13,7 +13,8 @@ export interface MunchCardItem {
     description: string,
 }
 export interface MunchGridProps {
-    cards: Array<MunchCardItem>
+    cards: Array<MunchCardItem>,
+    show: string
 }
 
 function MunchGrid(props: MunchGridProps): React.ReactElement {
@@ -24,7 +25,7 @@ function MunchGrid(props: MunchGridProps): React.ReactElement {
     const [cardsPerRow, setCardsPerRow] = React.useState(3);
 
     return (
-        <Paper>
+        <Paper sx={{display:props.show}} >
             <Box sx={{ flexGrow: 1}}>
             {stableSort(props.cards, getComparator(order, orderBy)).slice(page * cardsPerPage, page * cardsPerPage + cardsPerPage).map((card, index) => {
               return (

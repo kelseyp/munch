@@ -38,55 +38,12 @@ const mapFoodItemData = (foodItem: FoodItem): TableFoodItem => {
   return { 'item_name': foodItem.name, 'restaurant_name': foodItem.restaurant.name, 'price': foodItem.price, 'description': foodItem.description };
 }
 
-function ToggleView() {
-  const [showTable, setTable] = useState(true);
-  const [showGrid, setGrid] = useState(false);
-
-  function ToggleShowTable() {
-    return  (
-      setTable(!showTable)
-      );
-  }
-
-  function ToggleShowGrid() {
-    return (
-      setGrid(!showGrid)
-    );
-
-  }
-  return (
-
-    <div className="viewContainer">
-      
-      <Container>
-        {showTable && showGrid}
-        <ToggleButtonGroup
-          orientation="horizontal"
-          value={showTable}
-          exclusive
-          onChange={() => {
-            setTable(!showTable);
-            setGrid(!showGrid);
-          }}
-        >     
-          <ToggleButton value="list" aria-label="list" >
-            <ViewListIcon />
-            
-          </ToggleButton>
-          <ToggleButton value="module" aria-label="module">
-            <ViewModuleIcon />
-          </ToggleButton>
-        </ToggleButtonGroup>
-      </Container>
-    </div>
-  );
-}
-
 function App() {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([])
-  const showHideTable = React.useState(true);
-  const showHideGrid = React.useState(false);
-  
+  const [showTable, setShowTable] = useState<string>("show");
+  const [showGrid, setShowGrid] = useState<string>("none");
+  const [pageView, setPageView] = React.useState<string | null>('table');
+
   useEffect(() => {
     fetch(`http://localhost:3001`).then((response: Response) => {
       response.json().then((json: any) => {
@@ -104,6 +61,19 @@ function App() {
     });
   }
 
+  const handlePageView = (
+    event: React.MouseEvent<HTMLElement>,
+    newPageView: string | null,
+  ) => {
+    setPageView(newPageView);
+    if(newPageView === "table") {
+      setShowTable("show");
+      setShowGrid("none");
+    } else {
+      setShowTable("none");
+      setShowGrid("show");
+    }
+  };
 
   const tableFoodItems: TableFoodItem[] = foodItems.map((value: FoodItem) => { return mapFoodItemData(value); })
 
@@ -149,13 +119,21 @@ function App() {
       <Box component="main">
         <Toolbar />
         <Toolbar />
-
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <MunchTable rows={tableFoodItems} />
-            <MunchGrid cards={tableFoodItems} />  
-          </Grid>
-        </Grid>
+        <ToggleButtonGroup
+          orientation="horizontal"
+          value={pageView}
+          exclusive
+          onChange={handlePageView}
+        >
+          <ToggleButton value="table" aria-label="table" >
+            <ViewListIcon />
+          </ToggleButton>
+          <ToggleButton value="grid" aria-label="grid">
+            <ViewModuleIcon />
+          </ToggleButton>
+        </ToggleButtonGroup>
+        <MunchTable rows={tableFoodItems} show={showTable} />
+        <MunchGrid cards={tableFoodItems} show={showGrid} />
       </Box>
 
     </Container>
