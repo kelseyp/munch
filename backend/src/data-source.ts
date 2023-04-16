@@ -9,7 +9,7 @@ export const AppDataSource = new DataSource({
     // port: 3306,
     username: "root",
     password: "123456",
-    database: "munch",
+    database: "munch_lx",
     synchronize: true,
     logging: true,
     entities: [FoodItem, Restaurant],
