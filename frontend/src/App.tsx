@@ -1,5 +1,10 @@
 import './App.css';
+import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
+import ViewListIcon from '@mui/icons-material/ViewList';
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -35,6 +40,8 @@ function App() {
   const [displayItems, setDisplayItems] = useState<FoodItem[]>([]);
   const [restaurantFilters, setRestaurantFilters] = useState<string[]>([]);
   const [currentRestaurantFilters, setCurrentRestaurantFilters] = useState<string[]>([]);
+  const [showTable, setShowTable] = useState<string>("show");
+  const [pageView, setPageView] = React.useState<string | null>('table');
 
   useEffect(() => {
     fetch(`http://localhost:3001`).then((response: Response) => {
@@ -59,6 +66,18 @@ function App() {
       })
     });
   }
+
+  const handlePageView = (
+    event: React.MouseEvent<HTMLElement>,
+    newPageView: string | null,
+  ) => {
+    setPageView(newPageView);
+    if(newPageView === "table") {
+      setShowTable("show");
+    } else {
+      setShowTable("none");
+    }
+  };
 
   let handleCheckedBoxChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     if (checked) {
@@ -121,7 +140,22 @@ function App() {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3, height: 1 / 1 }}>
         <Toolbar />
-        <MunchTable rows={tableFoodItems} />
+        <ToggleButtonGroup
+          orientation="horizontal"
+          size="small"
+          value={pageView}
+          exclusive
+          onChange={handlePageView}
+          sx={{ pb: 2 }}
+        >
+          <ToggleButton value="table" aria-label="table" >
+            <ViewListIcon />
+          </ToggleButton>
+          <ToggleButton value="grid" aria-label="grid">
+            <ViewModuleIcon />
+          </ToggleButton>
+        </ToggleButtonGroup>
+        <MunchTable rows={tableFoodItems} show={showTable} />
       </Box>
     </Box>
   );

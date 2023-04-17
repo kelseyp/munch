@@ -19,7 +19,8 @@ export interface TableFoodItem {
 }
 
 export interface MunchTableProps {
-  rows: Array<TableFoodItem>
+  rows: Array<TableFoodItem>,
+  show: string
 }
 
 function MunchTable(props: MunchTableProps): React.ReactElement {
@@ -46,10 +47,10 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
     setPage(0);
   };
 
-  const tableHeight: string = "calc(100vh - 164px)";
+  const tableHeight: string = "calc(100vh - 220px)";
 
   return (
-    <Paper>
+    <Paper sx={{display:props.show}} >
       <TableContainer component={Paper} sx={{ flexGrow:1, flexShrink:1, height: tableHeight }}>
         <Table stickyHeader aria-label="sticky table" style={{ flexGrow:1, flexShrink:1, width:"100%", tableLayout:"auto"}}>
           <EnhancedTableHead
