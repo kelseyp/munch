@@ -18,11 +18,12 @@ app.get('/', cors(corsOptions), async (req: Request, res: Response) => {
 })
 
 app.get('/searchbar', cors(corsOptions), async (req: Request, res: Response) => {
-    var keyword = req.query.keyword?.toString().trim();
-    if (keyword) {
-        let data = await AppDataSource.getRepository(FoodItem).find({ relations: { restaurant: true }, where: [{ description: Like(`%${keyword}%`) }, { name:Like(`%${keyword}%`) }, { restaurant: { name: Like(`%${keyword}%`)}}] });
+    var searchWord = req.query.keyword?.toString().trim();
+    if (searchWord) {
+        let data = await AppDataSource.getRepository(FoodItem).find({ relations: { restaurant: true }, where: [{ description: Like(`%${searchWord}%`) }, { name:Like(`%${searchWord}%`) }, { restaurant: { name: Like(`%${searchWord}%`)}}] });
         return res.json(JSON.stringify(data))
-    } else {
+    } 
+    else {
         let data = await AppDataSource.getRepository(FoodItem).find({ relations: { restaurant: true } });
         return res.json(JSON.stringify(data))
     }
