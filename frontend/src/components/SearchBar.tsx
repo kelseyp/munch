@@ -12,10 +12,10 @@ export const Search = styled('div')(({ theme }) => ({
     },
     marginRight: theme.spacing(2),
     marginLeft: theme.spacing(15),
-    width: '60vh',
+    width: '60%',
     [theme.breakpoints.up('md')]: {
         marginLeft: theme.spacing(15),
-        width: '60vh',
+        width: '60%',
     },
 }));
 

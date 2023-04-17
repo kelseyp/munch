@@ -27,7 +27,7 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof TableFoodItem>('item_name');
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -47,48 +47,36 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
     setPage(0);
   };
 
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.rows.length) : 0;
+  const tableHeight: string = "calc(100vh - 164px)";
 
   return (
     <Paper sx={{display:props.show}} >
-      <TableContainer sx={{ flexGrow:1, flexShrink:1, height:"65vh", maxHeight: "65vh", width:"90vh",maxWidth:"90vh" }} component={Paper}>
-        <Table stickyHeader style={{ flexGrow:1, flexShrink:1, width:"auto", tableLayout:"auto"}} aria-label="sticky table">
-        <EnhancedTableHead
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-            />
+      <TableContainer component={Paper} sx={{ flexGrow:1, flexShrink:1, height: tableHeight }}>
+        <Table stickyHeader aria-label="sticky table" style={{ flexGrow:1, flexShrink:1, width:"100%", tableLayout:"auto"}}>
+          <EnhancedTableHead
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+          />
           <TableBody>
-          {stableSort(props.rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+            {stableSort(props.rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
               return (
                 <TableRow
                   key={index}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                  <TableCell width={"20%"} sx={{ height:75, maxHeight:75, minWidth:"20%", maxWidth:"20%" }} component="th" scope="row">{row.item_name}</TableCell>
-                  <TableCell width={"15%"} sx={{ height:75, maxHeight:75, minWidth:"15%", maxWidth:"15%" }} align="left">{row.restaurant_name}</TableCell>
-                  <TableCell width={"10%"} sx={{ height:75, maxHeight:75, minWidth:"10%", maxWidth:"10%" }} align="left">{row.price}</TableCell>
-                  <TableCell width={"55%"} sx={{ height:75, maxHeight:75, minWidth:"55%", maxWidth:"55%" }} align="right">{row.description}</TableCell>
+                  <TableCell component="th" scope="row">{row.item_name}</TableCell>
+                  <TableCell align="left">{row.restaurant_name}</TableCell>
+                  <TableCell align="right">{row.price}</TableCell>
+                  <TableCell align="left">{row.description}</TableCell>
                 </TableRow>
               );
             })}
-            {/* TableRow height below is TableCell height + 33 to have a well aligned table */}
-            {emptyRows > 0 && (
-              <TableRow
-                style={{
-                  height: (108) * emptyRows,
-                }}
-              >
-                <TableCell colSpan={6} />
-              </TableRow>
-            )}
           </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[10, 25, 50]}
         component="div"
         count={props.rows.length}
         rowsPerPage={rowsPerPage}
@@ -115,16 +103,16 @@ function getComparator<Key extends keyof any>(
   order: Order,
   orderBy: Key,
 ): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string },
-) => number {
+    a: { [key in Key]: number | string },
+    b: { [key in Key]: number | string },
+  ) => number {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
 
-function stableSort<T>(array:  Array<TableFoodItem>, comparator: (a: T, b: T) => number) {
+function stableSort<T>(array: Array<TableFoodItem>, comparator: (a: T, b: T) => number) {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -159,13 +147,13 @@ const headCells: readonly HeadCell[] = [
   },
   {
     id: 'price',
-    numeric: false,
+    numeric: true,
     disablePadding: false,
     label: 'Price',
   },
   {
     id: 'description',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Description',
   },
@@ -179,7 +167,7 @@ interface EnhancedTableProps {
 
 function EnhancedTableHead(props: EnhancedTableProps) {
   const { order, orderBy, onRequestSort } =
-     props;
+    props;
   const createSortHandler =
     (property: keyof TableFoodItem) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
