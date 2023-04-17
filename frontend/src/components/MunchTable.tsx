@@ -46,16 +46,12 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
     setPage(0);
   };
 
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.rows.length) : 0;
-
   const tableHeight: string = "calc(100vh - 164px)";
 
   return (
     <Paper>
-      <TableContainer component={Paper} sx={{ flexGrow:1, flexShrink:1, height:"auto", maxHeight: tableHeight }}>
-        <Table stickyHeader aria-label="sticky table" style={{ flexGrow:1, flexShrink:1, width:"auto", tableLayout:"auto"}}>
+      <TableContainer component={Paper} sx={{ flexGrow:1, flexShrink:1, height: tableHeight }}>
+        <Table stickyHeader aria-label="sticky table" style={{ flexGrow:1, flexShrink:1, width:"100%", tableLayout:"auto"}}>
           <EnhancedTableHead
             order={order}
             orderBy={orderBy}
@@ -75,16 +71,6 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
                 </TableRow>
               );
             })}
-            {/* TableRow height below is TableCell height + 33 to have a well aligned table */}
-            {emptyRows > 0 && (
-              <TableRow
-                style={{
-                  height: (108) * emptyRows,
-                }}
-              >
-                <TableCell colSpan={6} />
-              </TableRow>
-            )}
           </TableBody>
         </Table>
       </TableContainer>
