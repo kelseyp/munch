@@ -1,7 +1,6 @@
 import './App.css';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
@@ -10,6 +9,7 @@ import Drawer from '@mui/material/Drawer';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { useEffect, useState } from 'react';
 import SearchBar from './components/SearchBar';
+import CssBaseline from '@mui/material/CssBaseline';
 
 type Restaurant = {
   name: string
@@ -50,9 +50,11 @@ function App() {
   }
 
   const tableFoodItems: TableFoodItem[] = foodItems.map((value: FoodItem) => { return mapFoodItemData(value); })
+  const drawerWidth = 240;
 
   return (
-    <Container sx={{ display: "flex", height: "99vh", width: "90vh" }}>
+    <Box sx={{ display: 'flex'}}>
+      <CssBaseline />
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <Typography
@@ -68,42 +70,30 @@ function App() {
       <Drawer
         variant="permanent"
         sx={{
-          width: '15%',
-          flexShrink: 1,
-          flexGrow: 1,
-          [`& .MuiDrawer-paper`]: { width: '15%', minWidth: 150, maxWidth: 240, boxSizing: 'border-box' },
+          width: drawerWidth,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
         }}
       >
         <Toolbar />
-        <Box sx={{ overflow: 'auto' }}>
-          <Grid item xs={12}>
-            <Container>
-              <Typography
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-              >
-                Filters <FilterListIcon />
-              </Typography>
-            </Container>
-          </Grid>
+        <Box sx={{ overflow: 'auto', pt: 2 }}>
+          <Container>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            >
+              Filters <FilterListIcon />
+            </Typography>
+          </Container>
         </Box>
       </Drawer>
-      <Box component="main">
+      <Box component="main" sx={{ flexGrow: 1, p: 3, height: 1 / 1 }}>
         <Toolbar />
-        <Toolbar />
-
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Container >
-              <MunchTable rows={tableFoodItems} />
-            </Container>
-          </Grid>
-        </Grid>
+        <MunchTable rows={tableFoodItems} />
       </Box>
-
-    </Container>
+    </Box>
   );
 }
 
