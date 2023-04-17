@@ -142,9 +142,11 @@ function App() {
         <Toolbar />
         <ToggleButtonGroup
           orientation="horizontal"
+          size="small"
           value={pageView}
           exclusive
           onChange={handlePageView}
+          sx={{ pb: 2 }}
         >
           <ToggleButton value="table" aria-label="table" >
             <ViewListIcon />
