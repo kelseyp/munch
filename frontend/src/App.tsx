@@ -111,7 +111,7 @@ function App() {
               Restaurants
               <FormGroup>
                 {restaurantFilters.map((value: string) => {
-                  return <FormControlLabel label={value} control={<Checkbox onChange={handleCheckedBoxChange} name={value} />} />;
+                  return <FormControlLabel label={value} key={value} control={<Checkbox onChange={handleCheckedBoxChange} name={value} />} />;
                 })}
               </FormGroup>
               <Divider />

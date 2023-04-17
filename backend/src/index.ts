@@ -19,7 +19,6 @@ app.get('/', cors(corsOptions), async (req: Request, res: Response) => {
 
 app.get('/searchbar', cors(corsOptions), async (req: Request, res: Response) => {
     var searchWord = req.query.keyword?.toString().trim();
-    var restaurantName = req.query.keyword?.toString().trim();
     if (searchWord) {
         let data = await AppDataSource.getRepository(FoodItem).find({ relations: { restaurant: true }, where: [{ description: Like(`%${searchWord}%`) }, { name:Like(`%${searchWord}%`) }, { restaurant: { name: Like(`%${searchWord}%`)}}] });
         return res.json(JSON.stringify(data))
