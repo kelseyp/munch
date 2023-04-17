@@ -12,7 +12,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import MunchTable, { TableFoodItem } from './components/MunchTable';
-import MunchGrid from './components/MunchGrid';
 import Drawer from '@mui/material/Drawer';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { useEffect, useState } from 'react';
@@ -41,7 +40,6 @@ const mapFoodItemData = (foodItem: FoodItem): TableFoodItem => {
 function App() {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([])
   const [showTable, setShowTable] = useState<string>("show");
-  const [showGrid, setShowGrid] = useState<string>("none");
   const [pageView, setPageView] = React.useState<string | null>('table');
 
   useEffect(() => {
@@ -68,10 +66,8 @@ function App() {
     setPageView(newPageView);
     if(newPageView === "table") {
       setShowTable("show");
-      setShowGrid("none");
     } else {
       setShowTable("none");
-      setShowGrid("show");
     }
   };
 
