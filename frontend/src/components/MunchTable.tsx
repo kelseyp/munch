@@ -47,7 +47,7 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
     setPage(0);
   };
 
-  const tableHeight: string = "calc(100vh - 164px)";
+  const tableHeight: string = "calc(100vh - 200px)";
 
   return (
     <Paper sx={{display:props.show}} >
