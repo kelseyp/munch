@@ -9,16 +9,11 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { TableFoodItem } from './components/MunchTable';
+import MunchTable, { TableFoodItem } from './components/MunchTable';
 import Drawer from '@mui/material/Drawer';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { useEffect, useState } from 'react';
 import SearchBar from './components/SearchBar';
-import * as React from 'react';
-import {
-  DataGrid,
-  GridToolbar
-} from '@mui/x-data-grid';
 
 
 type Restaurant = {
@@ -94,31 +89,40 @@ function App() {
                 component="div"
                 sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
               >
-                Filters <FilterListIcon />
+                Filters test <FilterListIcon />
               </Typography>
               Price : 
+              <div>
+              <TextField label="MIN" id="price_range" defaultValue="0.1" size="small" sx={{ m: 1, width: '8ch' }} />
+              - 
+              <TextField label="MAX" id="price_range" defaultValue="10.0" size="small" sx={{ m: 1, width: '8ch' }} />
+              </div>
+
               <div>
               <FormGroup>
                 <FormControlLabel control={<Checkbox defaultChecked />} label="$0 - $5" /> 
                 <FormControlLabel control={<Checkbox />} label="$5 - $10" /> 
                 <FormControlLabel control={<Checkbox />} label="$10 above" /> 
               </FormGroup>
+
               </div>
             </Container>
           </Grid>
         </Box>
       </Drawer>
-      <Container>
-              <DataGrid
-               columns={[
-                { field: 'item_name' },
-                { field: 'restaurant_name' },
-                { field: 'price' },
-                { field: 'description' },
-              ]}
-              rows={tableFoodItems}
-              slots={{ toolbar: GridToolbar }} />
-      </Container>
+      <Box component="main">
+        <Toolbar />
+        <Toolbar />
+
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Container >
+              <MunchTable rows={tableFoodItems} />
+            </Container>
+          </Grid>
+        </Grid>
+      </Box>
+
     </Container>
   );
 }
