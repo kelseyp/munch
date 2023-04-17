@@ -133,7 +133,6 @@ function App() {
           </ToggleButton>
         </ToggleButtonGroup>
         <MunchTable rows={tableFoodItems} show={showTable} />
-        <MunchGrid cards={tableFoodItems} show={showGrid} />
       </Box>
 
     </Container>
