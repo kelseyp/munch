@@ -16,6 +16,9 @@ export class FoodItem {
     @Column()
     description: string
 
+    @Column()
+    image: string
+
     @ManyToOne(() => Restaurant, (restaurant) => restaurant.foodItems)
     restaurant: Restaurant
 }
