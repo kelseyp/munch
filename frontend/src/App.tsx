@@ -12,8 +12,7 @@ import { useEffect, useState } from 'react';
 import SearchBar from './components/SearchBar';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-import {FilterTheDamnTable} from './components/TableFilters';
-import {RestaurantCheckboxes} from './components/TableFilters';
+import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 
 type Restaurant = {
   name: string
@@ -34,51 +33,46 @@ export const mapFoodItemData = (foodItem: FoodItem): TableFoodItem => {
 }
 
 function App() {
-  const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
+  const [displayItems, setDisplayItems] = useState<FoodItem[]>([]);
+  const [restaurantFilters, setRestaurantFilters] = useState<string[]>([]);
+  const [currentRestaurantFilters, setCurrentRestaurantFilters] = useState<string[]>([]);
 
   useEffect(() => {
     fetch(`http://localhost:3001`).then((response: Response) => {
       response.json().then((json: any) => {
-        setFoodItems(JSON.parse(json));
+        const foodItems: FoodItem[] = JSON.parse(json) as FoodItem[];
+        const restaurantNames = new Set<string>(foodItems.map((value: FoodItem) => { return value.restaurant.name; }))
+        setRestaurantFilters(Array.from(restaurantNames).sort());
+        setDisplayItems(foodItems);
       })
     });
+
   }, [])
 
   const handleSearchWordChange = (event: any) => {
     let searchWord = event.target.value;
     fetch(`http://localhost:3001/searchbar?keyword=${searchWord}`).then((response: Response) => {
       response.json().then((json: any) => {
-        setFoodItems(JSON.parse(json));
+        const foodItems: FoodItem[] = JSON.parse(json) as FoodItem[];
+        const restaurantNames = new Set<string>(foodItems.map((value: FoodItem) => { return value.restaurant.name; }))
+        setRestaurantFilters(Array.from(restaurantNames).sort());
+        setDisplayItems(foodItems);
       })
     });
   }
 
-  const handleCheckedBoxChange = (event: any) => {
-    let searchWord = event.target.value;
-    fetch(`http://localhost:3001/searchbar?keyword=${searchWord}`).then((response: Response) => {
-      response.json().then((json: any) => {
-        setFoodItems(JSON.parse(json));
-      })
-    });
+  let handleCheckedBoxChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    if (checked) {
+      setCurrentRestaurantFilters([...currentRestaurantFilters, event.target.name]);
+    } else if (!checked) {
+      setCurrentRestaurantFilters(currentRestaurantFilters.filter((value: string) => { return value !== event.target.name; }));
+    }
+  };
+
+  let tableFoodItems: TableFoodItem[] = displayItems.map((value: FoodItem) => { return mapFoodItemData(value); });
+  if (currentRestaurantFilters.length > 0) {
+    tableFoodItems = tableFoodItems.filter((tableItem: TableFoodItem) => { return currentRestaurantFilters.indexOf(tableItem.restaurant_name) !== -1; });
   }
-
-  ///const tableFoodItems: TableFoodItem[] = foodItems.map((value: FoodItem) => { return mapFoodItemData(value); })
-  let tableFoodItems: TableFoodItem[] = foodItems.map((value: FoodItem) => { return mapFoodItemData(value); });
-  //const filteredDataForRestaurant = tableFoodItems.map(item => item.restaurant_name).filter((value, index, self) => self.indexOf(value) === index)
-  //const anyCheckedBoxes = [true, false];
-  //console.log(tableFoodItems)
-  let somethingNew: TableFoodItem[] = [];
-  somethingNew.push(tableFoodItems[0]);
-  const trialArray = ["Pizza 3.14" ];
-  //let trialFilter = tableFoodItems.filter(name => name.restaurant_name.toString() === trialArray.toString())
-
-
-
-  // Filters the tableFoodItems to see if any restaurant names match a name in trialArray
-  let trialFilter = tableFoodItems.filter(name => trialArray.includes(name.restaurant_name))
-  //console.log(trialFilter);
-  //console.log(trialArray.toString())
-  //tableFoodItems = FilterTheDamnTable(tableFoodItems);
 
   return (
     <Container sx={{ display: "flex", height: "99vh", width: "90vh" }}>
@@ -112,8 +106,11 @@ function App() {
             Filters <FilterListIcon />
             <Divider />
             Restaurants
-            {/* <RestaurantCheckboxes items={foodItems} tableData={tableFoodItems} filteredData={filteredDataForRestaurant} /> */}
-            <RestaurantCheckboxes checkedCallback={handleCheckedBoxChange} items={foodItems} tableData={tableFoodItems} />
+            <FormGroup>
+              {restaurantFilters.map((value: string) => {
+                return <FormControlLabel label={value} control={<Checkbox onChange={handleCheckedBoxChange} name={value} />} />;
+              })}
+            </FormGroup>
             <Divider />
           </Typography>
         </List>
@@ -125,7 +122,7 @@ function App() {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Container >
-              <MunchTable rows={FilterTheDamnTable(tableFoodItems)} />
+              <MunchTable rows={tableFoodItems} />
             </Container>
           </Grid>
         </Grid>
@@ -136,46 +133,3 @@ function App() {
 }
 
 export default App;
-
-
-
-{/* <Drawer
-        variant="permanent"
-        sx={{
-          width: '15%',
-          flexShrink: 1,
-          flexGrow: 1,
-          [`& .MuiDrawer-paper`]: { width: '15%', minWidth: 150, maxWidth: 240, boxSizing: 'border-box' },
-        }}
-      >
-        <Toolbar />
-        <Box sx={{ overflow: 'auto' }}>
-          <Grid item xs={12}>
-            <Container>
-              <Typography
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-              >
-                Filters <FilterListIcon />
-              </Typography>
-            </Container>
-          </Grid>
-        </Box>
-        <Box>
-          <Grid item xs={12}>
-            <Container>
-                <Typography
-                  variant="h6"
-                  noWrap
-                  component="div"
-                  sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-                >
-                Restuarants
-                </Typography>
-              <RestaurantCheckboxes/>
-            </Container>
-          </Grid>
-        </Box>
-      </Drawer> */}
