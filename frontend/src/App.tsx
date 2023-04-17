@@ -10,6 +10,10 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { useEffect, useState } from 'react';
 import SearchBar from './components/SearchBar';
 import CssBaseline from '@mui/material/CssBaseline';
+import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
+import {stableSort} from "./components/MunchTable"
+import {MunchTableProps} from "./components/MunchTable"
+
 
 type Restaurant = {
   name: string
@@ -49,6 +53,20 @@ function App() {
     });
   }
 
+  const onChange = (event: { persist: () => void; target: { id: any; name: any; value: any; type: any; }; }) => {
+    event.persist()
+    const {id, name, value, type} = event.target
+
+    if (type === 'radio') {
+      {stableSort(props.rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+        //MunchTable.
+        MunchTable rows={tableFoodItems}
+        MunchTableProps
+    } else {
+      
+    }
+  }
+
   const tableFoodItems: TableFoodItem[] = foodItems.map((value: FoodItem) => { return mapFoodItemData(value); })
   const drawerWidth = 240;
 
@@ -75,6 +93,21 @@ function App() {
           [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
         }}
       >
+         <FormControl>
+        <FormLabel id="demo-radio-buttons-group-label">Sort By</FormLabel>
+          <RadioGroup
+            aria-labelledby="demo-radio-buttons-group-label"
+            defaultValue="female"
+            name="radio-buttons-group"
+          >
+            <FormControlLabel value="female" control={<Radio />} label="Restaurant" />
+            <FormControlLabel value="male" control={<Radio />} label="Menu Item" />
+            <FormControlLabel value="other" control={<Radio />} label="Price" />
+            <FormControlLabel value="other" control={<Radio />} label="Description" />
+            onChange={onChange}
+        </RadioGroup>
+      </FormControl>
+
         <Toolbar />
         <Box sx={{ overflow: 'auto', pt: 2 }}>
           <Container>
