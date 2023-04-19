@@ -17,6 +17,12 @@ import SearchBar from './components/SearchBar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import './App.css';
+import { styled } from '@mui/material/styles';
+import Grid from '@mui/material/Grid';
+import MunchGrid from './components/MunchGrid';
+import { TableView } from '@mui/icons-material';
+
 
 type Restaurant = {
   name: string
@@ -41,6 +47,7 @@ function App() {
   const [restaurantFilters, setRestaurantFilters] = useState<string[]>([]);
   const [currentRestaurantFilters, setCurrentRestaurantFilters] = useState<string[]>([]);
   const [showTable, setShowTable] = useState<string>("show");
+  const [showGrid, setShowGrid] = useState<string>("none");
   const [pageView, setPageView] = React.useState<string | null>('table');
 
   useEffect(() => {
@@ -74,8 +81,10 @@ function App() {
     setPageView(newPageView);
     if(newPageView === "table") {
       setShowTable("show");
+      setShowGrid("none");
     } else {
       setShowTable("none");
+      setShowGrid("show");
     }
   };
 
@@ -156,6 +165,7 @@ function App() {
           </ToggleButton>
         </ToggleButtonGroup>
         <MunchTable rows={tableFoodItems} show={showTable} />
+        <MunchGrid cards={tableFoodItems} show={showGrid} />
       </Box>
     </Box>
   );

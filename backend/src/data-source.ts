@@ -5,10 +5,10 @@ import { Restaurant } from "./entity/Restaurant"
 
 export const AppDataSource = new DataSource({
     type: "mysql",
-    host: "54.237.150.71",
-    // port: 3306,
-    username: "root",
-    password: "123456",
+    host: "munch-dev.c3xdv2gw417p.us-east-1.rds.amazonaws.com",
+    port: 3306,
+    username: "admin",
+    password: "munch2023!",
     database: "munch",
     synchronize: true,
     logging: true,
