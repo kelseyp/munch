@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import MunchTable, { TableFoodItem } from './components/MunchTable';
+import MunchTable, { TableFoodItem, Order } from './components/MunchTable';
 import Drawer from '@mui/material/Drawer';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { useEffect, useState } from 'react';
@@ -17,8 +17,6 @@ import SearchBar from './components/SearchBar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Checkbox, FormGroup } from '@mui/material';
-import { stableSort } from "./components/MunchTable"
-import { MunchTableProps } from "./components/MunchTable"
 
 
 type Restaurant = {
@@ -45,6 +43,8 @@ function App() {
   const [currentRestaurantFilters, setCurrentRestaurantFilters] = useState<string[]>([]);
   const [showTable, setShowTable] = useState<string>("show");
   const [pageView, setPageView] = React.useState<string | null>('table');
+  const [order, setOrder] = React.useState<Order>('asc');
+  const [orderBy, setOrderBy] = React.useState<keyof TableFoodItem>('item_name');
 
   useEffect(() => {
     fetch(`http://localhost:3001`).then((response: Response) => {
@@ -70,129 +70,122 @@ function App() {
     });
   }
 
-  // const onChange = (event: { persist: () => void; target: { id: any; name: any; value: any; type: any; }; }) => {
-  //   event.persist()
-  //   const { id, name, value, type } = event.target
-
-  //   if (type === 'radio') {
-  //     {
-  //       stableSort(props.rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
-  //       //MunchTable.
-  //       MunchTable rows = { tableFoodItems }
-  //         MunchTableProps
-  //       } else {
-
-  //       }
-  // }
-
-
-    const handlePageView = (
-      event: React.MouseEvent<HTMLElement>,
-      newPageView: string | null,
-    ) => {
-      setPageView(newPageView);
-      if (newPageView === "table") {
-        setShowTable("show");
-      } else {
-        setShowTable("none");
-      }
-    };
-
-    let handleCheckedBoxChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-      if (checked) {
-        setCurrentRestaurantFilters([...currentRestaurantFilters, event.target.name]);
-      } else if (!checked) {
-        setCurrentRestaurantFilters(currentRestaurantFilters.filter((value: string) => { return value !== event.target.name; }));
-      }
-    };
-
-    let tableFoodItems: TableFoodItem[] = displayItems.map((value: FoodItem) => { return mapFoodItemData(value); });
-    if (currentRestaurantFilters.length > 0) {
-      tableFoodItems = tableFoodItems.filter((tableItem: TableFoodItem) => { return currentRestaurantFilters.indexOf(tableItem.restaurant_name) !== -1; });
+  const handlePageView = (
+    event: React.MouseEvent<HTMLElement>,
+    newPageView: string | null,
+  ) => {
+    setPageView(newPageView);
+    if (newPageView === "table") {
+      setShowTable("show");
+    } else {
+      setShowTable("none");
     }
+  };
 
-    const drawerWidth = 240;
+  let handleCheckedBoxChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    if (checked) {
+      setCurrentRestaurantFilters([...currentRestaurantFilters, event.target.name]);
+    } else if (!checked) {
+      setCurrentRestaurantFilters(currentRestaurantFilters.filter((value: string) => { return value !== event.target.name; }));
+    }
+  };
 
-    return (
-      <Box sx={{ display: 'flex' }}>
-        <CssBaseline />
-        <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-          <Toolbar>
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{ display: { xs: 'none', sm: 'block' } }}
-            >
-              MunchBox
-            </Typography>
-            <SearchBar searchCallback={handleSearchWordChange} />
-          </Toolbar>
-        </AppBar>
-        <Drawer variant="permanent"
-          sx={{
-            width: drawerWidth,
-            flexShrink: 0,
-            [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
-          }}
-        >
-          <FormControl>
-            <FormLabel id="demo-radio-buttons-group-label">Sort By</FormLabel>
-            <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
-              defaultValue="female"
-              name="radio-buttons-group"
-            >
-              <FormControlLabel value="female" control={<Radio />} label="Restaurant" />
-              <FormControlLabel value="male" control={<Radio />} label="Menu Item" />
-              <FormControlLabel value="other" control={<Radio />} label="Price" />
-              <FormControlLabel value="other" control={<Radio />} label="Description" />
-              onchange={}
-            </RadioGroup>
-          </FormControl>
+  let handleSortByChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setOrderBy((event.target as HTMLInputElement).value as keyof TableFoodItem);
+    setOrder('asc');
+  };
 
-          <Toolbar />
-          <Box sx={{ overflow: 'auto', pt: 2 }}>
-            <Container>
-              <Typography
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-              >
-                Filters <FilterListIcon />
-                <Divider />
-                Restaurants
-                <FormGroup>
-                  {restaurantFilters.map((value: string) => {
-                    return <FormControlLabel label={value} key={value} control={<Checkbox onChange={handleCheckedBoxChange} name={value} />} />;
-                  })}
-                </FormGroup>
-                <Divider />
-              </Typography>
-            </Container>
-          </Box>
-        </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 3, height: 1 / 1 }}>
-          <Toolbar />
-          <ToggleButtonGroup
-            orientation="horizontal"
-            size="small"
-            value={pageView}
-            exclusive
-            onChange={handlePageView}
-            sx={{ pb: 2 }}
-          >
-            <ToggleButton value="table" aria-label="table" >
-              <ViewListIcon />
-            </ToggleButton>
-            <ToggleButton value="grid" aria-label="grid">
-              <ViewModuleIcon />
-            </ToggleButton>
-          </ToggleButtonGroup>
-          <MunchTable rows={tableFoodItems} show={showTable} />
-        </Box>
-      </Box>
-    );
+  let handleSortTableChange = (order: Order, orderBy: keyof TableFoodItem) => {
+    setOrderBy(orderBy);
+    setOrder(order);
+  };
+
+  let tableFoodItems: TableFoodItem[] = displayItems.map((value: FoodItem) => { return mapFoodItemData(value); });
+  if (currentRestaurantFilters.length > 0) {
+    tableFoodItems = tableFoodItems.filter((tableItem: TableFoodItem) => { return currentRestaurantFilters.indexOf(tableItem.restaurant_name) !== -1; });
   }
 
-  export default App;
+  const drawerWidth = 240;
+
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+        <Toolbar>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ display: { xs: 'none', sm: 'block' } }}
+          >
+            MunchBox
+          </Typography>
+          <SearchBar searchCallback={handleSearchWordChange} />
+        </Toolbar>
+      </AppBar>
+      <Drawer variant="permanent"
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+        }}
+      >
+        <Toolbar />
+        <Box sx={{ overflow: 'auto', pt: 2 }}>
+          <Container>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            >
+              Filters <FilterListIcon />
+              <Divider />
+              Restaurants
+              <FormGroup>
+                {restaurantFilters.map((value: string) => {
+                  return <FormControlLabel label={value} key={value} control={<Checkbox onChange={handleCheckedBoxChange} name={value} />} />;
+                })}
+              </FormGroup>
+              <Divider />
+              Sort By
+              <RadioGroup
+                aria-labelledby="demo-radio-buttons-group-label"
+                defaultValue="item_name"
+                name="radio-buttons-group"
+                value={orderBy}
+                onChange={handleSortByChange}
+              >
+                <FormControlLabel value="item_name" control={<Radio />} label="Food Item" />
+                <FormControlLabel value="restaurant_name" control={<Radio />} label="Restaurant" />
+                <FormControlLabel value="price" control={<Radio />} label="Price" />
+                <FormControlLabel value="description" control={<Radio />} label="Description" />
+              </RadioGroup>
+              <Divider />
+            </Typography>
+          </Container>
+        </Box>
+      </Drawer>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, height: 1 / 1 }}>
+        <Toolbar />
+        <ToggleButtonGroup
+          orientation="horizontal"
+          size="small"
+          value={pageView}
+          exclusive
+          onChange={handlePageView}
+          sx={{ pb: 2 }}
+        >
+          <ToggleButton value="table" aria-label="table" >
+            <ViewListIcon />
+          </ToggleButton>
+          <ToggleButton value="grid" aria-label="grid">
+            <ViewModuleIcon />
+          </ToggleButton>
+        </ToggleButtonGroup>
+        <MunchTable rows={tableFoodItems} show={showTable} order={order} orderBy={orderBy} sortCallback={handleSortTableChange} />
+      </Box>
+    </Box>
+  );
+}
+
+export default App;
