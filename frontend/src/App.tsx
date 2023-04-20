@@ -16,7 +16,10 @@ import { useEffect, useState } from 'react';
 import SearchBar from './components/SearchBar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
-import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Checkbox, FormGroup } from '@mui/material';
+import { stableSort } from "./components/MunchTable"
+import { MunchTableProps } from "./components/MunchTable"
+
 
 type Restaurant = {
   name: string
@@ -67,98 +70,129 @@ function App() {
     });
   }
 
-  const handlePageView = (
-    event: React.MouseEvent<HTMLElement>,
-    newPageView: string | null,
-  ) => {
-    setPageView(newPageView);
-    if(newPageView === "table") {
-      setShowTable("show");
-    } else {
-      setShowTable("none");
+  // const onChange = (event: { persist: () => void; target: { id: any; name: any; value: any; type: any; }; }) => {
+  //   event.persist()
+  //   const { id, name, value, type } = event.target
+
+  //   if (type === 'radio') {
+  //     {
+  //       stableSort(props.rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+  //       //MunchTable.
+  //       MunchTable rows = { tableFoodItems }
+  //         MunchTableProps
+  //       } else {
+
+  //       }
+  // }
+
+
+    const handlePageView = (
+      event: React.MouseEvent<HTMLElement>,
+      newPageView: string | null,
+    ) => {
+      setPageView(newPageView);
+      if (newPageView === "table") {
+        setShowTable("show");
+      } else {
+        setShowTable("none");
+      }
+    };
+
+    let handleCheckedBoxChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+      if (checked) {
+        setCurrentRestaurantFilters([...currentRestaurantFilters, event.target.name]);
+      } else if (!checked) {
+        setCurrentRestaurantFilters(currentRestaurantFilters.filter((value: string) => { return value !== event.target.name; }));
+      }
+    };
+
+    let tableFoodItems: TableFoodItem[] = displayItems.map((value: FoodItem) => { return mapFoodItemData(value); });
+    if (currentRestaurantFilters.length > 0) {
+      tableFoodItems = tableFoodItems.filter((tableItem: TableFoodItem) => { return currentRestaurantFilters.indexOf(tableItem.restaurant_name) !== -1; });
     }
-  };
 
-  let handleCheckedBoxChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    if (checked) {
-      setCurrentRestaurantFilters([...currentRestaurantFilters, event.target.name]);
-    } else if (!checked) {
-      setCurrentRestaurantFilters(currentRestaurantFilters.filter((value: string) => { return value !== event.target.name; }));
-    }
-  };
+    const drawerWidth = 240;
 
-  let tableFoodItems: TableFoodItem[] = displayItems.map((value: FoodItem) => { return mapFoodItemData(value); });
-  if (currentRestaurantFilters.length > 0) {
-    tableFoodItems = tableFoodItems.filter((tableItem: TableFoodItem) => { return currentRestaurantFilters.indexOf(tableItem.restaurant_name) !== -1; });
-  }
-
-  const drawerWidth = 240;
-
-  return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-        <Toolbar>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
-            MunchBox
-          </Typography>
-          <SearchBar searchCallback={handleSearchWordChange} />
-        </Toolbar>
-      </AppBar>
-      <Drawer variant="permanent"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
-        }}
-      >
-        <Toolbar />
-        <Box sx={{ overflow: 'auto', pt: 2 }}>
-          <Container>
+    return (
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+          <Toolbar>
             <Typography
               variant="h6"
-              noWrap
               component="div"
-              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+              sx={{ display: { xs: 'none', sm: 'block' } }}
             >
-              Filters <FilterListIcon />
-              <Divider />
-              Restaurants
-              <FormGroup>
-                {restaurantFilters.map((value: string) => {
-                  return <FormControlLabel label={value} key={value} control={<Checkbox onChange={handleCheckedBoxChange} name={value} />} />;
-                })}
-              </FormGroup>
-              <Divider />
+              MunchBox
             </Typography>
-          </Container>
-        </Box>
-      </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3, height: 1 / 1 }}>
-        <Toolbar />
-        <ToggleButtonGroup
-          orientation="horizontal"
-          size="small"
-          value={pageView}
-          exclusive
-          onChange={handlePageView}
-          sx={{ pb: 2 }}
+            <SearchBar searchCallback={handleSearchWordChange} />
+          </Toolbar>
+        </AppBar>
+        <Drawer variant="permanent"
+          sx={{
+            width: drawerWidth,
+            flexShrink: 0,
+            [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+          }}
         >
-          <ToggleButton value="table" aria-label="table" >
-            <ViewListIcon />
-          </ToggleButton>
-          <ToggleButton value="grid" aria-label="grid">
-            <ViewModuleIcon />
-          </ToggleButton>
-        </ToggleButtonGroup>
-        <MunchTable rows={tableFoodItems} show={showTable} />
-      </Box>
-    </Box>
-  );
-}
+          <FormControl>
+            <FormLabel id="demo-radio-buttons-group-label">Sort By</FormLabel>
+            <RadioGroup
+              aria-labelledby="demo-radio-buttons-group-label"
+              defaultValue="female"
+              name="radio-buttons-group"
+            >
+              <FormControlLabel value="female" control={<Radio />} label="Restaurant" />
+              <FormControlLabel value="male" control={<Radio />} label="Menu Item" />
+              <FormControlLabel value="other" control={<Radio />} label="Price" />
+              <FormControlLabel value="other" control={<Radio />} label="Description" />
+              onchange={}
+            </RadioGroup>
+          </FormControl>
 
-export default App;
+          <Toolbar />
+          <Box sx={{ overflow: 'auto', pt: 2 }}>
+            <Container>
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+              >
+                Filters <FilterListIcon />
+                <Divider />
+                Restaurants
+                <FormGroup>
+                  {restaurantFilters.map((value: string) => {
+                    return <FormControlLabel label={value} key={value} control={<Checkbox onChange={handleCheckedBoxChange} name={value} />} />;
+                  })}
+                </FormGroup>
+                <Divider />
+              </Typography>
+            </Container>
+          </Box>
+        </Drawer>
+        <Box component="main" sx={{ flexGrow: 1, p: 3, height: 1 / 1 }}>
+          <Toolbar />
+          <ToggleButtonGroup
+            orientation="horizontal"
+            size="small"
+            value={pageView}
+            exclusive
+            onChange={handlePageView}
+            sx={{ pb: 2 }}
+          >
+            <ToggleButton value="table" aria-label="table" >
+              <ViewListIcon />
+            </ToggleButton>
+            <ToggleButton value="grid" aria-label="grid">
+              <ViewModuleIcon />
+            </ToggleButton>
+          </ToggleButtonGroup>
+          <MunchTable rows={tableFoodItems} show={showTable} />
+        </Box>
+      </Box>
+    );
+  }
+
+  export default App;

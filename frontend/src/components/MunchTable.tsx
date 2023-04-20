@@ -23,7 +23,7 @@ export interface MunchTableProps {
   show: string
 }
 
-function MunchTable(props: MunchTableProps): React.ReactElement {
+export function MunchTable(props: MunchTableProps): React.ReactElement {
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof TableFoodItem>('item_name');
   const [page, setPage] = React.useState(0);
@@ -112,7 +112,7 @@ function getComparator<Key extends keyof any>(
 }
 
 
-function stableSort<T>(array: Array<TableFoodItem>, comparator: (a: T, b: T) => number) {
+export function stableSort<T>(array: Array<TableFoodItem>, comparator: (a: T, b: T) => number) {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
