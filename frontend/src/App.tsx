@@ -9,14 +9,15 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import MunchTable, { TableFoodItem } from './components/MunchTable';
+import MunchTable, { TableFoodItem, Order } from './components/MunchTable';
 import Drawer from '@mui/material/Drawer';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { useEffect, useState } from 'react';
 import SearchBar from './components/SearchBar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
-import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Checkbox, FormGroup } from '@mui/material';
+
 
 type Restaurant = {
   name: string
@@ -42,6 +43,8 @@ function App() {
   const [currentRestaurantFilters, setCurrentRestaurantFilters] = useState<string[]>([]);
   const [showTable, setShowTable] = useState<string>("show");
   const [pageView, setPageView] = React.useState<string | null>('table');
+  const [order, setOrder] = React.useState<Order>('asc');
+  const [orderBy, setOrderBy] = React.useState<keyof TableFoodItem>('item_name');
 
   useEffect(() => {
     fetch(`http://localhost:3001`).then((response: Response) => {
@@ -72,7 +75,7 @@ function App() {
     newPageView: string | null,
   ) => {
     setPageView(newPageView);
-    if(newPageView === "table") {
+    if (newPageView === "table") {
       setShowTable("show");
     } else {
       setShowTable("none");
@@ -85,6 +88,16 @@ function App() {
     } else if (!checked) {
       setCurrentRestaurantFilters(currentRestaurantFilters.filter((value: string) => { return value !== event.target.name; }));
     }
+  };
+
+  let handleSortByChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setOrderBy((event.target as HTMLInputElement).value as keyof TableFoodItem);
+    setOrder('asc');
+  };
+
+  let handleSortTableChange = (order: Order, orderBy: keyof TableFoodItem) => {
+    setOrderBy(orderBy);
+    setOrder(order);
   };
 
   let tableFoodItems: TableFoodItem[] = displayItems.map((value: FoodItem) => { return mapFoodItemData(value); });
@@ -134,6 +147,20 @@ function App() {
                 })}
               </FormGroup>
               <Divider />
+              Sort By
+              <RadioGroup
+                aria-labelledby="sort-by-radio-button-group"
+                defaultValue="item_name"
+                name="radio-buttons-group"
+                value={orderBy}
+                onChange={handleSortByChange}
+              >
+                <FormControlLabel value="item_name" control={<Radio />} label="Food Item" />
+                <FormControlLabel value="restaurant_name" control={<Radio />} label="Restaurant" />
+                <FormControlLabel value="price" control={<Radio />} label="Price" />
+                <FormControlLabel value="description" control={<Radio />} label="Description" />
+              </RadioGroup>
+              <Divider />
             </Typography>
           </Container>
         </Box>
@@ -155,7 +182,7 @@ function App() {
             <ViewModuleIcon />
           </ToggleButton>
         </ToggleButtonGroup>
-        <MunchTable rows={tableFoodItems} show={showTable} />
+        <MunchTable rows={tableFoodItems} show={showTable} order={order} orderBy={orderBy} sortCallback={handleSortTableChange} />
       </Box>
     </Box>
   );
