@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 import SearchBar from './components/SearchBar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
-import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Checkbox, FormGroup } from '@mui/material';
+import { FormControlLabel, Radio, RadioGroup, Checkbox, FormGroup } from '@mui/material';
 
 
 type Restaurant = {
@@ -178,7 +178,7 @@ function App() {
           <ToggleButton value="table" aria-label="table" >
             <ViewListIcon />
           </ToggleButton>
-          <ToggleButton value="grid" aria-label="grid">
+          <ToggleButton value="grid" aria-label="grid" >
             <ViewModuleIcon />
           </ToggleButton>
         </ToggleButtonGroup>
