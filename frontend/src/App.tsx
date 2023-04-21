@@ -43,7 +43,6 @@ function App() {
   const [showTable, setShowTable] = useState<string>("show");
   const [pageView, setPageView] = React.useState<string | null>('table');
   const [priceFilterValue, setPriceFilterValue] = React.useState<number>(0);
-  //const [priceFilter, setPriceFilter] = React.useState(0);
 
   useEffect(() => {
     fetch(`http://localhost:3001`).then((response: Response) => {
@@ -94,7 +93,7 @@ function App() {
   };
 
   let tableFoodItems: TableFoodItem[] = displayItems.map((value: FoodItem) => { return mapFoodItemData(value); });
-  if (priceFilterValue) {
+  if (priceFilterValue > 0) {
     tableFoodItems = tableFoodItems.filter((tableItem: TableFoodItem) => { return priceFilterValue > tableItem.price; })
   }
   if (currentRestaurantFilters.length > 0) {
