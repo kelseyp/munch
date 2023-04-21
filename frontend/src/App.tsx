@@ -1,29 +1,29 @@
 import './App.css';
+
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
+import { useEffect, useState } from 'react';
+
+import FilterListIcon from '@mui/icons-material/FilterList';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { Checkbox, FormControlLabel, FormGroup, Radio, RadioGroup } from '@mui/material';
+import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import MunchTable, { TableFoodItem, Order } from './components/MunchTable';
-import Drawer from '@mui/material/Drawer';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import { useEffect, useState } from 'react';
-import SearchBar from './components/SearchBar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
-import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Checkbox, FormGroup } from '@mui/material';
-import './App.css';
-import { styled } from '@mui/material/styles';
-import Grid from '@mui/material/Grid';
+import Drawer from '@mui/material/Drawer';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+
 import MunchGrid from './components/MunchGrid';
-import { TableView } from '@mui/icons-material';
+import { MunchItem } from './components/MunchItem';
+import SearchBar from './components/SearchBar';
+import MunchTable from './components/MunchTable';
 
-
+export type Order = 'asc' | 'desc';
 
 type Restaurant = {
   name: string
@@ -37,10 +37,11 @@ type FoodItem = {
   price: number
   description: string
   restaurant: Restaurant
+  image: string
 };
 
-export const mapFoodItemData = (foodItem: FoodItem): TableFoodItem => {
-  return { 'item_name': foodItem.name, 'restaurant_name': foodItem.restaurant.name, 'price': foodItem.price, 'description': foodItem.description };
+export const mapFoodItemData = (foodItem: FoodItem): MunchItem => {
+  return { 'item_name': foodItem.name, 'restaurant_name': foodItem.restaurant.name, 'price': foodItem.price, 'description': foodItem.description, 'image': foodItem.image };
 }
 
 function App() {
@@ -51,7 +52,7 @@ function App() {
   const [showGrid, setShowGrid] = useState<string>("none");
   const [pageView, setPageView] = React.useState<string | null>('table');
   const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof TableFoodItem>('item_name');
+  const [orderBy, setOrderBy] = React.useState<keyof MunchItem>('item_name');
 
   useEffect(() => {
     fetch(`http://localhost:3001`).then((response: Response) => {
@@ -100,19 +101,39 @@ function App() {
   };
 
   let handleSortByChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setOrderBy((event.target as HTMLInputElement).value as keyof TableFoodItem);
+    setOrderBy((event.target as HTMLInputElement).value as keyof MunchItem);
     setOrder('asc');
   };
 
-  let handleSortTableChange = (order: Order, orderBy: keyof TableFoodItem) => {
+  let handleSortTableChange = (order: Order, orderBy: keyof MunchItem) => {
     setOrderBy(orderBy);
     setOrder(order);
   };
 
-  let tableFoodItems: TableFoodItem[] = displayItems.map((value: FoodItem) => { return mapFoodItemData(value); });
+  let munchItems: MunchItem[] = displayItems.map((value: FoodItem) => { return mapFoodItemData(value); });
   if (currentRestaurantFilters.length > 0) {
-    tableFoodItems = tableFoodItems.filter((tableItem: TableFoodItem) => { return currentRestaurantFilters.indexOf(tableItem.restaurant_name) !== -1; });
+    munchItems = munchItems.filter((tableItem: MunchItem) => { return currentRestaurantFilters.indexOf(tableItem.restaurant_name) !== -1; });
   }
+  munchItems.sort((a: MunchItem, b: MunchItem): number =>  {
+    if (order === 'asc') {
+      if (a[orderBy] < b[orderBy]) {
+        return -1;
+      }
+      if (a[orderBy] > b[orderBy]) {
+        return 1;
+      }
+      return 0;
+    } else if (order === 'desc') {
+      if (b[orderBy] < a[orderBy]) {
+        return -1;
+      }
+      if (b[orderBy] > a[orderBy]) {
+        return 1;
+      }
+      return 0;
+    }
+    return 0;
+  });
 
   const drawerWidth = 240;
 
@@ -191,8 +212,8 @@ function App() {
             <ViewModuleIcon />
           </ToggleButton>
         </ToggleButtonGroup>
-        <MunchTable rows={tableFoodItems} show={showTable} order={order} orderBy={orderBy} sortCallback={handleSortTableChange} />
-        <MunchGrid cards={tableFoodItems} show={showGrid} />
+        <MunchTable rows={munchItems} show={showTable} order={order} orderBy={orderBy} sortCallback={handleSortTableChange} />
+        <MunchGrid cards={munchItems} show={showGrid} />
       </Box>
     </Box>
   );

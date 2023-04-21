@@ -1,29 +1,26 @@
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-import TableBody from '@mui/material/TableBody';
-import Paper from '@mui/material/Paper';
-import TableContainer from '@mui/material/TableContainer';
-import TablePagination from '@mui/material/TablePagination';
-import Table from '@mui/material/Table';
 import React from 'react';
-import TableSortLabel from '@mui/material/TableSortLabel';
+
 import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import TableSortLabel from '@mui/material/TableSortLabel';
 import visuallyHidden from '@mui/utils/visuallyHidden';
 
-export interface TableFoodItem {
-  item_name: string,
-  restaurant_name: string,
-  price: number,
-  description: string,
-}
+import { Order } from '../App';
+import { MunchItem } from './MunchItem';
 
 export interface MunchTableProps {
-  rows: Array<TableFoodItem>,
+  rows: Array<MunchItem>,
   show: string,
   order: Order,
-  orderBy: keyof TableFoodItem,
-  sortCallback: ((order: Order, orderBy: keyof TableFoodItem) => void);
+  orderBy: keyof MunchItem,
+  sortCallback: ((order: Order, orderBy: keyof MunchItem) => void);
 }
 
 export function MunchTable(props: MunchTableProps): React.ReactElement {
@@ -32,10 +29,10 @@ export function MunchTable(props: MunchTableProps): React.ReactElement {
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof TableFoodItem,
+    property: keyof MunchItem,
   ) => {
     const isAsc = props.orderBy === property && props.order === 'asc';
-    props.sortCallback((isAsc ? 'desc' : 'asc'),property)
+    props.sortCallback((isAsc ? 'desc' : 'asc'), property)
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -50,16 +47,16 @@ export function MunchTable(props: MunchTableProps): React.ReactElement {
   const tableHeight: string = "calc(100vh - 220px)";
 
   return (
-    <Paper sx={{display:props.show}} >
-      <TableContainer component={Paper} sx={{ flexGrow:1, flexShrink:1, height: tableHeight }}>
-        <Table stickyHeader aria-label="sticky table" style={{ flexGrow:1, flexShrink:1, width:"100%", tableLayout:"auto"}}>
+    <Paper sx={{ display: props.show }} >
+      <TableContainer component={Paper} sx={{ flexGrow: 1, flexShrink: 1, height: tableHeight }}>
+        <Table stickyHeader aria-label="sticky table" style={{ flexGrow: 1, flexShrink: 1, width: "100%", tableLayout: "auto" }}>
           <EnhancedTableHead
             order={props.order}
             orderBy={props.orderBy}
             onRequestSort={handleRequestSort}
           />
           <TableBody>
-            {stableSort(props.rows, getComparator(props.order, props.orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+            {props.rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
               return (
                 <TableRow
                   key={index}
@@ -87,47 +84,9 @@ export function MunchTable(props: MunchTableProps): React.ReactElement {
   );
 }
 
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-export type Order = 'asc' | 'desc';
-
-function getComparator<Key extends keyof any>(
-  order: Order,
-  orderBy: Key,
-): (
-    a: { [key in Key]: number | string },
-    b: { [key in Key]: number | string },
-  ) => number {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-
-export function stableSort<T>(array: Array<TableFoodItem>, comparator: (a: T, b: T) => number) {
-  const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
-
-
 interface HeadCell {
   disablePadding: boolean;
-  id: keyof TableFoodItem;
+  id: keyof MunchItem;
   label: string;
   numeric: boolean;
 }
@@ -160,18 +119,17 @@ const headCells: readonly HeadCell[] = [
 ];
 
 interface EnhancedTableProps {
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof TableFoodItem) => void;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof MunchItem) => void;
   order: Order;
   orderBy: string;
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
-  const { order, orderBy, onRequestSort } =
-    props;
-  const createSortHandler =
-    (property: keyof TableFoodItem) => (event: React.MouseEvent<unknown>) => {
-      onRequestSort(event, property);
-    };
+  const { order, orderBy, onRequestSort } = props;
+  
+  const createSortHandler = (property: keyof MunchItem) => (event: React.MouseEvent<unknown>) => {
+    onRequestSort(event, property);
+  };
 
   return (
     <TableHead>
