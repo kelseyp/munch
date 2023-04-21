@@ -103,7 +103,7 @@ function App() {
   const drawerWidth = 240;
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', bgcolor:"ghostwhite" }}>
       <CssBaseline />
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
@@ -152,7 +152,6 @@ function App() {
                 <FormControlLabel value={0} control={<Radio />} label="Show All" />
                 <FormControlLabel value={5} control={<Radio />} label="< $5" />
                 <FormControlLabel value={10} control={<Radio />} label="< $10" />
-                <FormControlLabel value={15} control={<Radio />} label="< $15" />
               </RadioGroup>
             </Typography>
           </Container>
