@@ -149,7 +149,7 @@ function App() {
               <Divider />
               Sort By
               <RadioGroup
-                aria-labelledby="demo-radio-buttons-group-label"
+                aria-labelledby="sort-by-radio-button-group"
                 defaultValue="item_name"
                 name="radio-buttons-group"
                 value={orderBy}
