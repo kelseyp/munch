@@ -166,6 +166,7 @@ function App() {
                 <FormControlLabel value={5} control={<Radio />} label="< $5" />
                 <FormControlLabel value={10} control={<Radio />} label="< $10" />
               </RadioGroup>
+              <Divider />
               Sort By
               <RadioGroup
                 aria-labelledby="sort-by-radio-button-group"
