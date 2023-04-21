@@ -9,14 +9,15 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import MunchTable, { TableFoodItem } from './components/MunchTable';
+import MunchTable, { TableFoodItem, Order } from './components/MunchTable';
 import Drawer from '@mui/material/Drawer';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { useEffect, useState } from 'react';
 import SearchBar from './components/SearchBar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
-import { Checkbox, FormControlLabel, FormGroup, Radio, RadioGroup } from '@mui/material';
+import { FormControlLabel, Checkbox, FormGroup, Radio, RadioGroup } from '@mui/material';
+
 
 type Restaurant = {
   name: string
@@ -42,6 +43,8 @@ function App() {
   const [currentRestaurantFilters, setCurrentRestaurantFilters] = useState<string[]>([]);
   const [showTable, setShowTable] = useState<string>("show");
   const [pageView, setPageView] = React.useState<string | null>('table');
+  const [order, setOrder] = React.useState<Order>('asc');
+  const [orderBy, setOrderBy] = React.useState<keyof TableFoodItem>('item_name');
   const [priceFilterValue, setPriceFilterValue] = React.useState<number>(0);
 
   useEffect(() => {
@@ -86,6 +89,16 @@ function App() {
     } else if (!checked) {
       setCurrentRestaurantFilters(currentRestaurantFilters.filter((value: string) => { return value !== event.target.name; }));
     }
+  };
+
+  let handleSortByChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setOrderBy((event.target as HTMLInputElement).value as keyof TableFoodItem);
+    setOrder('asc');
+  };
+
+  let handleSortTableChange = (order: Order, orderBy: keyof TableFoodItem) => {
+    setOrderBy(orderBy);
+    setOrder(order);
   };
 
   const handlePriceFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -153,6 +166,20 @@ function App() {
                 <FormControlLabel value={5} control={<Radio />} label="< $5" />
                 <FormControlLabel value={10} control={<Radio />} label="< $10" />
               </RadioGroup>
+              Sort By
+              <RadioGroup
+                aria-labelledby="sort-by-radio-button-group"
+                defaultValue="item_name"
+                name="radio-buttons-group"
+                value={orderBy}
+                onChange={handleSortByChange}
+              >
+                <FormControlLabel value="item_name" control={<Radio />} label="Food Item" />
+                <FormControlLabel value="restaurant_name" control={<Radio />} label="Restaurant" />
+                <FormControlLabel value="price" control={<Radio />} label="Price" />
+                <FormControlLabel value="description" control={<Radio />} label="Description" />
+              </RadioGroup>
+              <Divider />
             </Typography>
           </Container>
         </Box>
@@ -174,7 +201,7 @@ function App() {
             <ViewModuleIcon />
           </ToggleButton>
         </ToggleButtonGroup>
-        <MunchTable rows={tableFoodItems} show={showTable} />
+        <MunchTable rows={tableFoodItems} show={showTable} order={order} orderBy={orderBy} sortCallback={handleSortTableChange} />
       </Box>
     </Box>
   );
