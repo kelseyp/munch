@@ -20,12 +20,13 @@ export interface TableFoodItem {
 
 export interface MunchTableProps {
   rows: Array<TableFoodItem>,
-  show: string
+  show: string,
+  order: Order,
+  orderBy: keyof TableFoodItem,
+  sortCallback: ((order: Order, orderBy: keyof TableFoodItem) => void);
 }
 
-function MunchTable(props: MunchTableProps): React.ReactElement {
-  const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof TableFoodItem>('item_name');
+export function MunchTable(props: MunchTableProps): React.ReactElement {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -33,9 +34,8 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
     event: React.MouseEvent<unknown>,
     property: keyof TableFoodItem,
   ) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
+    const isAsc = props.orderBy === property && props.order === 'asc';
+    props.sortCallback((isAsc ? 'desc' : 'asc'),property)
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -54,21 +54,21 @@ function MunchTable(props: MunchTableProps): React.ReactElement {
       <TableContainer component={Paper} sx={{ flexGrow:1, flexShrink:1, height: tableHeight }}>
         <Table stickyHeader aria-label="sticky table" style={{ flexGrow:1, flexShrink:1, width:"100%", tableLayout:"auto"}}>
           <EnhancedTableHead
-            order={order}
-            orderBy={orderBy}
+            order={props.order}
+            orderBy={props.orderBy}
             onRequestSort={handleRequestSort}
           />
           <TableBody>
-            {stableSort(props.rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+            {stableSort(props.rows, getComparator(props.order, props.orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
               return (
                 <TableRow
                   key={index}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                  <TableCell component="th" scope="row">{row.item_name}</TableCell>
-                  <TableCell align="left">{row.restaurant_name}</TableCell>
-                  <TableCell align="right">{row.price}</TableCell>
-                  <TableCell align="left">{row.description}</TableCell>
+                  <TableCell width={"20%"} component="th" scope="row">{row.item_name}</TableCell>
+                  <TableCell width={"15%"} align="left">{row.restaurant_name}</TableCell>
+                  <TableCell width={"10%"} align="right">{row.price}</TableCell>
+                  <TableCell width={"55%"} align="left">{row.description}</TableCell>
                 </TableRow>
               );
             })}
@@ -97,7 +97,7 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   return 0;
 }
 
-type Order = 'asc' | 'desc';
+export type Order = 'asc' | 'desc';
 
 function getComparator<Key extends keyof any>(
   order: Order,
@@ -112,7 +112,7 @@ function getComparator<Key extends keyof any>(
 }
 
 
-function stableSort<T>(array: Array<TableFoodItem>, comparator: (a: T, b: T) => number) {
+export function stableSort<T>(array: Array<TableFoodItem>, comparator: (a: T, b: T) => number) {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
