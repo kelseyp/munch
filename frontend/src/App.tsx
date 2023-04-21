@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 import SearchBar from './components/SearchBar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
-import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import { Checkbox, FormControlLabel, FormGroup, Radio, RadioGroup } from '@mui/material';
 
 type Restaurant = {
   name: string
@@ -42,6 +42,8 @@ function App() {
   const [currentRestaurantFilters, setCurrentRestaurantFilters] = useState<string[]>([]);
   const [showTable, setShowTable] = useState<string>("show");
   const [pageView, setPageView] = React.useState<string | null>('table');
+  const [priceFilterValue, setPriceFilterValue] = React.useState<number>(0);
+  //const [priceFilter, setPriceFilter] = React.useState(0);
 
   useEffect(() => {
     fetch(`http://localhost:3001`).then((response: Response) => {
@@ -72,7 +74,7 @@ function App() {
     newPageView: string | null,
   ) => {
     setPageView(newPageView);
-    if(newPageView === "table") {
+    if (newPageView === "table") {
       setShowTable("show");
     } else {
       setShowTable("none");
@@ -87,7 +89,14 @@ function App() {
     }
   };
 
+  const handlePriceFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPriceFilterValue(parseInt(event.target.value, 10));
+  };
+
   let tableFoodItems: TableFoodItem[] = displayItems.map((value: FoodItem) => { return mapFoodItemData(value); });
+  if (priceFilterValue) {
+    tableFoodItems = tableFoodItems.filter((tableItem: TableFoodItem) => { return priceFilterValue > tableItem.price; })
+  }
   if (currentRestaurantFilters.length > 0) {
     tableFoodItems = tableFoodItems.filter((tableItem: TableFoodItem) => { return currentRestaurantFilters.indexOf(tableItem.restaurant_name) !== -1; });
   }
@@ -134,6 +143,18 @@ function App() {
                 })}
               </FormGroup>
               <Divider />
+              Price
+              <RadioGroup
+                aria-labelledby="price-radio-button-group"
+                name="price-radio-button-group"
+                value={priceFilterValue}
+                onChange={handlePriceFilterChange}
+              >
+                <FormControlLabel value={0} control={<Radio />} label="Show All" />
+                <FormControlLabel value={5} control={<Radio />} label="< $5" />
+                <FormControlLabel value={10} control={<Radio />} label="< $10" />
+                <FormControlLabel value={15} control={<Radio />} label="< $15" />
+              </RadioGroup>
             </Typography>
           </Container>
         </Box>
