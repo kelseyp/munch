@@ -106,9 +106,14 @@ function App() {
   };
 
   let tableFoodItems: TableFoodItem[] = displayItems.map((value: FoodItem) => { return mapFoodItemData(value); });
-  if (priceFilterValue > 0) {
-    tableFoodItems = tableFoodItems.filter((tableItem: TableFoodItem) => { return priceFilterValue > tableItem.price; })
+  // Three price cases: value =0 is default case(full table), value=5 - want all items less than 5, value=10 - want all items less than 10 but greater than 5
+  // Using >= so that $5.00 and $10.00 items are included, not excluded.
+  if ((priceFilterValue === 5)) {
+    tableFoodItems = tableFoodItems.filter((tableItem: TableFoodItem) => { return priceFilterValue >= tableItem.price; })
+  } else if ((priceFilterValue === 10) ) {
+    tableFoodItems = tableFoodItems.filter((tableItem: TableFoodItem) => { return ((priceFilterValue >= tableItem.price) && (tableItem.price >= 5)); })
   }
+
   if (currentRestaurantFilters.length > 0) {
     tableFoodItems = tableFoodItems.filter((tableItem: TableFoodItem) => { return currentRestaurantFilters.indexOf(tableItem.restaurant_name) !== -1; });
   }
@@ -163,8 +168,8 @@ function App() {
                 onChange={handlePriceFilterChange}
               >
                 <FormControlLabel value={0} control={<Radio />} label="Show All" />
-                <FormControlLabel value={5} control={<Radio />} label="< $5" />
-                <FormControlLabel value={10} control={<Radio />} label="< $10" />
+                <FormControlLabel value={5} control={<Radio />} label="$0 - $5" />
+                <FormControlLabel value={10} control={<Radio />} label="$5 - $10" />
               </RadioGroup>
               <Divider />
               Sort By
