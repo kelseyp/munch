@@ -17,6 +17,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { FilterByPriceRange, FilterByRestaurant } from './domain/utils';
 
 import MunchGrid from './components/MunchGrid';
 import { MunchItem } from './components/MunchItem';
@@ -53,6 +54,7 @@ function App() {
   const [pageView, setPageView] = React.useState<string | null>('table');
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof MunchItem>('item_name');
+  const [priceFilterValue, setPriceFilterValue] = React.useState<number>(0);
 
   useEffect(() => {
     fetch(`http://localhost:3001`).then((response: Response) => {
@@ -109,11 +111,14 @@ function App() {
     setOrderBy(orderBy);
     setOrder(order);
   };
+  const handlePriceFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPriceFilterValue(parseInt(event.target.value, 10));
+  };
 
   let munchItems: MunchItem[] = displayItems.map((value: FoodItem) => { return mapFoodItemData(value); });
-  if (currentRestaurantFilters.length > 0) {
-    munchItems = munchItems.filter((tableItem: MunchItem) => { return currentRestaurantFilters.indexOf(tableItem.restaurant_name) !== -1; });
-  }
+  munchItems = FilterByPriceRange(munchItems, priceFilterValue);
+  munchItems = FilterByRestaurant(munchItems, currentRestaurantFilters);
+  
   munchItems.sort((a: MunchItem, b: MunchItem): number =>  {
     if (order === 'asc') {
       if (a[orderBy] < b[orderBy]) {
@@ -134,7 +139,7 @@ function App() {
     }
     return 0;
   });
-
+  
   const drawerWidth = 240;
 
   return (
@@ -176,6 +181,18 @@ function App() {
                   return <FormControlLabel label={value} key={value} control={<Checkbox onChange={handleCheckedBoxChange} name={value} />} />;
                 })}
               </FormGroup>
+              <Divider />
+              Price
+              <RadioGroup
+                aria-labelledby="price-radio-button-group"
+                name="price-radio-button-group"
+                value={priceFilterValue}
+                onChange={handlePriceFilterChange}
+              >
+                <FormControlLabel value={0} control={<Radio />} label="Show All" />
+                <FormControlLabel value={5} control={<Radio />} label="$0 - $5" />
+                <FormControlLabel value={10} control={<Radio />} label="$5 - $10" />
+              </RadioGroup>
               <Divider />
               Sort By
               <RadioGroup
