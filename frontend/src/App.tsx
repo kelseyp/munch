@@ -117,14 +117,17 @@ function App() {
       <CssBaseline />
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
-          <img src="./LOGO.PNG" height="64" alt="Logo" />
-          <Typography
+          <Box sx={{ padding: 1, maxHeight: 64}}>
+            <img src="./LOGO.PNG" height="48" alt="Logo" />
+          </Box>
+            <Typography
             variant="h4"
             component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
+            sx={{ display: { xs: 'none', sm: 'block' }, pt: 1 }}
+            >
               Munch
-          </Typography>
+            </Typography>
+          
           <SearchBar searchCallback={handleSearchWordChange} />
         </Toolbar>
       </AppBar>
