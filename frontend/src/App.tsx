@@ -17,6 +17,8 @@ import SearchBar from './components/SearchBar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import logo from './NewMunchLogo.png'; 
+
 
 type Restaurant = {
   name: string
@@ -104,8 +106,10 @@ function App() {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            MunchBox
+            
           </Typography>
+          <img src={logo} alt="Logo" />
+          Munch
           <SearchBar searchCallback={handleSearchWordChange} />
         </Toolbar>
       </AppBar>
