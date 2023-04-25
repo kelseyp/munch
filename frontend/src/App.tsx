@@ -118,8 +118,8 @@ function App() {
   let munchItems: MunchItem[] = displayItems.map((value: FoodItem) => { return mapFoodItemData(value); });
   munchItems = FilterByPriceRange(munchItems, priceFilterValue);
   munchItems = FilterByRestaurant(munchItems, currentRestaurantFilters);
-  
-  munchItems.sort((a: MunchItem, b: MunchItem): number =>  {
+
+  munchItems.sort((a: MunchItem, b: MunchItem): number => {
     if (order === 'asc') {
       if (a[orderBy] < b[orderBy]) {
         return -1;
@@ -139,7 +139,7 @@ function App() {
     }
     return 0;
   });
-  
+
   const drawerWidth = 240;
 
   return (
