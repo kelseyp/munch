@@ -5,6 +5,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
+import Grid2 from '@mui/material/Unstable_Grid2';
 
 import { MunchItem } from './MunchItem';
 
@@ -19,35 +20,39 @@ function MunchGrid(props: MunchGridProps): React.ReactElement {
   const [cardsPerRow, setCardsPerRow] = React.useState(3);
 
   return (
-    <Paper sx={{ display: props.show }} >
-      <Box sx={{ flexGrow: 1 }}>
+    <Paper sx={{ display: props.show}}>
+    <Box sx={{flexGrow: 1 }}>
+      <Grid2 container spacing={2}>
         {props.cards.slice(page * cardsPerPage, page * cardsPerPage + cardsPerPage).map((card: MunchItem) => {
           return (
-            <Card sx={{ maxWidth: 345 }}>
-              <CardMedia
-                sx={{ height: 140 }}
-                image={(card.image ? card.image: "") as string}
-                title={card.item_name}
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {card.item_name}
-                </Typography>
-                <Typography gutterBottom variant="h5" component="div">
-                  {card.price}
-                </Typography>
-                <Typography gutterBottom variant="h5" component="div">
-                  {card.restaurant_name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {card.description}
-                </Typography>
+            <Grid2 xs={4}>
+              <Card sx={{ maxWidth: 345 }}>
+                <CardMedia
+                  sx={{ height: 140 }}
+                  image={(card.image ? card.image : "") as string}
+                  title={card.item_name}
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {card.item_name}
+                  </Typography>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {card.price}
+                  </Typography>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {card.restaurant_name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {card.description}
+                  </Typography>
 
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </Grid2>
           );
         })}
-      </Box>
+      </Grid2>
+    </Box>
     </Paper>
   );
 }
