@@ -17,6 +17,7 @@ import SearchBar from './components/SearchBar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import { FormControlLabel, Checkbox, FormGroup, Radio, RadioGroup } from '@mui/material';
+import { FilterByPriceRange, FilterByRestaurant } from './domain/utils';
 
 
 type Restaurant = {
@@ -106,18 +107,9 @@ function App() {
   };
 
   let tableFoodItems: TableFoodItem[] = displayItems.map((value: FoodItem) => { return mapFoodItemData(value); });
-  // Three price cases: value =0 is default case(full table), value=5 - want all items less than 5, value=10 - want all items less than 10 but greater than 5
-  // Using >= so that $5.00 and $10.00 items are included, not excluded.
-  if ((priceFilterValue === 5)) {
-    tableFoodItems = tableFoodItems.filter((tableItem: TableFoodItem) => { return priceFilterValue >= tableItem.price; })
-  } else if ((priceFilterValue === 10) ) {
-    tableFoodItems = tableFoodItems.filter((tableItem: TableFoodItem) => { return ((priceFilterValue >= tableItem.price) && (tableItem.price >= 5)); })
-  }
-
-  if (currentRestaurantFilters.length > 0) {
-    tableFoodItems = tableFoodItems.filter((tableItem: TableFoodItem) => { return currentRestaurantFilters.indexOf(tableItem.restaurant_name) !== -1; });
-  }
-
+  tableFoodItems = FilterByPriceRange(tableFoodItems, priceFilterValue);
+  tableFoodItems = FilterByRestaurant(tableFoodItems, currentRestaurantFilters);
+  
   const drawerWidth = 240;
 
   return (
