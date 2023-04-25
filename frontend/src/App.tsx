@@ -17,8 +17,6 @@ import SearchBar from './components/SearchBar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
-import logo from './NewMunchLogo.png'; 
-
 
 type Restaurant = {
   name: string
@@ -101,15 +99,14 @@ function App() {
       <CssBaseline />
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
+          <img src="./LOGO.PNG" height="64" alt="Logo" />
           <Typography
-            variant="h6"
+            variant="h4"
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            
+              Munch
           </Typography>
-          <img src={logo} alt="Logo" />
-          Munch
           <SearchBar searchCallback={handleSearchWordChange} />
         </Toolbar>
       </AppBar>
@@ -120,6 +117,7 @@ function App() {
           [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
         }}
       >
+        
         <Toolbar />
         <Box sx={{ overflow: 'auto', pt: 2 }}>
           <Container>
