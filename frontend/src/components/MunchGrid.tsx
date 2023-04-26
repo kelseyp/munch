@@ -23,13 +23,23 @@ function MunchGrid(props: MunchGridProps): React.ReactElement {
     <Paper sx={{ display: props.show}}>
     <Box sx={{flexGrow: 1 }}>
       <Grid2 container spacing={2}>
-        {props.cards.slice(page * cardsPerPage, page * cardsPerPage + cardsPerPage).map((card: MunchItem) => {
+        {props.cards.map((card: MunchItem) => {
+          let imageName = "../images/".concat(card.image) as string;
+          console.log("image name: " + imageName)
+          let currentImage: any;
+          try {
+            currentImage = require(imageName);
+          } catch (error) {
+            currentImage = require("../images/404-error-page-not-found-with-two-men-plugging-in-cords.jpg");
+            console.log(error);
+          }
+
           return (
             <Grid2 xs={4}>
               <Card sx={{ maxWidth: 345 }}>
                 <CardMedia
                   sx={{ height: 140 }}
-                  image={(card.image ? card.image : "") as string}
+                  image={currentImage}
                   title={card.item_name}
                 />
                 <CardContent>
