@@ -147,13 +147,17 @@ function App() {
       <CssBaseline />
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
-          <Typography
-            variant="h6"
+          <Box sx={{ padding: 1, maxHeight: 64}}>
+            <img src="./LOGO.PNG" height="48" alt="Logo" />
+          </Box>
+            <Typography
+            variant="h4"
             component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
-            MunchBox
-          </Typography>
+            sx={{ display: { xs: 'none', sm: 'block' }, pt: 1 }}
+            >
+              Munch
+            </Typography>
+          
           <SearchBar searchCallback={handleSearchWordChange} />
         </Toolbar>
       </AppBar>
@@ -164,6 +168,7 @@ function App() {
           [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
         }}
       >
+        
         <Toolbar />
         <Box sx={{ overflow: 'auto', pt: 2 }}>
           <Container>
