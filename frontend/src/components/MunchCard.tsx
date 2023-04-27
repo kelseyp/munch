@@ -1,32 +1,50 @@
-import * as React from 'react';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import Grid2 from '@mui/material/Unstable_Grid2';
+import { MunchItem } from './MunchItem';
 
-export default function MunchCard() {
+export interface MunchCardProps {
+  card: MunchItem
+}
+
+function MunchCard(props: MunchCardProps): React.ReactElement {
+  let imageName = "../images/".concat(props.card.image) as string;
+  console.log("image name: " + imageName)
+  let currentImage: any;
+  try {
+    currentImage = require(imageName);
+  } catch (error) {
+    currentImage = require("../images/404-error-page-not-found-with-two-men-plugging-in-cords.jpg");
+    console.log(error);
+  }
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardMedia
-        sx={{ height: 140 }}
-        image="/static/images/cards/contemplative-reptile.jpg"
-        title="green iguana"
-      />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          Lizard
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
-      </CardActions>
-    </Card>
+    <Grid2 xs={12} sm={6} md={4} lg={3}>
+      <Card sx={{ maxWidth: 345 }}>
+        <CardMedia
+          sx={{ height: 140 }}
+          image={currentImage}
+          title={props.card.item_name}
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            {props.card.item_name}
+          </Typography>
+          <Typography gutterBottom variant="h5" component="div">
+            {props.card.price}
+          </Typography>
+          <Typography gutterBottom variant="h5" component="div">
+            {props.card.restaurant_name}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {props.card.description}
+          </Typography>
+
+        </CardContent>
+      </Card>
+    </Grid2>
   );
 }
+
+export default MunchCard;

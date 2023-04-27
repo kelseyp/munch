@@ -49,9 +49,9 @@ function App() {
   const [displayItems, setDisplayItems] = useState<FoodItem[]>([]);
   const [restaurantFilters, setRestaurantFilters] = useState<string[]>([]);
   const [currentRestaurantFilters, setCurrentRestaurantFilters] = useState<string[]>([]);
-  const [showTable, setShowTable] = useState<string>("show");
-  const [showGrid, setShowGrid] = useState<string>("none");
-  const [pageView, setPageView] = React.useState<string | null>('table');
+  const [showTable, setShowTable] = useState<string>("none");
+  const [showGrid, setShowGrid] = useState<string>("show");
+  const [pageView, setPageView] = React.useState<string | null>('grid');
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof MunchItem>('item_name');
   const [priceFilterValue, setPriceFilterValue] = React.useState<number>(0);
@@ -85,12 +85,12 @@ function App() {
     newPageView: string | null,
   ) => {
     setPageView(newPageView);
-    if (newPageView === "table") {
-      setShowTable("show");
-      setShowGrid("none");
-    } else {
+    if (newPageView === "grid") {
       setShowTable("none");
       setShowGrid("show");
+    } else {
+      setShowTable("show");
+      setShowGrid("none");
     }
   };
 
@@ -227,11 +227,11 @@ function App() {
           onChange={handlePageView}
           sx={{ pb: 2 }}
         >
-          <ToggleButton value="table" aria-label="table" >
-            <ViewListIcon />
-          </ToggleButton>
           <ToggleButton value="grid" aria-label="grid">
             <ViewModuleIcon />
+          </ToggleButton>
+          <ToggleButton value="table" aria-label="table" >
+            <ViewListIcon />
           </ToggleButton>
         </ToggleButtonGroup>
         <MunchTable rows={munchItems} show={showTable} order={order} orderBy={orderBy} sortCallback={handleSortTableChange} />
