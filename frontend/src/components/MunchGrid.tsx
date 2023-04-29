@@ -1,6 +1,7 @@
+import React from 'react';
+
 import Box from '@mui/material/Box';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import React from 'react';
 
 import MunchCard from './MunchCard';
 import { MunchItem } from './MunchItem';
@@ -16,7 +17,6 @@ function MunchGrid(props: MunchGridProps): React.ReactElement {
       <Grid2 container spacing={2}>
         {props.cards.map((card: MunchItem) => {
           return <MunchCard card={card} />;
-          
         })}
       </Grid2>
     </Box>
