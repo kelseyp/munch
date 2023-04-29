@@ -39,13 +39,13 @@ function MunchCard(props: MunchCardProps): React.ReactElement {
           title={props.card.item_name}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography gutterBottom variant="h4" component="div">
             {props.card.item_name}
           </Typography>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography gutterBottom variant="h6" component="div">
             {props.card.price}
           </Typography>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography gutterBottom variant="h6" component="div">
             {props.card.restaurant_name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
