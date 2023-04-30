@@ -64,7 +64,7 @@ AppDataSource.initialize().then(async () => {
         foodItem.price = rawItem.Price;
         foodItem.description = rawItem.Description;
         foodItem.restaurant = restaurant;
-        foodItem.image = "../../../shared/data/images/" + rawItem.Image;
+        foodItem.image = rawItem.Image;
         await AppDataSource.manager.save(foodItem);
         console.log("Saved a new food with id: " + foodItem.id);
     }));

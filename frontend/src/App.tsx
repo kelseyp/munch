@@ -1,24 +1,30 @@
 import './App.css';
+
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
+import { useEffect, useState } from 'react';
+
+import FilterListIcon from '@mui/icons-material/FilterList';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { Checkbox, FormControlLabel, FormGroup, Radio, RadioGroup } from '@mui/material';
+import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import MunchTable, { TableFoodItem, Order } from './components/MunchTable';
-import Drawer from '@mui/material/Drawer';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import { useEffect, useState } from 'react';
-import SearchBar from './components/SearchBar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
-import { FormControlLabel, Checkbox, FormGroup, Radio, RadioGroup } from '@mui/material';
+import Drawer from '@mui/material/Drawer';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import { FilterByPriceRange, FilterByRestaurant } from './domain/utils';
 
+import MunchGrid from './components/MunchGrid';
+import { MunchItem } from './components/MunchItem';
+import SearchBar from './components/SearchBar';
+import MunchTable from './components/MunchTable';
+
+export type Order = 'asc' | 'desc';
 
 type Restaurant = {
   name: string
@@ -32,20 +38,22 @@ type FoodItem = {
   price: number
   description: string
   restaurant: Restaurant
+  image: string
 };
 
-export const mapFoodItemData = (foodItem: FoodItem): TableFoodItem => {
-  return { 'item_name': foodItem.name, 'restaurant_name': foodItem.restaurant.name, 'price': foodItem.price, 'description': foodItem.description };
+export const mapFoodItemData = (foodItem: FoodItem): MunchItem => {
+  return { 'item_name': foodItem.name, 'restaurant_name': foodItem.restaurant.name, 'price': foodItem.price, 'description': foodItem.description, 'image': foodItem.image };
 }
 
 function App() {
   const [displayItems, setDisplayItems] = useState<FoodItem[]>([]);
   const [restaurantFilters, setRestaurantFilters] = useState<string[]>([]);
   const [currentRestaurantFilters, setCurrentRestaurantFilters] = useState<string[]>([]);
-  const [showTable, setShowTable] = useState<string>("show");
-  const [pageView, setPageView] = React.useState<string | null>('table');
+  const [showTable, setShowTable] = useState<string>("none");
+  const [showGrid, setShowGrid] = useState<string>("show");
+  const [pageView, setPageView] = React.useState<string | null>('grid');
   const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof TableFoodItem>('item_name');
+  const [orderBy, setOrderBy] = React.useState<keyof MunchItem>('item_name');
   const [priceFilterValue, setPriceFilterValue] = React.useState<number>(0);
 
   useEffect(() => {
@@ -77,10 +85,12 @@ function App() {
     newPageView: string | null,
   ) => {
     setPageView(newPageView);
-    if (newPageView === "table") {
-      setShowTable("show");
-    } else {
+    if (newPageView === "grid") {
       setShowTable("none");
+      setShowGrid("show");
+    } else {
+      setShowTable("show");
+      setShowGrid("none");
     }
   };
 
@@ -93,23 +103,43 @@ function App() {
   };
 
   let handleSortByChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setOrderBy((event.target as HTMLInputElement).value as keyof TableFoodItem);
+    setOrderBy((event.target as HTMLInputElement).value as keyof MunchItem);
     setOrder('asc');
   };
 
-  let handleSortTableChange = (order: Order, orderBy: keyof TableFoodItem) => {
+  let handleSortTableChange = (order: Order, orderBy: keyof MunchItem) => {
     setOrderBy(orderBy);
     setOrder(order);
   };
-
   const handlePriceFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPriceFilterValue(parseInt(event.target.value, 10));
   };
 
-  let tableFoodItems: TableFoodItem[] = displayItems.map((value: FoodItem) => { return mapFoodItemData(value); });
-  tableFoodItems = FilterByPriceRange(tableFoodItems, priceFilterValue);
-  tableFoodItems = FilterByRestaurant(tableFoodItems, currentRestaurantFilters);
-  
+  let munchItems: MunchItem[] = displayItems.map((value: FoodItem) => { return mapFoodItemData(value); });
+  munchItems = FilterByPriceRange(munchItems, priceFilterValue);
+  munchItems = FilterByRestaurant(munchItems, currentRestaurantFilters);
+
+  munchItems.sort((a: MunchItem, b: MunchItem): number => {
+    if (order === 'asc') {
+      if (a[orderBy] < b[orderBy]) {
+        return -1;
+      }
+      if (a[orderBy] > b[orderBy]) {
+        return 1;
+      }
+      return 0;
+    } else if (order === 'desc') {
+      if (b[orderBy] < a[orderBy]) {
+        return -1;
+      }
+      if (b[orderBy] > a[orderBy]) {
+        return 1;
+      }
+      return 0;
+    }
+    return 0;
+  });
+
   const drawerWidth = 240;
 
   return (
@@ -197,14 +227,15 @@ function App() {
           onChange={handlePageView}
           sx={{ pb: 2 }}
         >
-          <ToggleButton value="table" aria-label="table" >
-            <ViewListIcon />
-          </ToggleButton>
           <ToggleButton value="grid" aria-label="grid">
             <ViewModuleIcon />
           </ToggleButton>
+          <ToggleButton value="table" aria-label="table" >
+            <ViewListIcon />
+          </ToggleButton>
         </ToggleButtonGroup>
-        <MunchTable rows={tableFoodItems} show={showTable} order={order} orderBy={orderBy} sortCallback={handleSortTableChange} />
+        <MunchTable rows={munchItems} show={showTable} order={order} orderBy={orderBy} sortCallback={handleSortTableChange} />
+        <MunchGrid cards={munchItems} show={showGrid} />
       </Box>
     </Box>
   );
