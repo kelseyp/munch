@@ -197,6 +197,8 @@ function App() {
                 <FormControlLabel value={0} control={<Radio />} label="Show All" />
                 <FormControlLabel value={5} control={<Radio />} label="$0 - $5" />
                 <FormControlLabel value={10} control={<Radio />} label="$5 - $10" />
+                <FormControlLabel value={15} control={<Radio />} label="$10 - $15" />
+                <FormControlLabel value={20} control={<Radio />} label="$15 - $20" />
               </RadioGroup>
               <Divider />
               Sort By
