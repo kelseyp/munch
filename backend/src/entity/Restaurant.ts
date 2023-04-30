@@ -10,10 +10,10 @@ export class Restaurant {
     @Column()
     name: string
 
-    @Column()
-    address: number
+    @Column({nullable:true})
+    address?: string
 
-    @Column()
+    @Column({nullable:true})
     description?: string
 
     @OneToMany(() => FoodItem, (foodItem) => foodItem.restaurant)
