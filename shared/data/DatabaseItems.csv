@@ -7,10 +7,10 @@ Lighthouse Cafe,Grilled Cheese Sandwhich,4.29,"provolone, american cheese, butte
 Lighthouse Cafe,Buffalo Chicken Wrap,7.99,"crispy chicken, chedder jack cheese, lettuce,tomato, buffalo sauce in a flour tortilla",chicken_wrap.jpg
 Lighthouse Cafe,Cripsy Chicken Buffalo Wrap,8.69,"crispy chicken, bacon, chedder jack cheese, lettuce, ranch in a flour tortilla. Low Carb.",chicken_wrap.jpg
 Lighthouse Cafe,Crispy Chicken Strips,6.99,3 battered and fried chicken tenders served with choice of dipping sauce,chicken_strips.jpg
-Lighthouse Cafe,Veggie Wrap,5.59,"Spring mix. shredded carrots, tomatoes, cucumber, avacado, balsamic dressing in a flour tortilla. Vegetarian.. Vegan. Dairy Free.",veggie_wrap.jpg
+Lighthouse Cafe,Veggie Wrap,5.59,"Spring mix. shredded carrots, tomatoes, cucumber, avacado, balsamic dressing in a flour tortilla. Vegetarian. Vegan. Dairy Free.",veggie_wrap.jpg
 Lighthouse Cafe,Salad Of The Week,3.99,changes every week. Vegetarian. Vegan. Dairy Free. Low Carb.,salad.jpg
 Lighthouse Cafe,Soup Of The Week,3.49,changes every week,soup.jpg
-Lighthouse Cafe,Fries,2.59,choice of sauce Vegetarian. Vegan. Dairy Free.,fries.jpg
+Lighthouse Cafe,Fries,2.59,choice of sauce. Vegetarian. Vegan. Dairy Free.,fries.jpg
 Lighthouse Cafe,Chili Cheese Fries,4.69,vegetarian or beef chili,chillie_cheese_fries.jpg
 Pizza 3.14,Build Your Own Pizza,5.79,"Pepperoni, Sausage, Meatball, Chicken, Bacon, Extra Cheese, Mushrooms, Red Onions, Olives, Roasted Red Peppers, Green Peppers, Tomatoes, Broccoli, Pineapple, Fresh Jalapeños, Roasted Garlic, Artichokes. Vegetarian. Vegan. Dairy Free.",meatlovers_pizza.jpg
 Pizza 3.14,The Hawaiian,7.49,"Canadian Bacon, Pineapple, Sprinkle of Real Bacon, on a Semi-Sweet Sauce Smothered in Mozzarella",hawaiin_pizza.jpg
@@ -118,10 +118,10 @@ Mom Wong Kitchen,Chicken Dumpling,10.49,"Dumpling with chicken on the inside, ca
 Mom Wong Kitchen,Beef Pot Sticker,10.49,Dumpling filled with beef. Dairy Free.,Beef_Pot_Sticker.jpg
 Mom Wong Kitchen,Juicy Pork Dumpling w/ Peanuts,10.49,Dumpling filled with juicy pork and peanuts. Dairy Free.,Juicy_Pork_Dumpling_With_Peanuts.jpg
 Mom Wong Kitchen,Pork and Napa Dumpling,10.49,Dumpling filled with Pork and Napa. Dairy Free.,Pork_and_Napa_Dumpling.jpg
-Mom Wong Kitchen,Fried Cruller,1.49,Deep-fried pastry. Vegetarian. ,Fried_Cruller.jpg
+Mom Wong Kitchen,Fried Cruller,1.49,Deep-fried pastry. Vegetarian.,Fried_Cruller.jpg
 Mom Wong Kitchen,Vegetable Dumpling,9.99,Dumpling filled with vegetables. Vegetarian. Vegan. Dairy Free.,Vegetable_Dumpling.jpg
 Mom Wong Kitchen,Garlic Flavored Fried Chicken,9.99,Fried chicken with garlic flavoring,Garlic_Flavored_Fried_Chicken.jpg
-Mom Wong Kitchen,Shrimp and Chive Egg Dumpling,10.49,"Dumpling filled with shrimp and chive egg, can be boiled, fried, or steamed. Dairy Free",Shrimp_and_Chive_Egg_Dumpling.jpg
+Mom Wong Kitchen,Shrimp and Chive Egg Dumpling,10.49,"Dumpling filled with shrimp and chive egg, can be boiled, fried, or steamed. Dairy Free.",Shrimp_and_Chive_Egg_Dumpling.jpg
 Mom Wong Kitchen,Beef Dumpling,10.49,Dumpling filled with beef. Dairy Free.,Beef_Dumpling.jpg
 Mom Wong Kitchen,Original Flavored Fried Chicken,9.99,Fried chicken with original flavoring,Original_Flavored_Fried_Chicken.jpg
 Mom Wong Kitchen,Braised Beef Noodle Soup,11.49,"Beef soup, choose noodles or rice noodles. Dairy Free.",Braised_Beef_Noodle_Soup.jpg
@@ -136,7 +136,7 @@ Mom Wong Kitchen,Pork Hand-Ripped Noodle with Special Sauce,11.49,"Noodles made 
 Mom Wong Kitchen,Beef Hand-Ripped Noodle with Special Sauce,11.49,"Noodles made by hand-pulling wheat flour dough, served with beef and special sauce. Dairy Free",Beef_Hand-Ripped_Noodle_with_Special_Sauce.jpg
 Mom Wong Kitchen,Vegetables Hand-Ripped Noodle with Special Sauce,9.99,"Noodles made by hand-pulling wheat flour dough, served with vegetables and special sauce. Vegetarian. Vegan. Dairy Free.",Vegetables_Hand-Ripped_Noodle_with_Special_Sauce.jpg
 Mom Wong Kitchen,Chicken Hand-Ripped Noodle with Special Sauce,11.49,"Noodles made by hand-pulling wheat flour dough, served with chicken and special sauce. Dairy Free.",Chicken_Hand-Ripped_Noodle_with_Special_Sauce.jpg
-Mom Wong Kitchen,Shrimp Hand-Ripped Noodle with Special Sauce,11.49,"Noodles made by hand-pulling wheat flour dough, served with shrimp and special sauce Dairy Free.",Shrimp_Hand-Ripped_Noodle_with_Special_Sauce.jpg
+Mom Wong Kitchen,Shrimp Hand-Ripped Noodle with Special Sauce,11.49,"Noodles made by hand-pulling wheat flour dough, served with shrimp and special sauce. Dairy Free.",Shrimp_Hand-Ripped_Noodle_with_Special_Sauce.jpg
 Mom Wong Kitchen,Noodle with Black Bean Sauce,11.49,Noodles served with Black Bean sauce. Vegetarian. Vegan. Dairy Free.,Noodle_with_Black_Bean_Sauce.jpg
 Mom Wong Kitchen,Noodle and Pork Vegetable with Garlic Sauce,11.49,"Noodles served with pork, vegetables, and garlic sauce. Dairy Free.",Noodle_And_Pork_Vegetable_with_Garlic_Sauce.jpg
 Mom Wong Kitchen,Noodle with Tomato and Egg,11.49,Noodles served with tomato and eggs. Vegetarian. Dairy Free.,Noodle_with_Tomato_and_Egg.jpg
@@ -148,7 +148,7 @@ Mom Wong Kitchen,Mapo Tofu,10.49,Tofu served with rice. Vegetarian. Vegan. Dairy
 Mom Wong Kitchen,Popcorn Chicken,8.99,Popcorn chicken served with rice,Popcorn_Chicken.jpg
 Mom Wong Kitchen,Chongqing Style Fried Spicy Chicken,11.49,Chongqing Style Fried Spicy Chicken served with rice,Chongqing_Style_Fried_Spicy_Chicken.jpg
 Mom Wong Kitchen,Cucumber with Garlic Sauce,4.99,Cucumber with garlic sauce drizzled on. Vegetarian. Vegan. Dairy Free. Low Carb.,Cucumber_with_Garlic_Sauce.jpg
-Mom Wong Kitchen,Stir-Fried Baby Bok Choy,10.49,Stir-Fried Baby Bok Choy served with rice. Vegetarian.. Vegan. Dairy Free. Low Carb.,Stir-Fried_Baby_Bok_Choy.jpg
+Mom Wong Kitchen,Stir-Fried Baby Bok Choy,10.49,Stir-Fried Baby Bok Choy served with rice. Vegetarian. Vegan. Dairy Free. Low Carb.,Stir-Fried_Baby_Bok_Choy.jpg
 Mom Wong Kitchen,Spicy Beef,7.99,Spicy Beef served with rice. Dairy Free.,Spicy_Beef.jpg
 Mom Wong Kitchen,Eggplant with Garlic Sauce,10.49,Eggplant with Garlic Sauce served with rice. Vegetarian. Vegan. Dairy Free. Low Carb.,Eggplant_with_Garlic_Sauce.jpg
 Mom Wong Kitchen,Beef Broccoli,10.99,Beef and broccoli served with rice. Dairy Free.,Beef_Broccoli.jpg
