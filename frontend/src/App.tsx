@@ -19,10 +19,11 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { FilterByPriceRange, FilterByRestaurant } from './domain/utils';
 
+import { ItemDetailDialog } from './components/ItemDetailDialog';
 import MunchGrid from './components/MunchGrid';
 import { MunchItem } from './components/MunchItem';
-import SearchBar from './components/SearchBar';
 import MunchTable from './components/MunchTable';
+import SearchBar from './components/SearchBar';
 
 export type Order = 'asc' | 'desc';
 
@@ -55,6 +56,8 @@ function App() {
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof MunchItem>('item_name');
   const [priceFilterValue, setPriceFilterValue] = React.useState<number>(0);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState({} as MunchItem);
 
   useEffect(() => {
     fetch(`http://localhost:3001`).then((response: Response) => {
@@ -115,6 +118,15 @@ function App() {
     setPriceFilterValue(parseInt(event.target.value, 10));
   };
 
+  const handleDialogOpen = (item: MunchItem) => {
+    setDialogOpen(true);
+    setSelectedItem(item);
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+
   let munchItems: MunchItem[] = displayItems.map((value: FoodItem) => { return mapFoodItemData(value); });
   munchItems = FilterByPriceRange(munchItems, priceFilterValue);
   munchItems = FilterByRestaurant(munchItems, currentRestaurantFilters);
@@ -147,17 +159,16 @@ function App() {
       <CssBaseline />
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
-          <Box sx={{ padding: 1, maxHeight: 64}}>
+          <Box sx={{ padding: 1, maxHeight: 64 }}>
             <img src="./LOGO.PNG" height="48" alt="Logo" />
           </Box>
-            <Typography
+          <Typography
             variant="h4"
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' }, pt: 1 }}
-            >
-              Munch
-            </Typography>
-          
+          >
+            Munch
+          </Typography>
           <SearchBar searchCallback={handleSearchWordChange} />
         </Toolbar>
       </AppBar>
@@ -168,7 +179,6 @@ function App() {
           [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
         }}
       >
-        
         <Toolbar />
         <Box sx={{ overflow: 'auto', pt: 2 }}>
           <Container>
@@ -237,8 +247,13 @@ function App() {
           </ToggleButton>
         </ToggleButtonGroup>
         <MunchTable rows={munchItems} show={showTable} order={order} orderBy={orderBy} sortCallback={handleSortTableChange} />
-        <MunchGrid cards={munchItems} show={showGrid} />
+        <MunchGrid cards={munchItems} show={showGrid} handleDialogOpen={handleDialogOpen} />
       </Box>
+      <ItemDetailDialog
+        selectedItem={selectedItem}
+        open={dialogOpen}
+        handleDialogClose={handleDialogClose}
+      />
     </Box>
   );
 }
