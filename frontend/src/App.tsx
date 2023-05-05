@@ -27,45 +27,26 @@ import SearchBar from './components/SearchBar';
 
 export type Order = 'asc' | 'desc';
 
-type Restaurant = {
-  name: string
-  address: string
-  description: string
-}
-
-type FoodItem = {
-  id: number
-  name: string
-  price: number
-  description: string
-  restaurant: Restaurant
-  image: string
-};
-
-export const mapFoodItemData = (foodItem: FoodItem): MunchItem => {
-  return { 'item_name': foodItem.name, 'restaurant_name': foodItem.restaurant.name, 'price': foodItem.price, 'description': foodItem.description, 'image': foodItem.image };
-}
-
 function App() {
-  const [displayItems, setDisplayItems] = useState<FoodItem[]>([]);
+  const [displayItems, setDisplayItems] = useState<MunchItem[]>([]);
   const [restaurantFilters, setRestaurantFilters] = useState<string[]>([]);
   const [currentRestaurantFilters, setCurrentRestaurantFilters] = useState<string[]>([]);
   const [showTable, setShowTable] = useState<string>("none");
   const [showGrid, setShowGrid] = useState<string>("show");
   const [pageView, setPageView] = React.useState<string | null>('grid');
   const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof MunchItem>('item_name');
+  const [orderBy, setOrderBy] = React.useState<keyof MunchItem>('name');
   const [priceFilterValue, setPriceFilterValue] = React.useState<number>(0);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState({} as MunchItem);
+  const [selectedItem, setSelectedItem] = useState<MunchItem|null>(null);
 
   useEffect(() => {
     fetch(`http://localhost:3001`).then((response: Response) => {
       response.json().then((json: any) => {
-        const foodItems: FoodItem[] = JSON.parse(json) as FoodItem[];
-        const restaurantNames = new Set<string>(foodItems.map((value: FoodItem) => { return value.restaurant.name; }))
+        const munchItems: MunchItem[] = JSON.parse(json) as MunchItem[];
+        const restaurantNames = new Set<string>(munchItems.map((value: MunchItem) => { return value.restaurant.name; }))
         setRestaurantFilters(Array.from(restaurantNames).sort());
-        setDisplayItems(foodItems);
+        setDisplayItems(munchItems);
       })
     });
 
@@ -75,10 +56,10 @@ function App() {
     let searchWord = event.target.value;
     fetch(`http://localhost:3001/searchbar?keyword=${searchWord}`).then((response: Response) => {
       response.json().then((json: any) => {
-        const foodItems: FoodItem[] = JSON.parse(json) as FoodItem[];
-        const restaurantNames = new Set<string>(foodItems.map((value: FoodItem) => { return value.restaurant.name; }))
+        const munchItems: MunchItem[] = JSON.parse(json) as MunchItem[];
+        const restaurantNames = new Set<string>(munchItems.map((value: MunchItem) => { return value.restaurant.name; }))
         setRestaurantFilters(Array.from(restaurantNames).sort());
-        setDisplayItems(foodItems);
+        setDisplayItems(munchItems);
       })
     });
   }
@@ -127,7 +108,7 @@ function App() {
     setDialogOpen(false);
   };
 
-  let munchItems: MunchItem[] = displayItems.map((value: FoodItem) => { return mapFoodItemData(value); });
+  let munchItems: MunchItem[] = displayItems;
   munchItems = FilterByPriceRange(munchItems, priceFilterValue);
   munchItems = FilterByRestaurant(munchItems, currentRestaurantFilters);
 
@@ -249,11 +230,14 @@ function App() {
         <MunchTable rows={munchItems} show={showTable} order={order} orderBy={orderBy} sortCallback={handleSortTableChange} />
         <MunchGrid cards={munchItems} show={showGrid} handleDialogOpen={handleDialogOpen} />
       </Box>
-      <ItemDetailDialog
-        selectedItem={selectedItem}
-        open={dialogOpen}
-        handleDialogClose={handleDialogClose}
-      />
+      {selectedItem ?
+        <ItemDetailDialog
+          selectedItem={selectedItem}
+          open={dialogOpen}
+          handleDialogClose={handleDialogClose}
+        />
+        : <></>
+      }
     </Box>
   );
 }

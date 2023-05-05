@@ -39,20 +39,17 @@ function MunchCard(props: MunchCardProps): React.ReactElement {
           <CardMedia
             sx={{ height: 140 }}
             image={image}
-            title={props.card.item_name}
+            title={props.card.name}
           />
           <CardContent>
             <Typography gutterBottom variant="h4" component="div">
-              {props.card.item_name}
+              {props.card.name}
             </Typography>
             <Typography gutterBottom variant="h6" component="div">
               {props.card.price}
             </Typography>
             <Typography gutterBottom variant="h6" component="div">
-              {props.card.restaurant_name}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {props.card.description}
+              {props.card.restaurant.name}
             </Typography>
           </CardContent>
         </CardActionArea>

@@ -62,8 +62,8 @@ export function MunchTable(props: MunchTableProps): React.ReactElement {
                   key={index}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                  <TableCell width={"20%"} component="th" scope="row">{row.item_name}</TableCell>
-                  <TableCell width={"15%"} align="left">{row.restaurant_name}</TableCell>
+                  <TableCell width={"20%"} component="th" scope="row">{row.name}</TableCell>
+                  <TableCell width={"15%"} align="left">{row.restaurant.name}</TableCell>
                   <TableCell width={"10%"} align="right">{row.price}</TableCell>
                   <TableCell width={"55%"} align="left">{row.description}</TableCell>
                 </TableRow>
@@ -94,12 +94,12 @@ interface HeadCell {
 const headCells: readonly HeadCell[] = [
   {
     disablePadding: false,
-    id: 'item_name',
+    id: 'name',
     numeric: false,
     label: 'Food Item',
   },
   {
-    id: 'restaurant_name',
+    id: 'restaurant',
     numeric: false,
     disablePadding: false,
     label: 'Restaurant',

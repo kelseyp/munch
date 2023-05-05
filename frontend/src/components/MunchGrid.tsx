@@ -17,7 +17,7 @@ function MunchGrid(props: MunchGridProps): React.ReactElement {
     <Box sx={{ display: props.show, flexGrow: 1 }}>
       <Grid2 container spacing={2}>
         {props.cards.map((card: MunchItem) => {
-          return <MunchCard key={card.item_name} card={card} handleDialogOpen={props.handleDialogOpen} />;
+          return <MunchCard key={card.name} card={card} handleDialogOpen={props.handleDialogOpen} />;
         })}
       </Grid2>
     </Box>

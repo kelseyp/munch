@@ -19,7 +19,7 @@ export function FilterByPriceRange(tableItems: MunchItem[], priceFilterValue: nu
 
 export function FilterByRestaurant(tableItems: MunchItem[], currentRestaurantFilters: string[]) {
   if (currentRestaurantFilters.length > 0) {
-    tableItems = tableItems.filter((tableItem: MunchItem) => { return currentRestaurantFilters.indexOf(tableItem.restaurant_name) !== -1; });
+    tableItems = tableItems.filter((tableItem: MunchItem) => { return currentRestaurantFilters.indexOf(tableItem.restaurant.name) !== -1; });
   }
 
   return tableItems;
