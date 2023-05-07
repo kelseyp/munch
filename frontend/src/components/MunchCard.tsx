@@ -54,7 +54,7 @@ function MunchCard(props: MunchCardProps): React.ReactElement {
               {props.card.name}
             </Typography>
             <Typography gutterBottom variant="h6" component="div">
-              {props.card.price}
+              ${props.card.price.toFixed(2)}
             </Typography>
             <Typography gutterBottom variant="h6" component="div"
               sx={{

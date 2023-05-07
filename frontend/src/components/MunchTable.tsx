@@ -64,7 +64,7 @@ export function MunchTable(props: MunchTableProps): React.ReactElement {
                 >
                   <TableCell width={"20%"} component="th" scope="row">{row.name}</TableCell>
                   <TableCell width={"15%"} align="left">{row.restaurant.name}</TableCell>
-                  <TableCell width={"10%"} align="right">{row.price}</TableCell>
+                  <TableCell width={"10%"} align="right">${row.price.toFixed(2)}</TableCell>
                   <TableCell width={"55%"} align="left">{row.description}</TableCell>
                 </TableRow>
               );

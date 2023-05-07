@@ -32,7 +32,7 @@ export function ItemDetailDialog(props: ItemDetailDialogProps) {
       <Card sx={{ width: 500 }}>
         <CardHeader
           title={props.selectedItem.name}
-          subheader={props.selectedItem.price}
+          subheader={`$${props.selectedItem.price.toFixed(2)}`}
         />
         <CardMedia
           sx={{ height: 300 }}
