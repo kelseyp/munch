@@ -25,18 +25,20 @@ import { MunchItem } from './components/MunchItem';
 import MunchTable from './components/MunchTable';
 import SearchBar from './components/SearchBar';
 
+type PageView = 'grid' | 'table';
+
 function App() {
   const [displayItems, setDisplayItems] = useState<MunchItem[]>([]);
   const [restaurantFilters, setRestaurantFilters] = useState<string[]>([]);
   const [currentRestaurantFilters, setCurrentRestaurantFilters] = useState<string[]>([]);
   const [showTable, setShowTable] = useState<string>("none");
   const [showGrid, setShowGrid] = useState<string>("show");
-  const [pageView, setPageView] = React.useState<string | null>('grid');
+  const [pageView, setPageView] = React.useState<PageView>('grid');
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof MunchItem>('name');
   const [priceFilterValue, setPriceFilterValue] = React.useState<number>(0);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<MunchItem|null>(null);
+  const [selectedItem, setSelectedItem] = useState<MunchItem | null>(null);
 
   useEffect(() => {
     fetch(`http://localhost:3001`).then((response: Response) => {
@@ -64,15 +66,24 @@ function App() {
 
   const handlePageView = (
     event: React.MouseEvent<HTMLElement>,
-    newPageView: string | null,
+    newPageView: PageView | null,
   ) => {
+    if (!newPageView) {
+      return;
+    }
+
     setPageView(newPageView);
-    if (newPageView === "grid") {
-      setShowTable("none");
-      setShowGrid("show");
-    } else {
-      setShowTable("show");
-      setShowGrid("none");
+
+    switch (newPageView) {
+      default:
+      case 'grid':
+        setShowTable("none");
+        setShowGrid("show");
+        break;
+      case 'table':
+        setShowTable("show");
+        setShowGrid("none");
+        break;
     }
   };
 
