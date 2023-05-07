@@ -34,7 +34,7 @@ function MunchCard(props: MunchCardProps): React.ReactElement {
 
   return (
     <Grid2 xs={12} sm={6} md={4} lg={3}>
-      <Card sx={{ maxWidth: 345 }}>
+      <Card sx={{ maxWidth: 345, height: 346 }}>
         <CardActionArea onClick={() => props.handleDialogOpen(props.card)}>
           <CardMedia
             sx={{ height: 140 }}
@@ -42,13 +42,28 @@ function MunchCard(props: MunchCardProps): React.ReactElement {
             title={props.card.name}
           />
           <CardContent>
-            <Typography gutterBottom variant="h4" component="div">
+            <Typography gutterBottom variant="h4" component="div"
+              sx={{
+                height: 85,
+                display: '-webkit-box',
+                overflow: 'hidden',
+                WebkitBoxOrient: 'vertical',
+                WebkitLineClamp: 2,
+              }}
+            >
               {props.card.name}
             </Typography>
             <Typography gutterBottom variant="h6" component="div">
               {props.card.price}
             </Typography>
-            <Typography gutterBottom variant="h6" component="div">
+            <Typography gutterBottom variant="h6" component="div"
+              sx={{
+                display: '-webkit-box',
+                overflow: 'hidden',
+                WebkitBoxOrient: 'vertical',
+                WebkitLineClamp: 1,
+              }}
+            >
               {props.card.restaurant.name}
             </Typography>
           </CardContent>
