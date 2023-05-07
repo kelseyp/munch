@@ -12,8 +12,8 @@ import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import visuallyHidden from '@mui/utils/visuallyHidden';
 
-import { Order } from '../App';
 import { MunchItem } from './MunchItem';
+import { Order } from '../domain/utils';
 
 export interface MunchTableProps {
   rows: Array<MunchItem>,

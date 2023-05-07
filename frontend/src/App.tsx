@@ -17,15 +17,13 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { FilterByPriceRange, FilterByRestaurant } from './domain/utils';
+import { FilterByPriceRange, FilterByRestaurant, Order, sortItemsByKey } from './domain/utils';
 
 import { ItemDetailDialog } from './components/ItemDetailDialog';
 import MunchGrid from './components/MunchGrid';
 import { MunchItem } from './components/MunchItem';
 import MunchTable from './components/MunchTable';
 import SearchBar from './components/SearchBar';
-
-export type Order = 'asc' | 'desc';
 
 function App() {
   const [displayItems, setDisplayItems] = useState<MunchItem[]>([]);
@@ -112,26 +110,7 @@ function App() {
   munchItems = FilterByPriceRange(munchItems, priceFilterValue);
   munchItems = FilterByRestaurant(munchItems, currentRestaurantFilters);
 
-  munchItems.sort((a: MunchItem, b: MunchItem): number => {
-    if (order === 'asc') {
-      if (a[orderBy] < b[orderBy]) {
-        return -1;
-      }
-      if (a[orderBy] > b[orderBy]) {
-        return 1;
-      }
-      return 0;
-    } else if (order === 'desc') {
-      if (b[orderBy] < a[orderBy]) {
-        return -1;
-      }
-      if (b[orderBy] > a[orderBy]) {
-        return 1;
-      }
-      return 0;
-    }
-    return 0;
-  });
+  munchItems.sort(sortItemsByKey(orderBy, order));
 
   const drawerWidth = 240;
 
@@ -195,15 +174,14 @@ function App() {
               Sort By
               <RadioGroup
                 aria-labelledby="sort-by-radio-button-group"
-                defaultValue="item_name"
+                defaultValue="name"
                 name="radio-buttons-group"
                 value={orderBy}
                 onChange={handleSortByChange}
               >
-                <FormControlLabel value="item_name" control={<Radio />} label="Food Item" />
-                <FormControlLabel value="restaurant_name" control={<Radio />} label="Restaurant" />
+                <FormControlLabel value="name" control={<Radio />} label="Food Item" />
+                <FormControlLabel value="restaurant" control={<Radio />} label="Restaurant" />
                 <FormControlLabel value="price" control={<Radio />} label="Price" />
-                <FormControlLabel value="description" control={<Radio />} label="Description" />
               </RadioGroup>
               <Divider />
             </Typography>
