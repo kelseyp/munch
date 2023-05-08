@@ -34,8 +34,8 @@ const readCSV = async <T>(filePath: string, delimeter: string = ','): Promise<T[
 }
 
 AppDataSource.initialize().then(async () => {
-    // await AppDataSource.manager.clear(FoodItem);
-    // await AppDataSource.manager.clear(Restaurant);
+    await AppDataSource.dropDatabase();
+    await AppDataSource.synchronize();
     let rawRestaurants = await readCSV<RawRestaurant>(path.resolve(__dirname, '../../../shared/data/DatabaseRestaurants.csv'), '|');
 
     for await(const rawRestaurant of rawRestaurants) {
@@ -44,6 +44,8 @@ AppDataSource.initialize().then(async () => {
             console.log(`${rawRestaurant.Name} not found`)
             restaurant = new Restaurant()
             restaurant.name = rawRestaurant.Name;
+            restaurant.address = rawRestaurant.Address;
+            restaurant.description = rawRestaurant.Description;
             await AppDataSource.manager.save(restaurant)
         } else {
             console.log(`${restaurant.name} found`)
