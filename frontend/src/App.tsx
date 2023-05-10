@@ -24,6 +24,7 @@ import MunchGrid from './components/MunchGrid';
 import { MunchItem } from './components/MunchItem';
 import MunchTable from './components/MunchTable';
 import SearchBar from './components/SearchBar';
+import { OpeningDialog } from './components/OpeningDialogue';
 
 type PageView = 'grid' | 'table';
 
@@ -219,6 +220,10 @@ function App() {
         <MunchTable rows={munchItems} show={showTable} order={order} orderBy={orderBy} sortCallback={handleSortTableChange} />
         <MunchGrid cards={munchItems} show={showGrid} handleDialogOpen={handleDialogOpen} />
       </Box>
+      <OpeningDialog
+        open={true}
+        handleDialogClose={() => { }}
+      />
       {selectedItem ?
         <ItemDetailDialog
           selectedItem={selectedItem}
