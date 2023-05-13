@@ -61,7 +61,7 @@ export default function SearchBar(props: SearchBarProps) {
                     <SearchIcon />
                 </SearchIconWrapper>
                 <StyledInputBase
-                    placeholder="What are we eating tonight?"
+                    placeholder="What are we in the mood for?"
                     inputProps={{ 'aria-label': 'search' }}
                     onChange={props.searchCallback}
                 />
