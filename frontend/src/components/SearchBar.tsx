@@ -11,10 +11,10 @@ export const Search = styled('div')(({ theme }) => ({
         backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
     marginRight: theme.spacing(2),
-    marginLeft: theme.spacing(15),
+    marginLeft: theme.spacing(2),
     width: '60%',
     [theme.breakpoints.up('md')]: {
-        marginLeft: theme.spacing(15),
+        marginLeft: theme.spacing(2),
         width: '60%',
     },
 }));
@@ -54,7 +54,7 @@ export default function SearchBar(props: SearchBarProps) {
         <Container
         maxWidth="md"
         disableGutters
-        sx={{ flexGrow: 0 }}
+        sx={{ flexGrow: 1 }}
         >
             <Search>
                 <SearchIconWrapper>

@@ -6,14 +6,14 @@ import { useEffect, useState } from 'react';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
-import { Checkbox, FormControlLabel, FormGroup, Radio, RadioGroup } from '@mui/material';
+import { Checkbox, FormControlLabel, FormGroup, Radio, RadioGroup, SelectChangeEvent } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
-import { Dialog, DialogTitle, DialogContentText } from "@mui/material";
+import { Dialog, DialogContent, DialogActions } from "@mui/material";
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Toolbar from '@mui/material/Toolbar';
@@ -25,7 +25,7 @@ import MunchGrid from './components/MunchGrid';
 import { MunchItem } from './components/MunchItem';
 import MunchTable from './components/MunchTable';
 import SearchBar from './components/SearchBar'; 
-import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
 
 type PageView = 'grid' | 'table';
 
@@ -120,6 +120,10 @@ function App() {
     setDialogOpen(false);
   };
 
+  const handleOpenerDialogClose = () => {
+    setOpen(false);
+  }
+
   let munchItems: MunchItem[] = displayItems;
   munchItems = FilterByPriceRange(munchItems, priceFilterValue);
   munchItems = FilterByRestaurant(munchItems, currentRestaurantFilters);
@@ -133,7 +137,7 @@ function App() {
       <CssBaseline />
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
-          <Box sx={{ padding: 1, maxHeight: 64 }}>
+          <Box sx={{ padding: 1, maxHeight: 64 , alignSelf: 'center'}}>
             <img src="./LOGO.PNG" height="48" alt="Logo" />
           </Box>
           <Typography
@@ -150,10 +154,12 @@ function App() {
         open ={open}
         onClose={handleDialogClose}
       >
-        <Container>
-        </Container>
-        <SearchBar searchCallback={handleSearchWordChange} />
-
+        <DialogContent>
+          <SearchBar searchCallback={handleSearchWordChange} />
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" size="medium" onClick={handleOpenerDialogClose}>Eat</Button>
+        </DialogActions>
       </Dialog>
       <Drawer variant="permanent"
         sx={{
