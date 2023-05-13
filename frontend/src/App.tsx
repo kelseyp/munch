@@ -13,6 +13,7 @@ import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
+import { Dialog, DialogTitle, DialogContentText } from "@mui/material";
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Toolbar from '@mui/material/Toolbar';
@@ -23,7 +24,8 @@ import { ItemDetailDialog } from './components/ItemDetailDialog';
 import MunchGrid from './components/MunchGrid';
 import { MunchItem } from './components/MunchItem';
 import MunchTable from './components/MunchTable';
-import SearchBar from './components/SearchBar';
+import SearchBar from './components/SearchBar'; 
+import Grid from '@mui/material/Grid';
 
 type PageView = 'grid' | 'table';
 
@@ -39,6 +41,7 @@ function App() {
   const [priceFilterValue, setPriceFilterValue] = React.useState<number>(0);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<MunchItem | null>(null);
+  const [open, setOpen] = React.useState(true); { //Used with the opening dialog. Other methods weren't working. }
 
   useEffect(() => {
     fetch(`http://localhost:3001`).then((response: Response) => {
@@ -143,6 +146,15 @@ function App() {
           <SearchBar searchCallback={handleSearchWordChange} />
         </Toolbar>
       </AppBar>
+      <Dialog
+        open ={open}
+        onClose={handleDialogClose}
+      >
+        <Container>
+        </Container>
+        <SearchBar searchCallback={handleSearchWordChange} />
+
+      </Dialog>
       <Drawer variant="permanent"
         sx={{
           width: drawerWidth,
@@ -229,6 +241,6 @@ function App() {
       }
     </Box>
   );
-}
+}}
 
 export default App;

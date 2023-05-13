@@ -2,11 +2,9 @@ import { SettingsInputComponent } from "@mui/icons-material";
 import { Card, CardContent, CardHeader, CardMedia, Dialog, Typography, DialogTitle, DialogContentText } from "@mui/material";
 import * as React from 'react';
 import { useEffect, useState } from "react";
-import { SearchBar } from './SearchBar';
 
 export interface OpeningDialog {
     open : boolean;
-    search: SearchBar;
     handleDialogClose: () => void;
 }
 
@@ -38,7 +36,7 @@ export function OpeningDialog(props: OpeningDialog) {
                         (Low card, vegan, etc) and Munch will tell you what to eat!
                 </DialogContentText>    
                 <div>
-                    {props.search}
+                    
                 </div>
             </Dialog>
         </div>
