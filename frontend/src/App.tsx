@@ -158,7 +158,7 @@ function App() {
           <SearchBar searchCallback={handleSearchWordChange} />
         </DialogContent>
         <DialogActions>
-          <Button variant="contained" size="medium" onClick={handleOpenerDialogClose}>Eat</Button>
+          <Button variant="contained" size="medium" onClick={handleOpenerDialogClose}>Let's Eat!</Button>
         </DialogActions>
       </Dialog>
       <Drawer variant="permanent"
