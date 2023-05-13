@@ -18,6 +18,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { FilterByPriceRange, FilterByRestaurant } from './domain/utils';
+import visuallyHidden from '@mui/utils/visuallyHidden';
 
 import MunchGrid from './components/MunchGrid';
 import { MunchItem } from './components/MunchItem';
@@ -214,6 +215,24 @@ function App() {
                 <FormControlLabel value="price" control={<Radio />} label="Price" />
                 <FormControlLabel value="description" control={<Radio />} label="Description" />
               </RadioGroup>
+
+              <RadioGroup
+                aria-labelledby="sort-by-radio-button-group"
+                defaultValue="item_name"
+                name="radio-buttons-group"
+                value= {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                onChange={handleSortByChange}
+              >
+                <FormControlLabel value="item_name" control={<Radio />} label="Food Item2" />
+                <FormControlLabel value="restaurant_name" control={<Radio />} label="Restaurant2" />
+                <FormControlLabel value="price" control={<Radio />} label="Price2" />
+                <FormControlLabel value="description" control={<Radio />} label="Description2" />
+              </RadioGroup>
+
+                <Box component="span" sx={visuallyHidden}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                </Box>
+
               <Divider />
             </Typography>
           </Container>
