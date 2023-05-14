@@ -17,7 +17,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { FilterByPriceRange, FilterByRestaurant, Order, sortItemsByKey } from './domain/utils';
+import { FilterByDietaryRestriction, FilterByPriceRange, FilterByRestaurant, Order, sortItemsByKey } from './domain/utils';
 
 import { ItemDetailDialog } from './components/ItemDetailDialog';
 import MunchGrid from './components/MunchGrid';
@@ -31,6 +31,7 @@ function App() {
   const [displayItems, setDisplayItems] = useState<MunchItem[]>([]);
   const [restaurantFilters, setRestaurantFilters] = useState<string[]>([]);
   const [currentRestaurantFilters, setCurrentRestaurantFilters] = useState<string[]>([]);
+  const [currentDietaryFilters, setCurrentDietaryFilters] = useState<string[]>([]);
   const [showTable, setShowTable] = useState<string>("none");
   const [showGrid, setShowGrid] = useState<string>("show");
   const [pageView, setPageView] = React.useState<PageView>('grid');
@@ -117,9 +118,18 @@ function App() {
     setDialogOpen(false);
   };
 
+  let handleDietaryCheckBoxChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    if (checked) {
+      setCurrentDietaryFilters([...currentDietaryFilters, event.target.name]);
+    } else if (!checked) {
+      setCurrentDietaryFilters(currentDietaryFilters.filter((value: string) => { return value !== event.target.name; }));
+    }
+  };
+
   let munchItems: MunchItem[] = displayItems;
   munchItems = FilterByPriceRange(munchItems, priceFilterValue);
   munchItems = FilterByRestaurant(munchItems, currentRestaurantFilters);
+  munchItems = FilterByDietaryRestriction(munchItems, currentDietaryFilters);
 
   munchItems.sort(sortItemsByKey(orderBy, order));
 
@@ -166,6 +176,14 @@ function App() {
                 {restaurantFilters.map((value: string) => {
                   return <FormControlLabel label={value} key={value} control={<Checkbox onChange={handleCheckedBoxChange} name={value} />} />;
                 })}
+              </FormGroup>
+              <Divider />
+              Dietary
+              <FormGroup>
+                <FormControlLabel label={"Vegetarian"} key={"Vegetarian"} control={<Checkbox onChange={handleDietaryCheckBoxChange} name={"Vegetarian"} />} />
+                <FormControlLabel label={"Dairy Free"} key={"Dairy Free"} control={<Checkbox onChange={handleDietaryCheckBoxChange} name={"Dairy Free"} />} />
+                <FormControlLabel label={"Vegan"} key={"Vegan"} control={<Checkbox onChange={handleDietaryCheckBoxChange} name={"Vegan"} />} />
+                <FormControlLabel label={"Low Carb"} key={"Low Carb"} control={<Checkbox onChange={handleDietaryCheckBoxChange} name={"Low Carb"} />} />
               </FormGroup>
               <Divider />
               Price
