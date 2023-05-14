@@ -42,7 +42,7 @@ function App() {
   const [selectedItem, setSelectedItem] = useState<MunchItem | null>(null);
 
   useEffect(() => {
-    fetch(`http://localhost:3001`).then((response: Response) => {
+    fetch(`http://127.0.0.1:3001`).then((response: Response) => {
       response.json().then((json: any) => {
         const munchItems: MunchItem[] = JSON.parse(json) as MunchItem[];
         const restaurantNames = new Set<string>(munchItems.map((value: MunchItem) => { return value.restaurant.name; }))
@@ -55,7 +55,7 @@ function App() {
 
   const handleSearchWordChange = (event: any) => {
     let searchWord = event.target.value;
-    fetch(`http://localhost:3001/searchbar?keyword=${searchWord}`).then((response: Response) => {
+    fetch(`http://127.0.0.1:3001/searchbar?keyword=${searchWord}`).then((response: Response) => {
       response.json().then((json: any) => {
         const munchItems: MunchItem[] = JSON.parse(json) as MunchItem[];
         const restaurantNames = new Set<string>(munchItems.map((value: MunchItem) => { return value.restaurant.name; }))
