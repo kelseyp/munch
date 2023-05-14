@@ -16,6 +16,7 @@ import Drawer from '@mui/material/Drawer';
 import { Dialog, DialogContent, DialogActions } from "@mui/material";
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { FilterByPriceRange, FilterByRestaurant, Order, sortItemsByKey } from './domain/utils';
@@ -24,8 +25,7 @@ import { ItemDetailDialog } from './components/ItemDetailDialog';
 import MunchGrid from './components/MunchGrid';
 import { MunchItem } from './components/MunchItem';
 import MunchTable from './components/MunchTable';
-import SearchBar from './components/SearchBar'; 
-import Button from '@mui/material/Button';
+import SearchBar from './components/SearchBar';
 
 type PageView = 'grid' | 'table';
 
