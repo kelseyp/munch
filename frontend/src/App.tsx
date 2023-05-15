@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
-import { Checkbox, FormControlLabel, FormGroup, Radio, RadioGroup } from '@mui/material';
+import { Checkbox, FormControlLabel, FormGroup, Radio, RadioGroup, TableCell, TableSortLabel } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -23,7 +23,11 @@ import { ItemDetailDialog } from './components/ItemDetailDialog';
 import MunchGrid from './components/MunchGrid';
 import { MunchItem } from './components/MunchItem';
 import MunchTable from './components/MunchTable';
+import { headCells } from './components/MunchTable';
+import { EnhancedTableHead} from './components/MunchTable';
 import SearchBar from './components/SearchBar';
+import visuallyHidden from '@mui/utils/visuallyHidden';
+
 
 type PageView = 'grid' | 'table';
 
@@ -212,6 +216,48 @@ function App() {
                 <FormControlLabel value="restaurant" control={<Radio />} label="Restaurant" />
                 <FormControlLabel value="price" control={<Radio />} label="Price" />
               </RadioGroup>
+
+              <RadioGroup
+                aria-labelledby="sort-by-radio-button-group"
+                defaultValue="item_name"
+                name="radio-buttons-group"
+                value= {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                onChange={handleSortByChange}
+              >
+                <FormControlLabel value="item_name" control={<Radio />} label="Food Item2" />
+                <FormControlLabel value="restaurant_name" control={<Radio />} label="Restaurant2" />
+                <FormControlLabel value="price" control={<Radio />} label="Price2" />
+                <FormControlLabel value="description" control={<Radio />} label="Description2" />
+              </RadioGroup>
+
+              {headCells.map((headCell) => (
+          <TableCell
+            sx={{fontWeight:'bold'}}
+            key={headCell.id}
+            align={headCell.numeric ? 'right' : 'left'}
+            padding={headCell.disablePadding ? 'none' : 'normal'}
+            sortDirection={orderBy === headCell.id ? order : false}
+          >
+            <TableSortLabel
+              active={orderBy === headCell.id}
+              direction={orderBy === headCell.id ? order : 'asc'}
+             // onClick={createSortHandler(headCell.id)}
+            >
+              {headCell.label}
+              {orderBy === headCell.id ? (
+                <Box component="span" sx={visuallyHidden}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                </Box>
+              ) : null}
+            </TableSortLabel>
+          </TableCell>
+        ))}
+
+                <Box component="span" sx={visuallyHidden}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                </Box>
+
+
               <Divider />
             </Typography>
           </Container>

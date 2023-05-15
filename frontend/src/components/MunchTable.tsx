@@ -91,7 +91,7 @@ interface HeadCell {
   numeric: boolean;
 }
 
-const headCells: readonly HeadCell[] = [
+export const headCells: readonly HeadCell[] = [
   {
     disablePadding: false,
     id: 'name',
@@ -118,13 +118,13 @@ const headCells: readonly HeadCell[] = [
   },
 ];
 
-interface EnhancedTableProps {
+export interface EnhancedTableProps {
   onRequestSort: (event: React.MouseEvent<unknown>, property: keyof MunchItem) => void;
   order: Order;
   orderBy: string;
 }
 
-function EnhancedTableHead(props: EnhancedTableProps) {
+export function EnhancedTableHead(props: EnhancedTableProps) {
   const { order, orderBy, onRequestSort } = props;
   
   const createSortHandler = (property: keyof MunchItem) => (event: React.MouseEvent<unknown>) => {
