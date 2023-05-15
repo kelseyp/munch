@@ -19,8 +19,50 @@ export function FilterByPriceRange(tableItems: MunchItem[], priceFilterValue: nu
 
 export function FilterByRestaurant(tableItems: MunchItem[], currentRestaurantFilters: string[]) {
   if (currentRestaurantFilters.length > 0) {
-    tableItems = tableItems.filter((tableItem: MunchItem) => { return currentRestaurantFilters.indexOf(tableItem.restaurant_name) !== -1; });
+    tableItems = tableItems.filter((tableItem: MunchItem) => { return currentRestaurantFilters.indexOf(tableItem.restaurant.name) !== -1; });
   }
 
   return tableItems;
+}
+
+export function FilterByDietaryRestriction(tableItems: MunchItem[], currentDietaryFilters: string[]) {
+  if (currentDietaryFilters.length > 0) {
+    if (currentDietaryFilters.includes("Vegetarian")) {
+      tableItems = tableItems.filter((tableItem: MunchItem) => { return tableItem.description.includes("Vegetarian"); });
+    }
+    if (currentDietaryFilters.includes("Dairy Free")) {
+      tableItems = tableItems.filter((tableItem: MunchItem) => { return tableItem.description.includes("Dairy Free"); });
+    }
+    if (currentDietaryFilters.includes("Vegan")) {
+      tableItems = tableItems.filter((tableItem: MunchItem) => { return tableItem.description.includes("Vegan"); });
+    }
+    if (currentDietaryFilters.includes("Low Carb")) {
+      tableItems = tableItems.filter((tableItem: MunchItem) => { return tableItem.description.includes("Low Carb"); });
+    }
+
+  }
+
+  return tableItems;
+}
+
+export type Order = 'asc' | 'desc';
+
+export function sortItemsByKey(orderBy: keyof MunchItem, order: Order): ((a: MunchItem, b: MunchItem) => number) | undefined {
+  return (left: MunchItem, right: MunchItem): number => {
+    let a = left[orderBy];
+    let b = right[orderBy];
+    if (orderBy === 'restaurant') {
+      a = left[orderBy].name;
+      b = right[orderBy].name;
+    }
+
+    let comparison = 0;
+    if (a < b) {
+      comparison = -1;
+    } else if (a > b) {
+      comparison = 1;
+    }
+
+    return (order === 'asc') ? comparison : -1 * comparison;
+  };
 }

@@ -17,53 +17,37 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { FilterByPriceRange, FilterByRestaurant } from './domain/utils';
-import visuallyHidden from '@mui/utils/visuallyHidden';
+import { FilterByDietaryRestriction, FilterByPriceRange, FilterByRestaurant, Order, sortItemsByKey } from './domain/utils';
 
+import { ItemDetailDialog } from './components/ItemDetailDialog';
 import MunchGrid from './components/MunchGrid';
 import { MunchItem } from './components/MunchItem';
-import SearchBar from './components/SearchBar';
 import MunchTable from './components/MunchTable';
+import SearchBar from './components/SearchBar';
 
-export type Order = 'asc' | 'desc';
-
-type Restaurant = {
-  name: string
-  address: string
-  description: string
-}
-
-type FoodItem = {
-  id: number
-  name: string
-  price: number
-  description: string
-  restaurant: Restaurant
-  image: string
-};
-
-export const mapFoodItemData = (foodItem: FoodItem): MunchItem => {
-  return { 'item_name': foodItem.name, 'restaurant_name': foodItem.restaurant.name, 'price': foodItem.price, 'description': foodItem.description, 'image': foodItem.image };
-}
+type PageView = 'grid' | 'table';
 
 function App() {
-  const [displayItems, setDisplayItems] = useState<FoodItem[]>([]);
+  const [displayItems, setDisplayItems] = useState<MunchItem[]>([]);
   const [restaurantFilters, setRestaurantFilters] = useState<string[]>([]);
   const [currentRestaurantFilters, setCurrentRestaurantFilters] = useState<string[]>([]);
+  const [currentDietaryFilters, setCurrentDietaryFilters] = useState<string[]>([]);
   const [showTable, setShowTable] = useState<string>("none");
   const [showGrid, setShowGrid] = useState<string>("show");
-  const [pageView, setPageView] = React.useState<string | null>('grid');
+  const [pageView, setPageView] = React.useState<PageView>('grid');
   const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof MunchItem>('item_name');
+  const [orderBy, setOrderBy] = React.useState<keyof MunchItem>('name');
   const [priceFilterValue, setPriceFilterValue] = React.useState<number>(0);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<MunchItem | null>(null);
 
   useEffect(() => {
     fetch(`http://localhost:3001`).then((response: Response) => {
       response.json().then((json: any) => {
-        const foodItems: FoodItem[] = JSON.parse(json) as FoodItem[];
-        const restaurantNames = new Set<string>(foodItems.map((value: FoodItem) => { return value.restaurant.name; }))
+        const munchItems: MunchItem[] = JSON.parse(json) as MunchItem[];
+        const restaurantNames = new Set<string>(munchItems.map((value: MunchItem) => { return value.restaurant.name; }))
         setRestaurantFilters(Array.from(restaurantNames).sort());
-        setDisplayItems(foodItems);
+        setDisplayItems(munchItems);
       })
     });
 
@@ -73,25 +57,34 @@ function App() {
     let searchWord = event.target.value;
     fetch(`http://localhost:3001/searchbar?keyword=${searchWord}`).then((response: Response) => {
       response.json().then((json: any) => {
-        const foodItems: FoodItem[] = JSON.parse(json) as FoodItem[];
-        const restaurantNames = new Set<string>(foodItems.map((value: FoodItem) => { return value.restaurant.name; }))
+        const munchItems: MunchItem[] = JSON.parse(json) as MunchItem[];
+        const restaurantNames = new Set<string>(munchItems.map((value: MunchItem) => { return value.restaurant.name; }))
         setRestaurantFilters(Array.from(restaurantNames).sort());
-        setDisplayItems(foodItems);
+        setDisplayItems(munchItems);
       })
     });
   }
 
   const handlePageView = (
     event: React.MouseEvent<HTMLElement>,
-    newPageView: string | null,
+    newPageView: PageView | null,
   ) => {
+    if (!newPageView) {
+      return;
+    }
+
     setPageView(newPageView);
-    if (newPageView === "grid") {
-      setShowTable("none");
-      setShowGrid("show");
-    } else {
-      setShowTable("show");
-      setShowGrid("none");
+
+    switch (newPageView) {
+      default:
+      case 'grid':
+        setShowTable("none");
+        setShowGrid("show");
+        break;
+      case 'table':
+        setShowTable("show");
+        setShowGrid("none");
+        break;
     }
   };
 
@@ -116,30 +109,29 @@ function App() {
     setPriceFilterValue(parseInt(event.target.value, 10));
   };
 
-  let munchItems: MunchItem[] = displayItems.map((value: FoodItem) => { return mapFoodItemData(value); });
+  const handleDialogOpen = (item: MunchItem) => {
+    setDialogOpen(true);
+    setSelectedItem(item);
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+
+  let handleDietaryCheckBoxChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    if (checked) {
+      setCurrentDietaryFilters([...currentDietaryFilters, event.target.name]);
+    } else if (!checked) {
+      setCurrentDietaryFilters(currentDietaryFilters.filter((value: string) => { return value !== event.target.name; }));
+    }
+  };
+
+  let munchItems: MunchItem[] = displayItems;
   munchItems = FilterByPriceRange(munchItems, priceFilterValue);
   munchItems = FilterByRestaurant(munchItems, currentRestaurantFilters);
+  munchItems = FilterByDietaryRestriction(munchItems, currentDietaryFilters);
 
-  munchItems.sort((a: MunchItem, b: MunchItem): number => {
-    if (order === 'asc') {
-      if (a[orderBy] < b[orderBy]) {
-        return -1;
-      }
-      if (a[orderBy] > b[orderBy]) {
-        return 1;
-      }
-      return 0;
-    } else if (order === 'desc') {
-      if (b[orderBy] < a[orderBy]) {
-        return -1;
-      }
-      if (b[orderBy] > a[orderBy]) {
-        return 1;
-      }
-      return 0;
-    }
-    return 0;
-  });
+  munchItems.sort(sortItemsByKey(orderBy, order));
 
   const drawerWidth = 240;
 
@@ -148,17 +140,16 @@ function App() {
       <CssBaseline />
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
-          <Box sx={{ padding: 1, maxHeight: 64}}>
+          <Box sx={{ padding: 1, maxHeight: 64 }}>
             <img src="./LOGO.PNG" height="48" alt="Logo" />
           </Box>
-            <Typography
+          <Typography
             variant="h4"
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' }, pt: 1 }}
-            >
-              Munch
-            </Typography>
-          
+          >
+            Munch
+          </Typography>
           <SearchBar searchCallback={handleSearchWordChange} />
         </Toolbar>
       </AppBar>
@@ -169,7 +160,6 @@ function App() {
           [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
         }}
       >
-        
         <Toolbar />
         <Box sx={{ overflow: 'auto', pt: 2 }}>
           <Container>
@@ -186,6 +176,14 @@ function App() {
                 {restaurantFilters.map((value: string) => {
                   return <FormControlLabel label={value} key={value} control={<Checkbox onChange={handleCheckedBoxChange} name={value} />} />;
                 })}
+              </FormGroup>
+              <Divider />
+              Dietary
+              <FormGroup>
+                <FormControlLabel label={"Vegetarian"} key={"Vegetarian"} control={<Checkbox onChange={handleDietaryCheckBoxChange} name={"Vegetarian"} />} />
+                <FormControlLabel label={"Dairy Free"} key={"Dairy Free"} control={<Checkbox onChange={handleDietaryCheckBoxChange} name={"Dairy Free"} />} />
+                <FormControlLabel label={"Vegan"} key={"Vegan"} control={<Checkbox onChange={handleDietaryCheckBoxChange} name={"Vegan"} />} />
+                <FormControlLabel label={"Low Carb"} key={"Low Carb"} control={<Checkbox onChange={handleDietaryCheckBoxChange} name={"Low Carb"} />} />
               </FormGroup>
               <Divider />
               Price
@@ -205,34 +203,15 @@ function App() {
               Sort By
               <RadioGroup
                 aria-labelledby="sort-by-radio-button-group"
-                defaultValue="item_name"
+                defaultValue="name"
                 name="radio-buttons-group"
                 value={orderBy}
                 onChange={handleSortByChange}
               >
-                <FormControlLabel value="item_name" control={<Radio />} label="Food Item" />
-                <FormControlLabel value="restaurant_name" control={<Radio />} label="Restaurant" />
+                <FormControlLabel value="name" control={<Radio />} label="Food Item" />
+                <FormControlLabel value="restaurant" control={<Radio />} label="Restaurant" />
                 <FormControlLabel value="price" control={<Radio />} label="Price" />
-                <FormControlLabel value="description" control={<Radio />} label="Description" />
               </RadioGroup>
-
-              <RadioGroup
-                aria-labelledby="sort-by-radio-button-group"
-                defaultValue="item_name"
-                name="radio-buttons-group"
-                value= {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                onChange={handleSortByChange}
-              >
-                <FormControlLabel value="item_name" control={<Radio />} label="Food Item2" />
-                <FormControlLabel value="restaurant_name" control={<Radio />} label="Restaurant2" />
-                <FormControlLabel value="price" control={<Radio />} label="Price2" />
-                <FormControlLabel value="description" control={<Radio />} label="Description2" />
-              </RadioGroup>
-
-                <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-
               <Divider />
             </Typography>
           </Container>
@@ -256,8 +235,16 @@ function App() {
           </ToggleButton>
         </ToggleButtonGroup>
         <MunchTable rows={munchItems} show={showTable} order={order} orderBy={orderBy} sortCallback={handleSortTableChange} />
-        <MunchGrid cards={munchItems} show={showGrid} />
+        <MunchGrid cards={munchItems} show={showGrid} handleDialogOpen={handleDialogOpen} />
       </Box>
+      {selectedItem ?
+        <ItemDetailDialog
+          selectedItem={selectedItem}
+          open={dialogOpen}
+          handleDialogClose={handleDialogClose}
+        />
+        : <></>
+      }
     </Box>
   );
 }

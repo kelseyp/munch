@@ -1,7 +1,10 @@
+import { Restaurant } from "./Restaurant"
+
 export interface MunchItem {
-    item_name: string,
-    restaurant_name: string,
-    price: number,
-    description: string,
+    id: number
+    name: string
+    price: number
+    description: string
+    restaurant: Restaurant
     image: string
 }
