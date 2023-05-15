@@ -127,12 +127,6 @@ function App() {
     }
   };
 
-  // const handleKeyChecking = (event: React.KeyboardEventHandler<HTMLInputElement>) => {
-  //   if (event.keyCode == 13){
-
-  //   }
-  // }
-
   const handleOpenerDialogClose = () => {
     setOpen(false);
     let searchWord = document.querySelector<HTMLInputElement>('input[name="dialogSearchBar"]')?.value;
@@ -208,8 +202,8 @@ function App() {
                     <SearchIcon />
                   </SearchIconWrapper>
                   <StyledInputBase
-                    onKeyDown={(ev) => {
-                      if (ev.key === 'Enter') {
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter') {
                         handleOpenerDialogClose()
                       }}}
                     placeholder="What are we in the mood for?"
