@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
-import { Checkbox, Dialog, DialogContent, FormControlLabel, FormGroup, Radio, RadioGroup } from '@mui/material';
+import { Checkbox, Dialog, DialogContent, FormControlLabel, FormGroup, Radio, RadioGroup, TableCell, TableSortLabel } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -22,6 +22,9 @@ import { ItemDetailDialog } from './components/ItemDetailDialog';
 import MunchGrid from './components/MunchGrid';
 import { MunchItem } from './components/MunchItem';
 import MunchTable from './components/MunchTable';
+import { headCells } from './components/MunchTable';
+import { EnhancedTableProps} from './components/MunchTable';
+import visuallyHidden from '@mui/utils/visuallyHidden';
 import { Search, SearchIconWrapper, StyledInputBase } from './components/SearchBar';
 import SearchIcon from '@mui/icons-material/Search';
 
@@ -149,7 +152,9 @@ function App() {
   munchItems.sort(sortItemsByKey(orderBy, order));
 
   const drawerWidth = 240;
-
+  const createSortHandler = (property: keyof MunchItem) => (event: React.MouseEvent<unknown>) => {
+    EnhancedTableProps onRequestSort(event, property);
+  };
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -280,6 +285,28 @@ function App() {
                 <FormControlLabel value="restaurant" control={<Radio />} label="Restaurant" />
                 <FormControlLabel value="price" control={<Radio />} label="Price" />
               </RadioGroup>
+              {headCells.map((headCell) => (
+          <TableCell
+            sx={{fontWeight:'bold'}}
+            key={headCell.id}
+            align={headCell.numeric ? 'right' : 'left'}
+            padding={headCell.disablePadding ? 'none' : 'normal'}
+            sortDirection={orderBy === headCell.id ? order : false}
+          >
+            <TableSortLabel
+              active={orderBy === headCell.id}
+              direction={orderBy === headCell.id ? order : 'asc'}
+              onClick={createSortHandler(headCell.id)}
+            >
+              {headCell.label}
+              {orderBy === headCell.id ? (
+                <Box component="span" sx={visuallyHidden}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                </Box>
+              ) : null}
+            </TableSortLabel>
+          </TableCell>
+        ))}
               <Divider />
             </Typography>
           </Container>
