@@ -1,14 +1,13 @@
 import './App.css';
-
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
-import { Checkbox, FormControlLabel, FormGroup, Radio, RadioGroup, TableCell, TableSortLabel } from '@mui/material';
+import { Checkbox, Dialog, DialogContent, FormControlLabel, FormGroup, Radio, RadioGroup } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
@@ -18,16 +17,13 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { FilterByDietaryRestriction, FilterByPriceRange, FilterByRestaurant, Order, sortItemsByKey } from './domain/utils';
-
+import Grid2 from '@mui/material/Unstable_Grid2';
 import { ItemDetailDialog } from './components/ItemDetailDialog';
 import MunchGrid from './components/MunchGrid';
 import { MunchItem } from './components/MunchItem';
 import MunchTable from './components/MunchTable';
-import { headCells } from './components/MunchTable';
-import { EnhancedTableHead} from './components/MunchTable';
-import SearchBar from './components/SearchBar';
-import visuallyHidden from '@mui/utils/visuallyHidden';
-
+import { Search, SearchIconWrapper, StyledInputBase } from './components/SearchBar';
+import SearchIcon from '@mui/icons-material/Search';
 
 type PageView = 'grid' | 'table';
 
@@ -44,6 +40,7 @@ function App() {
   const [priceFilterValue, setPriceFilterValue] = React.useState<number>(0);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<MunchItem | null>(null);
+  const [open, setOpen] = React.useState(true);
 
   useEffect(() => {
     fetch(`http://localhost:3001`).then((response: Response) => {
@@ -130,6 +127,20 @@ function App() {
     }
   };
 
+  const handleOpenerDialogClose = () => {
+    setOpen(false);
+    let searchWord = document.querySelector<HTMLInputElement>('input[name="dialogSearchBar"]')?.value;
+    fetch(`http://localhost:3001/searchbar?keyword=${searchWord}`).then((response: Response) => {
+      response.json().then((json: any) => {
+        const munchItems: MunchItem[] = JSON.parse(json) as MunchItem[];
+        const restaurantNames = new Set<string>(munchItems.map((value: MunchItem) => { return value.restaurant.name; }))
+        setRestaurantFilters(Array.from(restaurantNames).sort());
+        setDisplayItems(munchItems);
+      })
+    });
+    document.querySelector<HTMLInputElement>('input[name="newSearchBar"]')!.value = searchWord ?? "";
+  }
+
   let munchItems: MunchItem[] = displayItems;
   munchItems = FilterByPriceRange(munchItems, priceFilterValue);
   munchItems = FilterByRestaurant(munchItems, currentRestaurantFilters);
@@ -144,7 +155,7 @@ function App() {
       <CssBaseline />
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
-          <Box sx={{ padding: 1, maxHeight: 64 }}>
+          <Box sx={{ padding: 1, maxHeight: 64, alignSelf: 'center' }}>
             <img src="./LOGO.PNG" height="48" alt="Logo" />
           </Box>
           <Typography
@@ -154,9 +165,62 @@ function App() {
           >
             Munch
           </Typography>
-          <SearchBar searchCallback={handleSearchWordChange} />
+          <Container
+            maxWidth="md"
+            disableGutters
+            sx={{ flexGrow: 1 }}
+          >
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="What are we in the mood for?"
+                inputProps={{ 'aria-label': 'search' }}
+                onChange={handleSearchWordChange}
+                name="newSearchBar"
+                defaultValue=""
+              />
+            </Search>
+          </Container>
         </Toolbar>
       </AppBar>
+      <Dialog
+        open={open}
+        onClose={handleDialogClose}
+      >
+        <DialogContent>
+          <Grid2 container spacing={2}>
+            <Grid2 xs={9}>
+              <Container
+                maxWidth="md"
+                disableGutters
+                sx={{ flexGrow: 1 }}
+              >
+                <Search>
+                  <SearchIconWrapper>
+                    <SearchIcon />
+                  </SearchIconWrapper>
+                  <StyledInputBase
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter') {
+                        handleOpenerDialogClose()
+                      }}}
+                    placeholder="What are we in the mood for?"
+                    inputProps={{ 'aria-label': 'search' }}
+                    type="text"
+                    name="dialogSearchBar"
+                    defaultValue=""
+                  />
+                </Search>
+              </Container>
+            </Grid2>
+            <Grid2 xs={3}>
+              <Button variant="contained" size="medium" onClick={handleOpenerDialogClose}>Let's Eat!</Button>
+            </Grid2>
+          </Grid2>
+        </DialogContent>
+      </Dialog>
       <Drawer variant="permanent"
         sx={{
           width: drawerWidth,
@@ -216,48 +280,6 @@ function App() {
                 <FormControlLabel value="restaurant" control={<Radio />} label="Restaurant" />
                 <FormControlLabel value="price" control={<Radio />} label="Price" />
               </RadioGroup>
-
-              <RadioGroup
-                aria-labelledby="sort-by-radio-button-group"
-                defaultValue="item_name"
-                name="radio-buttons-group"
-                value= {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                onChange={handleSortByChange}
-              >
-                <FormControlLabel value="item_name" control={<Radio />} label="Food Item2" />
-                <FormControlLabel value="restaurant_name" control={<Radio />} label="Restaurant2" />
-                <FormControlLabel value="price" control={<Radio />} label="Price2" />
-                <FormControlLabel value="description" control={<Radio />} label="Description2" />
-              </RadioGroup>
-
-              {headCells.map((headCell) => (
-          <TableCell
-            sx={{fontWeight:'bold'}}
-            key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-             // onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-
-                <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-
-
               <Divider />
             </Typography>
           </Container>
